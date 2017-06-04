@@ -7,7 +7,7 @@ import MenuItem from 'material-ui/MenuItem';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import RaisedButton from 'material-ui/RaisedButton';
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
-import UserComponent from './UserComponent';
+import  UserComponent from "./UserComponent";
 export default class ToolbarExamplesSimple extends React.Component {
 
   constructor(props) {
@@ -19,6 +19,9 @@ export default class ToolbarExamplesSimple extends React.Component {
 
   handleChange = (event, index, value) => this.setState({value});
 
+  handleUserChange = (user) => {
+    this.props.handleUserChange(user);
+  }
   render() {
     return (
       <Toolbar>
@@ -37,7 +40,7 @@ export default class ToolbarExamplesSimple extends React.Component {
           <ToolbarTitle text="Options" />
           <FontIcon className="muidocs-icon-custom-sort" />
           <ToolbarSeparator />
-          <UserComponent />
+          <UserComponent  handleUserChange={this.handleUserChange} />
         </ToolbarGroup>
       </Toolbar>
     );

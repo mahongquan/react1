@@ -3,9 +3,9 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
-
-export default class UserComponent extends React.Component {
-
+import Client from './Client';
+import Cookies from 'universal-cookie';
+class UserComponent extends React.Component {
   constructor(props) {
     super(props);
 
@@ -13,6 +13,7 @@ export default class UserComponent extends React.Component {
       open: false,
       logined:false,
       user:"mahongquan",
+      csrf_token:"",
     };
   }
 
@@ -25,17 +26,38 @@ export default class UserComponent extends React.Component {
       anchorEl: event.currentTarget
     });
   };
+  showlogin = () => {
+    console.log("showlogin");
+    Client.login( "mahongquan","333333",this.state.csrf_token,(data) => {
+        this.setState({
+          logined: true,
+        });
+        this.props.handleUserChange(this.state.user);
+    });
+  };
   handleLogin = () => {
   	console.log("login");
-    this.setState({
-      logined: true,
+    Client.login_index( (data) => {
+        console.log(data.csrf_token);
+        this.setState({
+          csrf_token: data.csrf_token,//.slice(0, MATCHING_ITEM_LIMIT),
+        });
+        const cookies = new Cookies();
+
+        cookies.set('csrftoken', this.state.csrf_token, { path: '/' });
+        this.showlogin();
     });
+    
   };
   handleLogout = () => {
   	console.log("logout");
+    Client.logout( (data) => {
+       ;
+    });
     this.setState({
       logined: false,
     });
+    this.props.handleUserChange(this.state.user);
   };
   handleRequestClose = () => {
     this.setState({
@@ -66,3 +88,4 @@ export default class UserComponent extends React.Component {
     );
   }
 }
+export default UserComponent;

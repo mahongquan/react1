@@ -1,0 +1,57 @@
+import React from 'react';
+var createReactClass = require('create-react-class');
+var LoginFormComponent = createReactClass({
+  getInitialState: function(){
+    return {
+      name: "",
+      pwd:""
+    };
+  },
+  handleNameChange:function(e) {
+    this.setState({name: e.target.value});
+  },
+  handlePwdChange:function(e) {
+    this.setState({pwd: e.target.value});
+  },
+  handleSubmit:function(e) {
+      e.preventDefault();
+      var data={};
+      data["username"]=this.state.name;
+      data["password"]=this.state.pwd;
+      this.props.onLoginSubmit(data);
+      this.props.dlgclose();
+  },
+  render:function() {
+    return (
+      <form className="loginForm" onSubmit={this.handleSubmit}>
+      <table className="table-condensed">
+        <tbody>
+          <tr>
+                <td>
+                    <label>用户名:</label>
+                </td>
+                <td>
+                    <input type="text" id="username"  value={this.state.name}
+                    onChange={this.handleNameChange}
+                    ></input>
+                </td>
+          </tr>
+          <tr>
+                <td>
+                    <label>密码:</label>
+                </td>
+                <td>
+                    <input type="text" id="password"  value={this.state.pwd}
+                    onChange={this.handlePwdChange}
+                    ></input>
+                </td>
+          </tr>
+        </tbody>
+        </table>
+        <input type="submit" value="ok" />
+      </form>
+    );
+  }
+});
+
+export default LoginFormComponent;
