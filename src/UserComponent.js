@@ -4,73 +4,85 @@ import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import Client from './Client';
-const MATCHING_ITEM_LIMIT = 25;
 export default class UserComponent extends React.Component {
+    constructor(props) {
+        super(props);
 
-  constructor(props) {
-    super(props);
+        this.state = {
+            open: false,
+            logined: false,
+            user: "mahongquan",
+            csrf_token: "",
+        };
+    }
 
-    this.state = {
-      open: false,
-      logined:false,
-      user:"mahongquan",
+    handleTouchTap = (event) => {
+        // This prevents ghost click.
+        event.preventDefault();
+
+        this.setState({
+            open: true,
+            anchorEl: event.currentTarget
+        });
     };
-  }
+    showlogin = () => {
+        console.log("showlogin");
+        Client.login("mahongquan", "333333", this.state.csrf_token, (data) => {
+            this.setState({
+                logined: true,
+            });
+            this.props.handleUserChange(this.state.user);
+        });
+    };
+    handleLogin = () => {
+        console.log("login");
+        Client.login_index((data) => {
+            console.log(data.csrf_token);
+            this.setState({
+                csrf_token: data.csrf_token, //.slice(0, MATCHING_ITEM_LIMIT),
+            });
+            const cookies = new Cookies();
 
-  handleTouchTap = (event) => {
-    // This prevents ghost click.
-    event.preventDefault();
+            cookies.set('csrftoken', this.state.csrf_token, { path: '/' });
+            this.showlogin();
+        });
 
-    this.setState({
-      open: true,
-      anchorEl: event.currentTarget
-    });
-  };
-  handleLogin = () => {
-  	console.log("login");
-    var value="马红权";
-    Client.search(value, (foods) => {
-        console.log(foods);
-        // this.setState({
-        //   foods: foods.slice(0, MATCHING_ITEM_LIMIT),
-        // });
-    });
-    this.setState({
-      logined: true,
-    });
-  };
-  handleLogout = () => {
-  	console.log("logout");
-    this.setState({
-      logined: false,
-    });
-  };
-  handleRequestClose = () => {
-    this.setState({
-      open: false,
-    });
-  };
+    };
+    handleLogout = () => {
+        console.log("logout");
+        Client.logout((data) => {;
+        });
+        this.setState({
+            logined: false,
+        });
+        this.props.handleUserChange(this.state.user);
+    };
+    handleRequestClose = () => {
+        this.setState({
+            open: false,
+        });
+    };
 
-  render() {
-    return (
-      <div>
-        <RaisedButton  onTouchTap={this.handleTouchTap}
-          label={this.state.user}>
-          <span className="caret"> </span>
-        </RaisedButton>
-        <Popover
-          open={this.state.open}
-          anchorEl={this.state.anchorEl}
-          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-          targetOrigin={{horizontal: 'left', vertical: 'top'}}
-          onRequestClose={this.handleRequestClose}
-        >
-          <Menu>
-            <MenuItem primaryText="登录" disabled={this.state.logined} onTouchTap={this.handleLogin} />
-            <MenuItem primaryText="注销" disabled={!this.state.logined} onTouchTap={this.handleLogout} />
-          </Menu>
-        </Popover>
-      </div>
-    );
-  }
+    render() {
+        return ( < div >
+            < RaisedButton onTouchTap = { this.handleTouchTap }
+            label = { this.state.user } >
+            < span className = "caret" > < /span> < /RaisedButton> < Popover open = { this.state.open }
+            anchorEl = { this.state.anchorEl }
+            anchorOrigin = {
+                { horizontal: 'left', vertical: 'bottom' } }
+            targetOrigin = {
+                { horizontal: 'left', vertical: 'top' } }
+            onRequestClose = { this.handleRequestClose } >
+            < Menu >
+            < MenuItem primaryText = "登录"
+            disabled = { this.state.logined }
+            onTouchTap = { this.handleLogin }
+            /> < MenuItem primaryText = "注销"
+            disabled = {!this.state.logined }
+            onTouchTap = { this.handleLogout }
+            /> < /Menu> < /Popover> < /div>
+        );
+    }
 }
+export default UserComponent;
