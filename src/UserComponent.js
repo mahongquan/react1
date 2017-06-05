@@ -3,7 +3,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
-
+import Client from './Client';
+const MATCHING_ITEM_LIMIT = 25;
 export default class UserComponent extends React.Component {
 
   constructor(props) {
@@ -27,6 +28,13 @@ export default class UserComponent extends React.Component {
   };
   handleLogin = () => {
   	console.log("login");
+    var value="马红权";
+    Client.search(value, (foods) => {
+        console.log(foods);
+        // this.setState({
+        //   foods: foods.slice(0, MATCHING_ITEM_LIMIT),
+        // });
+    });
     this.setState({
       logined: true,
     });

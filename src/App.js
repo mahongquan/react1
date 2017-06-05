@@ -42,7 +42,6 @@ class App extends Component {
         <MuiThemeProvider>
           <TableExampleSimple />
         </MuiThemeProvider>
-        
       </div>
     );
   }
