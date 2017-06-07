@@ -6,25 +6,26 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
-import DropDownMenu from 'material-ui/DropDownMenu';
-import FontIcon from 'material-ui/FontIcon';
+//import DropDownMenu from 'material-ui/DropDownMenu';
+//import FontIcon from 'material-ui/FontIcon';
+import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
-import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from 'material-ui/Toolbar';
+import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn, } from 'material-ui/Table';
 import Client from './Client';
 //import  UserComponent from "./UserComponent";
-import LoginFormComponent from "./LoginFormComponent";
+//import LoginFormComponent from "./LoginFormComponent";
 import DialogExampleSimple from "./DialogExampleSimple"
+import DialogImportStandard from "./DialogImportStandard"
 //import Cookies from 'universal-cookie';
 injectTapEventPlugin();
-var ReactDOM = require('react-dom');
-var createReactClass = require('create-react-class');
+//var ReactDOM = require('react-dom');
+//var createReactClass = require('create-react-class');
 //import { Navbar, Jumbotron, Button } from 'react-bootstrap';
 //var csrf_token="";
 var user = "";
 class App extends Component {
   state = {
-    user: null,
     contacts: [],
     showRemoveIcon: false,
     searchValue: '',
@@ -52,6 +53,9 @@ class App extends Component {
   };
   oncontactClick=(contact) => {
     console.log("click row");
+  };
+  handleImportStandard=() => {
+    console.log("import row");
   };
   handleUserChange = (user) => {
     if (user === "AnonymousUser") {
@@ -152,12 +156,9 @@ class App extends Component {
     });
   };
   render() {
-    const {showRemoveIcon, contacts} = this.state;
-    const removeIconStyle = showRemoveIcon ? {} : {
-      visibility: 'hidden'
-    };
+    //const {showRemoveIcon, contacts} = this.state;
 
-    const contactRows = contacts.map((contact, idx) => (
+    const contactRows = this.state.contacts.map((contact, idx) => (
       <TableRow
       key={idx}
       onClick={() => this.oncontactClick(contact)}
@@ -183,6 +184,9 @@ class App extends Component {
       onChange={this.handleSearchChange}
       >
           </TextField>
+         <div>
+         <DialogImportStandard title="导入标样" disabled={this.state.logined}  onLoginSubmit={this.onLoginSubmit} />
+         </div>
           <div>
         <RaisedButton  onTouchTap={this.handleTouchTap}
       label={this.state.user}>

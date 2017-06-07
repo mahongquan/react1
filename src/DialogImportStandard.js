@@ -10,7 +10,7 @@ import LoginFormComponent from "./LoginFormComponent";
  *
  * You can also close this dialog by clicking outside the dialog, or with the 'Esc' key.
  */
-export default class DialogExampleSimple extends React.Component {
+export default class DialogImportStandard extends React.Component {
   state = {
     open: false,
   };
