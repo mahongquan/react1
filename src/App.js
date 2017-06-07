@@ -8,7 +8,7 @@ import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 //import DropDownMenu from 'material-ui/DropDownMenu';
 //import FontIcon from 'material-ui/FontIcon';
-import FlatButton from 'material-ui/FlatButton';
+//import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn, } from 'material-ui/Table';
@@ -17,6 +17,7 @@ import Client from './Client';
 //import LoginFormComponent from "./LoginFormComponent";
 import DialogExampleSimple from "./DialogExampleSimple"
 import DialogImportStandard from "./DialogImportStandard"
+import DialogEdit from "./DialogEdit"
 //import Cookies from 'universal-cookie';
 injectTapEventPlugin();
 //var ReactDOM = require('react-dom');
@@ -32,6 +33,7 @@ class App extends Component {
     open: false,
     logined: false,
     user: "AnonymousUser",
+    selected:null,
   //csrf_token:"",
   }
   componentDidMount=() => {
@@ -53,6 +55,8 @@ class App extends Component {
   };
   oncontactClick=(contact) => {
     console.log("click row");
+    console.log(contact);
+    this.setState({selected:contact});
   };
   handleImportStandard=() => {
     console.log("import row");
@@ -156,13 +160,8 @@ class App extends Component {
     });
   };
   render() {
-    //const {showRemoveIcon, contacts} = this.state;
-
     const contactRows = this.state.contacts.map((contact, idx) => (
-      <TableRow
-      key={idx}
-      onClick={() => this.oncontactClick(contact)}
-      >
+      <TableRow      key={idx}      onTouchTap={() => this.oncontactClick(contact)}>
         <TableRowColumn>{contact.yiqibh}</TableRowColumn>
         <TableRowColumn>{contact.hetongbh}</TableRowColumn>
         <TableRowColumn>{contact.yonghu}</TableRowColumn>
@@ -186,6 +185,9 @@ class App extends Component {
           </TextField>
          <div>
          <DialogImportStandard title="导入标样" disabled={this.state.logined}  onLoginSubmit={this.onLoginSubmit} />
+         </div>
+         <div>
+         <DialogEdit  title="编辑" contact={this.state.selected} />
          </div>
           <div>
         <RaisedButton  onTouchTap={this.handleTouchTap}
