@@ -4,26 +4,72 @@ import RaisedButton from 'material-ui/RaisedButton';
 export default class DialogEdit extends React.Component {
   state = {
     open: false,
+    contact:{}
   };
-
+  // componentDidMount=()=> {
+  //   console.log("mount");
+  //   console.log(this.props.contact);
+  //   this.setState({contact:this.props.contact});
+  // };
   handleOpen = () => {
-    this.setState({open: true});
+    console.log("open");
+    var contact=this.props.contact;
+    if (contact==null){
+        contact={}
+    }
+    this.setState({open: true,contact:contact});
   };
 
   handleClose = () => {
     this.setState({open: false});
   };
-   handleChange = () => {
-    ;
+  handleChange = (e) => {
+    console.log("change");
+    var contact=this.state.contact;
+    switch(e.target.name)
+    {
+        case "baoxiang":
+            contact.baoxiang=e.target.value;
+            break;
+        case "yonghu":
+            contact.yonghu=e.target.value;
+            break;
+        case "addr":
+            contact.addr=e.target.value;
+            break;
+        case "channels":
+            contact.channels=e.target.value;
+            break;
+        case "yiqixinghao":
+            contact.yiqixinghao=e.target.value;
+            break;
+        case "yiqibh":
+            contact.yiqibh=e.target.value;
+            break;
+        case "shenhe":
+            contact.shenhe=e.target.value;
+            break;
+        case "yujifahuo_date":
+            contact.yujifahuo_date=e.target.value;
+            break;
+        case "tiaoshi_date":
+            contact.tiaoshi_date=e.target.value;
+            break;//
+        case "hetongbh":
+            contact.hetongbh=e.target.value;
+            break;
+        default:
+            break;
+
+    }
+    this.setState({console:contact});
+    console.log(this.state.contact)
   };
   onLoginSubmit= (data) => {
     this.props.onLoginSubmit(data);
   };
   render() {
-    var contact=this.props.contact;
-    if (contact==null){
-      contact={};
-    }
+    var contact=this.state.contact;
     //console.log(contact);
     return (
       <div>
