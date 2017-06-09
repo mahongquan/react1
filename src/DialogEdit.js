@@ -1,10 +1,13 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
+import Client from './Client';
 export default class DialogEdit extends React.Component {
   state = {
     open: false,
-    contact:{}
+    contact:{},
+    bxbg:'#ffffff',
   };
   // componentDidMount=()=> {
   //   console.log("mount");
@@ -25,11 +28,20 @@ export default class DialogEdit extends React.Component {
   };
   handleChange = (e) => {
     console.log("change");
+    // e.target.inputStyle={
+    //   width: '50%',
+    //   margin: '0 auto',
+    //   border: '2px solid #FF9800',
+    //   backgroundColor: '#ffd699',
+    // };
+    console.log(e.target.style)
+    e.target.style.backgroundColor="rgba(0x88,0x88,0xff,0)";
     var contact=this.state.contact;
     switch(e.target.name)
     {
         case "baoxiang":
             contact.baoxiang=e.target.value;
+            this.setState({bxbg:'#8888ff'});
             break;
         case "yonghu":
             contact.yonghu=e.target.value;
@@ -68,6 +80,12 @@ export default class DialogEdit extends React.Component {
   onLoginSubmit= (data) => {
     this.props.onLoginSubmit(data);
   };
+  handleSave= (data) => {
+    var url="/rest/Contact";
+    Client.post(url,this.state.contact,(res) => {
+        console.log(res);
+    });
+  };
   render() {
     var contact=this.state.contact;
     //console.log(contact);
@@ -80,95 +98,100 @@ export default class DialogEdit extends React.Component {
           open={this.state.open}
           onRequestClose={this.handleClose}
         >
-            <table id="table_input" className="table-condensed" >
+            <table id="table_TextField" className="table-condensed" >
             <tbody>
             <tr >
                 <td >
                     ID:
                 </td>
                 <td >
-                    <input type="text" id="id" name="id" readOnly="true"  disabled="disabled"    defaultValue={contact.id} />
+                    <TextField type="text" id="id" name="id" readOnly="true"  disabled={true}    defaultValue={contact.id} />
                 </td>
                 <td>
                     <label>用户单位:</label>
                 </td>
                 <td>
-                    <input type="text" id="yonghu" name="yonghu" value={contact.yonghu}  onChange={this.handleChange} />
+                    <TextField type="text" id="yonghu" name="yonghu" value={contact.yonghu}  onChange={this.handleChange} />
                 </td>
             </tr><tr>
                 <td>
                     客户地址:
                 </td>
                 <td>
-                    <input type="text" id="addr" name="addr" value={contact.addr}  onChange={this.handleChange} /> 
+                    <TextField type="text" id="addr" name="addr" value={contact.addr}  onChange={this.handleChange} /> 
                 </td>
                 <td>
                     通道配置:
                 </td>
                 <td>
-                    <input type="text" id="channels" name="channels" value={contact.channels} onChange={this.handleChange} />
+                    <TextField type="text" id="channels" name="channels" value={contact.channels} onChange={this.handleChange} />
                 </td>
             </tr><tr>
                 <td>
                     <label>仪器型号:</label>
                 </td>
                 <td>
-                    <input type="text" id="yiqixinghao" name="yiqixinghao" value={contact.yiqixinghao} onChange={this.handleChange} />
+                    <TextField type="text" id="yiqixinghao" name="yiqixinghao" value={contact.yiqixinghao} onChange={this.handleChange} />
                 </td>
                 <td>
                     <label>仪器编号:</label>
                 </td>
                 <td>
-                    <input type="text" id="yiqibh" name="yiqibh" value={contact.yiqibh} onChange={this.handleChange} />
+                    <TextField type="text" id="yiqibh" name="yiqibh" value={contact.yiqibh} onChange={this.handleChange} />
                 </td>
             </tr><tr>
                 <td>
                     <label>包箱:</label>
                 </td>
                 <td>
-                    <input type="text" id="baoxiang" name="baoxiang" value={contact.baoxiang}  onChange={this.handleChange} />
+                    <TextField type="text" id="baoxiang" name="baoxiang" value={contact.baoxiang}  
+                    onChange={this.handleChange} 
+                    style={{
+                      backgroundColor: this.state.bxbg,
+                    }}
+                    />
                 </td>
                 <td>
                     审核:
                 </td>
                 <td>
-                    <input type="text" id="shenhe" name="shenhe" value={contact.shenhe} onChange={this.handleChange}  />
+                    <TextField type="text" id="shenhe" name="shenhe" value={contact.shenhe} onChange={this.handleChange}  />
                 </td>
             </tr><tr>
                 <td>
                     <label>入库时间:</label>
                 </td>
                 <td>
-                    <input type="text" className="mydate" id="yujifahuo_date" name="yujifahuo_date" value={contact.yujifahuo_date}  onChange={this.handleChange} />
+                    <TextField type="text" className="mydate" id="yujifahuo_date" name="yujifahuo_date" value={contact.yujifahuo_date}  onChange={this.handleChange} />
                 </td>
                 <td>
                     调试时间:
                 </td>
                 <td>
-                    <input type="text" className="mydate" id="tiaoshi_date" name="tiaoshi_date" value={contact.tiaoshi_date}  onChange={this.handleChange} />
+                    <TextField type="text" className="mydate" id="tiaoshi_date" name="tiaoshi_date" value={contact.tiaoshi_date}  onChange={this.handleChange} />
                 </td>
             </tr><tr>
                 <td>
                     <label>合同编号:</label>
                 </td>
                 <td>
-                    <input type="text" id="hetongbh" name="hetongbh" value={contact.hetongbh} onChange={this.handleChange}  />
+                    <TextField type="text" id="hetongbh" name="hetongbh" value={contact.hetongbh} onChange={this.handleChange}  />
                 </td>
                 <td>
                     方法:
                 </td>
                 <td>
-                <input type="text" id="method" name="method" readOnly="true" defaultValue={contact.method} />
-                <button>选择文件</button>
-                <button>清除</button>
+                <TextField type="text" id="method" name="method" readOnly="true"   disabled={true} defaultValue={contact.method} />
+                <RaisedButton>选择文件</RaisedButton>
+                <RaisedButton>清除</RaisedButton>
                 </td>
             </tr>        
             </tbody>
             </table>
            <div> 
-           <button>保存</button> 
-           <button>清除</button> 
-           <button>复制</button>
+           <RaisedButton onTouchTap={this.handleSave} >保存</RaisedButton> 
+           <RaisedButton  onTouchTap={this.handleClear} >清除</RaisedButton> 
+           <RaisedButton onTouchTap={this.handleCopy} >复制</RaisedButton>
            </div>
         </Dialog>
         </div>

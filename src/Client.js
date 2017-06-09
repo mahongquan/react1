@@ -1,5 +1,20 @@
 /* eslint-disable no-undef */
 import queryString from 'query-string';
+function post(url,data,cb) {
+  var method="POST"
+  if (data.id){
+    method="PUT"
+  }
+  return fetch(url,
+  {
+      method: method,
+      credentials: 'include',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(data)
+  }).then(checkStatus)
+    .then(parseJSON)
+    .then(cb);
+}
 function contacts(query, cb) {
   return fetch(`/rest/Contact?baoxiang=${query}&limit=10`, {
     credentials: 'include',
@@ -62,5 +77,5 @@ function parseJSON(response) {
   return response.json();
 }
 
-const Client = {contacts,items,login_index,login,logout};
+const Client = {contacts,items,login_index,login,logout,post};
 export default Client;

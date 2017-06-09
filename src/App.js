@@ -187,7 +187,7 @@ class App extends Component {
          <DialogImportStandard title="导入标样" disabled={this.state.logined}  onLoginSubmit={this.onLoginSubmit} />
          </div>
          <div>
-         <DialogEdit  title="编辑" contact={this.state.selected} />
+         <DialogEdit  title="编辑仪器信息" contact={this.state.selected} />
          </div>
           <div>
         <RaisedButton  onTouchTap={this.handleTouchTap}
