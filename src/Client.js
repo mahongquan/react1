@@ -16,7 +16,7 @@ function post(url,data,cb) {
     .then(cb);
 }
 function contacts(query, cb) {
-  return fetch(`/rest/Contact?baoxiang=${query}&limit=10`, {
+  return fetch(`/rest/Contact?start=0&baoxiang=${query}&limit=10&search=`, {
     credentials: 'include',
     accept: 'application/json',
   }).then(checkStatus)

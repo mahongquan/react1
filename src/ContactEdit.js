@@ -5,7 +5,7 @@ import TextField from 'material-ui/TextField';
 import MyTextField from './MyTextField';
 import Client from './Client';
 import update from 'immutability-helper';
-export default class DialogEdit extends React.Component {
+export default class ContactEdit extends React.Component {
   state = {
     open: false,
     contact:{},
@@ -17,7 +17,9 @@ export default class DialogEdit extends React.Component {
   // };
   handleOpen = () => {
     console.log("open");
-    var contact=this.props.contact;
+    var contact_idx=this.props.contact;
+    this.parent=this.props.parent;
+    var contact=this.parent.state.contacts[contact_idx];
     if (contact==null){
         contact={}
     }

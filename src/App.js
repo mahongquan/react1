@@ -6,24 +6,15 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
-//import DropDownMenu from 'material-ui/DropDownMenu';
-//import FontIcon from 'material-ui/FontIcon';
-//import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn, } from 'material-ui/Table';
 import Client from './Client';
-//import  UserComponent from "./UserComponent";
-//import LoginFormComponent from "./LoginFormComponent";
 import DialogExampleSimple from "./DialogExampleSimple"
 import DialogImportStandard from "./DialogImportStandard"
-import DialogEdit from "./DialogEdit"
-//import Cookies from 'universal-cookie';
+import ContactEdit from "./ContactEdit"
+import update from 'immutability-helper';
 injectTapEventPlugin();
-//var ReactDOM = require('react-dom');
-//var createReactClass = require('create-react-class');
-//import { Navbar, Jumbotron, Button } from 'react-bootstrap';
-//var csrf_token="";
 var user = "";
 class App extends Component {
   state = {
@@ -36,11 +27,16 @@ class App extends Component {
     selected:null,
   //csrf_token:"",
   }
+
   componentDidMount=() => {
     Client.contacts("", (contacts) => {
+      var user=contacts.user;
+      if(user==undefined){
+        user="AnonymousUser"
+      }
       this.setState({
         contacts: contacts.data, //.slice(0, MATCHING_ITEM_LIMIT),
-        user: contacts.user,
+        user: user,
       });
       if (user === "AnonymousUser") {
         this.setState({
@@ -53,10 +49,34 @@ class App extends Component {
       }
     });
   };
-  oncontactClick=(contact) => {
+  // removeFoodItem = (itemIndex) => {
+  //   const filteredFoods = this.state.selectedFoods.filter(
+  //     (item, idx) => itemIndex !== idx,
+  //   );
+  //   this.setState({ selectedFoods: filteredFoods });
+  // }
+
+  // addFood = (food) => {
+  //   const newFoods = this.state.selectedFoods.concat(food);
+  //   this.setState({ selectedFoods: newFoods });
+  // }
+  handleTest = () => {
+    //const contact2=update(this.state.contacts[this.state.selected],{baoxiang: {$set: "test"}});
+    // console.log("handleTest");
+    //console.log(contact2);
+    //var one=this.state.contacts[this.state.selected];
+    var idx=this.state.selected;
+    console.log(idx);
+    const contacts2=update(this.state.contacts,{[idx]: {baoxiang:{$set:"test111"}}});
+    console.log(contacts2);
+    //this.state.contacts[this.state.selected].baoxiang="test";
+    this.setState({contacts:contacts2});
+    //this.forceUpdate();
+  };
+  oncontactClick=(key) => {
     console.log("click row");
-    console.log(contact);
-    this.setState({selected:contact});
+    console.log(key);
+    this.setState({selected:key});
   };
   handleImportStandard=() => {
     console.log("import row");
@@ -161,7 +181,7 @@ class App extends Component {
   };
   render() {
     const contactRows = this.state.contacts.map((contact, idx) => (
-      <TableRow      key={idx}      onTouchTap={() => this.oncontactClick(contact)}>
+      <TableRow      key={idx}      onTouchTap={() => this.oncontactClick(idx)}>
         <TableRowColumn>{contact.yiqibh}</TableRowColumn>
         <TableRowColumn>{contact.hetongbh}</TableRowColumn>
         <TableRowColumn>{contact.yonghu}</TableRowColumn>
@@ -187,9 +207,12 @@ class App extends Component {
          <DialogImportStandard title="导入标样" disabled={this.state.logined}  onLoginSubmit={this.onLoginSubmit} />
          </div>
          <div>
-         <DialogEdit  title="编辑仪器信息" contact={this.state.selected} />
+         <ContactEdit  title="编辑仪器信息" contact={this.state.selected} parent={this}/>
          </div>
           <div>
+          <RaisedButton  onTouchTap={this.handleTest}
+            label="test" >
+        </RaisedButton>
         <RaisedButton  onTouchTap={this.handleTouchTap}
       label={this.state.user}>
         </RaisedButton>
