@@ -73,6 +73,12 @@ class App extends Component {
     this.setState({contacts:contacts2});
     //this.forceUpdate();
   };
+  handleContactChange = (idx,contact) => {
+    console.log(idx);
+    const contacts2=update(this.state.contacts,{[idx]: {$set:contact}});
+    console.log(contacts2);
+    this.setState({contacts:contacts2});
+  };
   oncontactClick=(key) => {
     console.log("click row");
     console.log(key);
@@ -182,7 +188,7 @@ class App extends Component {
   render() {
     const contactRows = this.state.contacts.map((contact, idx) => (
       <TableRow      key={idx}      onTouchTap={() => this.oncontactClick(idx)}>
-        <TableRowColumn>{contact.yiqibh}</TableRowColumn>
+        <TableRowColumn>{contact.id}</TableRowColumn>
         <TableRowColumn>{contact.hetongbh}</TableRowColumn>
         <TableRowColumn>{contact.yonghu}</TableRowColumn>
         <TableRowColumn>{contact.baoxiang}</TableRowColumn>
@@ -246,7 +252,7 @@ class App extends Component {
         <Table>
     <TableHeader>
       <TableRow>
-        <TableHeaderColumn>仪器编号</TableHeaderColumn>
+        <TableHeaderColumn>id</TableHeaderColumn>
         <TableHeaderColumn>合同编号</TableHeaderColumn>
         <TableHeaderColumn>用户单位</TableHeaderColumn>
         <TableHeaderColumn>包箱</TableHeaderColumn>
