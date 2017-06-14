@@ -1,7 +1,7 @@
 
 import React from 'react';
 import Client from './Client';
-import { Table, TableBody, TableHeader, TableRowColumn, TableRow, } from 'material-ui/Table';
+import { Table, TableBody, TableHeader,TableHeaderColumn, TableRowColumn, TableRow, } from 'material-ui/Table';
 class UsePacks extends React.Component {
   state = {
     foods: [],
@@ -58,31 +58,29 @@ class UsePacks extends React.Component {
         onClick={() => this.props.onFoodClick(food)}
       >
         <TableRowColumn>{food.yiqibh}</TableRowColumn>
-        <TableRowColumn className='right aligned'>{food.id}</TableRowColumn>
-        <TableRowColumn className='right aligned'>{food.name}</TableRowColumn>
-        <TableRowColumn className='right aligned'>{food.contact}</TableRowColumn>
-        <TableRowColumn className='right aligned'>{food.pack}</TableRowColumn>
-        <TableRowColumn className='right aligned'>{food.hetongbh}</TableRowColumn>
+        <TableRowColumn >{food.id}</TableRowColumn>
+        <TableRowColumn >{food.name}</TableRowColumn>
+        <TableRowColumn >{food.contact}</TableRowColumn>
+        <TableRowColumn >{food.pack}</TableRowColumn>
+        <TableRowColumn >{food.hetongbh}</TableRowColumn>
       </TableRow>
     ));
 
     return (
-      <div id='food-search'>
-        <Table className='ui selectable sTableRowuctured large Table'>
+        <Table>
           <TableHeader>
              <TableRow>
-              <TableRowColumn className='eight wide'>id</TableRowColumn>
-              <TableRowColumn>name</TableRowColumn>
-              <TableRowColumn>contact</TableRowColumn>
-              <TableRowColumn>pack</TableRowColumn>
-              <TableRowColumn>hetongbh</TableRowColumn>
+              <TableHeaderColumn>id</TableHeaderColumn>
+              <TableHeaderColumn>name</TableHeaderColumn>
+              <TableHeaderColumn>contact</TableHeaderColumn>
+              <TableHeaderColumn>pack</TableHeaderColumn>
+              <TableHeaderColumn>hetongbh</TableHeaderColumn>
             </TableRow>
           </TableHeader>
           <TableBody>
             {foodRows}
           </TableBody>
         </Table>
-      </div>
     );
   }
 }

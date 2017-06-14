@@ -1,270 +1,76 @@
 import React, { Component } from 'react';
-import './App.css';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import injectTapEventPlugin from 'react-tap-event-plugin';
-import RaisedButton from 'material-ui/RaisedButton';
-import Popover from 'material-ui/Popover';
-import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/MenuItem';
-import TextField from 'material-ui/TextField';
-import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar';
-import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
-import Client from './Client';
-import DialogExampleSimple from "./DialogExampleSimple"
-import DialogImportStandard from "./DialogImportStandard"
-import ContactEdit from "./ContactEdit"
-import update from 'immutability-helper';
-injectTapEventPlugin();
-var user = "";
+import {Navbar,Nav,NavItem,NavDropdown,MenuItem,DropdownButton} from "react-bootstrap";
 class App extends Component {
-  state = {
-    contacts: [],
-    showRemoveIcon: false,
-    searchValue: '',
-    open: false,
-    logined: false,
-    user: "AnonymousUser",
-    selected:null,
-  //csrf_token:"",
-  }
-
-  componentDidMount=() => {
-    Client.contacts("", (contacts) => {
-      var user=contacts.user;
-      if(user==undefined){
-        user="AnonymousUser"
-      }
-      this.setState({
-        contacts: contacts.data, //.slice(0, MATCHING_ITEM_LIMIT),
-        user: user,
-      });
-      if (user === "AnonymousUser") {
-        this.setState({
-          logined: false
-        });
-      } else {
-        this.setState({
-          logined: true
-        });
-      }
-    });
-  };
-  // removeFoodItem = (itemIndex) => {
-  //   const filteredFoods = this.state.selectedFoods.filter(
-  //     (item, idx) => itemIndex !== idx,
-  //   );
-  //   this.setState({ selectedFoods: filteredFoods });
-  // }
-
-  // addFood = (food) => {
-  //   const newFoods = this.state.selectedFoods.concat(food);
-  //   this.setState({ selectedFoods: newFoods });
-  // }
-  handleTest = () => {
-    //const contact2=update(this.state.contacts[this.state.selected],{baoxiang: {$set: "test"}});
-    // console.log("handleTest");
-    //console.log(contact2);
-    //var one=this.state.contacts[this.state.selected];
-    var idx=this.state.selected;
-    console.log(idx);
-    const contacts2=update(this.state.contacts,{[idx]: {baoxiang:{$set:"test111"}}});
-    console.log(contacts2);
-    //this.state.contacts[this.state.selected].baoxiang="test";
-    this.setState({contacts:contacts2});
-    //this.forceUpdate();
-  };
-  handleContactChange = (idx,contact) => {
-    console.log(idx);
-    const contacts2=update(this.state.contacts,{[idx]: {$set:contact}});
-    console.log(contacts2);
-    this.setState({contacts:contacts2});
-  };
-  oncontactClick=(key) => {
-    console.log("click row");
-    console.log(key);
-    this.setState({selected:key});
-  };
-  handleImportStandard=() => {
-    console.log("import row");
-  };
-  handleUserChange = (user) => {
-    if (user === "AnonymousUser") {
-      this.setState({
-        logined: false
-      });
-    } else {
-      this.setState({
-        logined: true
-      });
-    }
-    this.setState({
-      user: user,
-      contacts: [], //slice(0, MATCHING_ITEM_LIMIT),
-    });
-    this.componentDidMount();
-  };
-  handleTouchTap = (event) => {
-    // This prevents ghost click.
-    event.preventDefault();
-
-    this.setState({
-      open: true,
-      anchorEl: event.currentTarget
-    });
-  };
-  showlogin = () => {
-    console.log("showlogin");
-    var data = {
-      username: "mahongquan",
-      password: "333333"
-    };
-    this.onLoginSubmit(data);
-  };
-  handleLogin = () => {
-    console.log("login");
-    Client.login_index((data) => {
-      //console.log(data.csrf_token);
-      // const cookies = new Cookies();
-
-      // cookies.set('csrftoken', this.state.csrf_token, { path: '/' });
-      this.showlogin();
-    });
-
-  };
-  handleLogout = () => {
-    console.log("logout");
-    Client.logout((data) => {
-      console.log("logout" + data);
-      this.setState({
-        logined: false,
-        user: "AnonymousUser",
-      });
-      this.handleUserChange(this.state.user);
-    });
-  };
-  handleRequestClose = () => {
-    this.setState({
-      open: false,
-    });
-  };
-  handleSearchChange = (e) => {
-    const value = e.target.value;
-
-    this.setState({
-      searchValue: value,
-    });
-
-    if (value === '') {
-      this.setState({
-        contacts: [],
-        showRemoveIcon: false,
-      });
-    } else {
-      this.setState({
-        showRemoveIcon: true,
-      });
-
-      Client.contacts(value, (contacts) => {
-        this.setState({
-          contacts: contacts.data, //.slice(0, MATCHING_ITEM_LIMIT),
-        });
-      });
-    }
-  };
-  onLoginSubmit= (data) => {
-    console.log(data);
-    Client.login(data.username, data.password, (res) => {
-      if (res.success) {
-        this.setState({
-          logined: true,
-        });
-        this.setState({
-          user: data.username
-        });
-        this.handleUserChange(this.state.user);
-      }
-    });
-  };
   render() {
-    const contactRows = this.state.contacts.map((contact, idx) => (
-      <TableRow      key={idx}      onTouchTap={() => this.oncontactClick(idx)}>
-        <TableRowColumn>{contact.id}</TableRowColumn>
-        <TableRowColumn>{contact.hetongbh}</TableRowColumn>
-        <TableRowColumn>{contact.yonghu}</TableRowColumn>
-        <TableRowColumn>{contact.baoxiang}</TableRowColumn>
-        <TableRowColumn>{contact.yiqixinghao}</TableRowColumn>
-      </TableRow>
-    ));
     return (
-      <div className="App">
-        <MuiThemeProvider>
-        <div>
-         <Toolbar>
-        <ToolbarGroup>
-          <ToolbarTitle text="仪器信息" />
-          <TextField
-      id="id_search"
-      type='text'
-      placeholder='Search instrument...'
-      value={this.state.searchValue}
-      onChange={this.handleSearchChange}
-      >
-          </TextField>
-         <div>
-         <DialogImportStandard title="导入标样" disabled={this.state.logined}  onLoginSubmit={this.onLoginSubmit} />
-         </div>
-         <div>
-         <ContactEdit  title="编辑仪器信息" contact={this.state.selected} parent={this}/>
-         </div>
-          <div>
-          <RaisedButton  onTouchTap={this.handleTest}
-            label="test" >
-        </RaisedButton>
-        <RaisedButton  onTouchTap={this.handleTouchTap}
-      label={this.state.user}>
-        </RaisedButton>
-        <Popover
-      open={this.state.open}
-      anchorEl={this.state.anchorEl}
-      anchorOrigin={{
-        horizontal: 'left',
-        vertical: 'bottom'
-      }}
-      targetOrigin={{
-        horizontal: 'left',
-        vertical: 'top'
-      }}
-      onRequestClose={this.handleRequestClose}
-      >
-          <Menu>
-            <MenuItem primaryText="注销" disabled={!this.state.logined} onTouchTap={this.handleLogout} />
-          </Menu>
-
-        </Popover>
-       </div>
-        </ToolbarGroup>
-        <ToolbarGroup>
-                <DialogExampleSimple title="登录" disabled={this.state.logined}  onLoginSubmit={this.onLoginSubmit}>
-                </DialogExampleSimple>
-        </ToolbarGroup>
-      </Toolbar>
-        <Table>
-    <TableHeader>
-      <TableRow>
-        <TableRowColumn>id</TableRowColumn>
-        <TableRowColumn>合同编号</TableRowColumn>
-        <TableRowColumn>用户单位</TableRowColumn>
-        <TableRowColumn>包箱</TableRowColumn>
-        <TableRowColumn>仪器型号</TableRowColumn>
-      </TableRow>
-    </TableHeader>
-         <TableBody>
-            {contactRows}
-          </TableBody>
-        </Table>
-        </div>
-      </MuiThemeProvider>
-      </div>
+    <div id="todoapp">
+    <Navbar className="navbar-inverse">
+    <Navbar.Header>
+      <Navbar.Brand>
+        <a href="#">装箱单</a>
+      </Navbar.Brand>
+    </Navbar.Header>
+    <Nav>
+      <NavItem eventKey={1} href="#">合同</NavItem>
+      <NavItem eventKey={2} href="#">管理</NavItem>
+      <NavItem eventKey={4} href="#">备件</NavItem>
+      <NavItem eventKey={5} href="#">复制包</NavItem>
+      <NavItem eventKey={6} href="#">统计</NavItem>
+      {/*<NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
+        <MenuItem eventKey={3.1}>Action</MenuItem>
+        <MenuItem eventKey={3.2}>Another action</MenuItem>
+        <MenuItem eventKey={3.3}>Something else here</MenuItem>
+        <MenuItem divider />
+        <MenuItem eventKey={3.4}>Separated link</MenuItem>
+      </NavDropdown>*/}
+    </Nav>
+  </Navbar>
+    <div>
+    <table>
+    <tr>
+   <td>
+     <DropdownButton title="Dropdown">
+      <MenuItem eventKey="1">登录</MenuItem>
+      <MenuItem eventKey="2">注销</MenuItem>
+      </DropdownButton>
+  </td>
+  <td>
+        <input type="text" id="id_input_search"  placeholder="合同 or 仪器编号" value="" />
+        <button id="id_bt_search" className="btm btn-info">搜索
+        <span className="glyphicon glyphicon-search" aria-hidden="true"></span>
+        </button>
+        <button id="id_bt_new"  className="btn btn-primary">新仪器</button>
+        <button id="id_bt_standard"  className="btn btn-info">导入标样</button>
+  </td>
+   <td>
+    <DropdownButton title="过滤">
+      <MenuItem className="baoxiang">马红权</MenuItem>
+      <MenuItem className="baoxiang">陈旺</MenuItem>
+      <MenuItem className="baoxiang">吴振宁</MenuItem>
+      <MenuItem className="baoxiang">*</MenuItem>
+    </DropdownButton>
+  </td>
+  </tr>
+ </table>
+ </div>
+      <div id="main" style={{"min-height":"200px"}}>
+      <table  className="table-bordered" >
+    　<thead>
+    　　<tr>
+    　　　<td>ID</td><td>用户单位</td><td>客户地址</td><td>通道配置</td><td>仪器型号</td><td>仪器编号</td><td>包箱</td><td>审核</td>
+          <td>入库时间</td><td>调试时间</td><td>合同编号</td><td>方法</td><td>操作</td>
+    　　</tr>
+   　</thead> 
+      <tbody id="contact-list">
+      </tbody>
+      </table>
+      <a id="bt_prev">前一页</a> 
+      <label id="page">page/page</label>
+      <a id="bt_next">后一页</a>
+      <input id="page_input" value="1" maxlength="6" size="6" />
+      <button id="page_go"  className="btn btn-info">跳转</button>
+    </div>
+  </div>
     );
   }
 }
