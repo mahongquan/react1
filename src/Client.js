@@ -23,6 +23,14 @@ function contacts(query, cb) {
     .then(parseJSON)
     .then(cb);
 }
+function UsePacks(query, cb) {
+  return fetch(`/rest/UsePack?contact=${query}`, {
+    credentials: 'include',
+    accept: 'application/json',
+  }).then(checkStatus)
+    .then(parseJSON)
+    .then(cb);
+}
 function items(query, cb) {
   return fetch(`/rest/Item?name=${query}`, {
     credentials: 'include',
@@ -77,5 +85,5 @@ function parseJSON(response) {
   return response.json();
 }
 
-const Client = {contacts,items,login_index,login,logout,post};
+const Client = {contacts,items,login_index,login,logout,post, UsePacks};
 export default Client;

@@ -8,7 +8,7 @@ import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import TextField from 'material-ui/TextField';
 import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar';
-import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn, } from 'material-ui/Table';
+import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import Client from './Client';
 import DialogExampleSimple from "./DialogExampleSimple"
 import DialogImportStandard from "./DialogImportStandard"
@@ -198,6 +198,7 @@ class App extends Component {
     return (
       <div className="App">
         <MuiThemeProvider>
+        <div>
          <Toolbar>
         <ToolbarGroup>
           <ToolbarTitle text="仪器信息" />
@@ -247,22 +248,21 @@ class App extends Component {
                 </DialogExampleSimple>
         </ToolbarGroup>
       </Toolbar>
-      </MuiThemeProvider>
-      <MuiThemeProvider>
         <Table>
     <TableHeader>
       <TableRow>
-        <TableHeaderColumn>id</TableHeaderColumn>
-        <TableHeaderColumn>合同编号</TableHeaderColumn>
-        <TableHeaderColumn>用户单位</TableHeaderColumn>
-        <TableHeaderColumn>包箱</TableHeaderColumn>
-        <TableHeaderColumn>仪器型号</TableHeaderColumn>
+        <TableRowColumn>id</TableRowColumn>
+        <TableRowColumn>合同编号</TableRowColumn>
+        <TableRowColumn>用户单位</TableRowColumn>
+        <TableRowColumn>包箱</TableRowColumn>
+        <TableRowColumn>仪器型号</TableRowColumn>
       </TableRow>
     </TableHeader>
          <TableBody>
             {contactRows}
           </TableBody>
         </Table>
+        </div>
       </MuiThemeProvider>
       </div>
     );

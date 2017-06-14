@@ -4,6 +4,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import MyTextField from './MyTextField';
 import Client from './Client';
+import UsePacks from './UsePacks';
 import update from 'immutability-helper';
 export default class DialogEdit extends React.Component {
   state = {
@@ -191,6 +192,7 @@ export default class DialogEdit extends React.Component {
            <RaisedButton onTouchTap={this.handleCopy} >复制</RaisedButton>
            </div>
         </Dialog>
+        <UsePacks />
         </div>
     );
   }
