@@ -15,8 +15,9 @@ function post(url,data,cb) {
     .then(parseJSON)
     .then(cb);
 }
-function contacts(query, cb) {
-  return fetch(`/rest/Contact?start=0&baoxiang=${query}&limit=10&search=`, {
+function contacts(data, cb) {
+  var query=queryString.stringify(data)
+  return fetch(`/rest/Contact?${query}`, {
     credentials: 'include',
     accept: 'application/json',
   }).then(checkStatus)
