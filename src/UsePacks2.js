@@ -47,7 +47,10 @@ class UsePacks2 extends React.Component {
       searchValue: '',
     });
   };
-
+  onEditClick = (id) => {
+  };
+  onDeleteClick = (id) => {
+  };
   render() {
     const { showRemoveIcon, foods } = this.state;
     const removeIconStyle = showRemoveIcon ? {} : { visibility: 'hidden' };
@@ -61,6 +64,10 @@ class UsePacks2 extends React.Component {
         <td >{food.contact}</td>
         <td >{food.pack}</td>
         <td >{food.hetongbh}</td>
+        <td>
+        <button className="usepack_edit" onClick={() => this.onEditClick(food.id)}>编辑</button>
+        <button  className="usepack_delete" onClick={() => this.onDeleteClick(food.id)}>删除</button>
+        </td>
       </tr>
     ));
 
@@ -73,6 +80,7 @@ class UsePacks2 extends React.Component {
               <td>contact</td>
               <td>pack</td>
               <td>hetongbh</td>
+              <td>操作</td>
             </tr>
           </thead>
           <tbody>

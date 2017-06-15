@@ -4,6 +4,7 @@ import update from 'immutability-helper';
 import Client from './Client';
 import ExampleModal from './ExampleModal';
 import ContactEdit2 from './ContactEdit2';
+var DateTime=require('react-datetime');
 var host="";
 class App extends Component {
   mystate = {
@@ -216,6 +217,7 @@ class App extends Component {
     ));
     return (
     <div id="todoapp">
+    <DateTime />
     <Navbar className="navbar-inverse">
     <Navbar.Header>
       <Navbar.Brand>
