@@ -3,6 +3,7 @@ import {Navbar,Nav,NavItem,MenuItem,DropdownButton,Table} from "react-bootstrap"
 import update from 'immutability-helper';
 import Client from './Client';
 import ExampleModal from './ExampleModal';
+import ContactEdit2 from './ContactEdit2';
 var host="";
 class App extends Component {
   mystate = {
@@ -196,7 +197,9 @@ class App extends Component {
         <td>{contact.addr}</td>
         <td>{contact.channels}</td>
         <td>{contact.yiqixinghao}</td>
-        <td><a>{contact.yiqibh}</a></td>
+        <td>
+          <ContactEdit2 parent={this} index={idx} title={contact.yiqibh} />
+        </td>
         <td>{contact.baoxiang}</td>
         <td>{contact.shenhe}</td>
         <td>{contact.yujifahuo_date}</td>
