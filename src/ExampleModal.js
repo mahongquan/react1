@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react';
 import LoginFormComponent from "./LoginFormComponent";
-import {Modal,OverlayTrigger,Popover,Button,Overlay,Tooltip,Navbar,Nav,NavItem,NavDropdown,MenuItem,DropdownButton,Table} from "react-bootstrap";
-const ExampleModal = React.createClass({
+import {Modal} from "react-bootstrap";
+var createReactClass = require('create-react-class');
+const ExampleModal = createReactClass({
   getInitialState() {
     return { showModal: false };
   },
@@ -18,17 +18,6 @@ const ExampleModal = React.createClass({
     this.props.onLoginSubmit(data);
   },
   render() {
-    const popover = (
-      <Popover id="modal-popover" title="popover">
-        very popover. such engagement
-      </Popover>
-    );
-    const tooltip = (
-      <Tooltip id="modal-tooltip">
-        wow.
-      </Tooltip>
-    );
-
     return (
         <a onClick={this.open}>{this.props.title}
         <Modal show={this.state.showModal} onHide={this.close}>
