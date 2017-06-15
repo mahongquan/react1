@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import {Navbar,Nav,NavItem,MenuItem,DropdownButton,Table} from "react-bootstrap";
 import update from 'immutability-helper';
 import Client from './Client';
+import ExampleModal from './ExampleModal';
+var host="";
 class App extends Component {
   mystate = {
     start:0,
-    limit:3,
+    limit:5,
     baoxiang:"",
     logined: false,
     search:""
@@ -153,6 +155,10 @@ class App extends Component {
     //this.setState({start:this.mystate.start});
     this.componentDidMount();
   };
+  onDetailClick=(contactid)=>{
+    console.log(contactid);
+    window.open(host+"/parts/showcontact/?id="+contactid, "detail", 'height=800,width=800,resizable=yes,scrollbars=yes');
+  }
   handleNext = (e) => {
     this.mystate.start=this.mystate.start+this.mystate.limit;
     if(this.mystate.start>this.mystate.total-this.mystate.limit) 
@@ -163,6 +169,11 @@ class App extends Component {
     }
     this.componentDidMount();
   };
+  onSelectBaoxiang=(e) => {
+    this.mystate.baoxiang=e;
+    this.componentDidMount();
+    console.log(e);
+  }
   onLoginSubmit= (data) => {
     console.log(data);
     Client.login(data.username, data.password, (res) => {
@@ -185,14 +196,14 @@ class App extends Component {
         <td>{contact.addr}</td>
         <td>{contact.channels}</td>
         <td>{contact.yiqixinghao}</td>
-        <td>{contact.yiqibh}</td>
+        <td><a>{contact.yiqibh}</a></td>
         <td>{contact.baoxiang}</td>
         <td>{contact.shenhe}</td>
         <td>{contact.yujifahuo_date}</td>
         <td>{contact.tiaoshi_date}</td>
         <td>{contact.hetongbh}</td>
         <td>{contact.method}</td>
-        <td><a className="contact_detail" data={contact.id}>详细</a>
+        <td><a className="contact_detail" data={contact.id} onClick={() => this.onDetailClick(contact.id)}>详细</a>
          <a className="contact_updatemethod" data={contact.id}>更新方法</a>
          <a className="contact_allfile" data={contact.id}>全部文件</a>
          <a className="contact_chuku" data={contact.id}>核对备料计划</a>
@@ -205,7 +216,7 @@ class App extends Component {
     <Navbar className="navbar-inverse">
     <Navbar.Header>
       <Navbar.Brand>
-        <a href="#">装箱单</a>
+        <a>装箱单</a>
       </Navbar.Brand>
     </Navbar.Header>
     <Nav>
@@ -222,10 +233,10 @@ class App extends Component {
    <td>
      <DropdownButton title={this.state.user} id="id_dropdown1">
         <li hidden={this.state.user!=="AnonymousUser"}>
-          <a href="#"  onClick={this.handleLogin}>登录</a>
+          <ExampleModal onLoginSubmit={this.onLoginSubmit} title="登录" />
         </li>
         <li  hidden={this.state.user==="AnonymousUser"} >
-          <a href="#" onClick={this.handleLogout}>注销</a>
+          <a onClick={this.handleLogout}>注销</a>
         </li>
      </DropdownButton>
   </td>
@@ -239,10 +250,10 @@ class App extends Component {
   </td>
    <td>
     <DropdownButton title="过滤" id="id_dropdown2">
-      <MenuItem className="baoxiang">马红权</MenuItem>
-      <MenuItem className="baoxiang">陈旺</MenuItem>
-      <MenuItem className="baoxiang">吴振宁</MenuItem>
-      <MenuItem className="baoxiang">*</MenuItem>
+      <MenuItem onSelect={() => this.onSelectBaoxiang("马红权")}>马红权</MenuItem>
+      <MenuItem onSelect={() => this.onSelectBaoxiang("陈旺")}>陈旺</MenuItem>
+      <MenuItem onSelect={() => this.onSelectBaoxiang("吴振宁")}>吴振宁</MenuItem>
+      <MenuItem onSelect={() => this.onSelectBaoxiang("")}>*</MenuItem>
     </DropdownButton>
   </td>
   </tr>
