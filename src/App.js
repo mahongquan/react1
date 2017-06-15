@@ -248,7 +248,7 @@ class App extends Component {
         <button id="id_bt_search" className="btm btn-info" onClick={this.search}>搜索
         <span className="glyphicon glyphicon-search" aria-hidden="true"></span>
         </button>
-        <button id="id_bt_new"  className="btn btn-primary">新仪器</button>
+        <ContactEdit2 parent={this} index={null} title="新仪器" />
         <button id="id_bt_standard"  className="btn btn-info">导入标样</button>
   </td>
    <td>
