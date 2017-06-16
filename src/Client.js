@@ -79,10 +79,11 @@ function checkStatus(response) {
   error.status = response.statusText;
   error.response = response;
   console.log(error); // eslint-disable-line no-console
-  throw error;
+  //throw error;
 }
 
 function parseJSON(response) {
+  console.log(response);
   return response.json();
 }
 

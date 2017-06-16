@@ -4,8 +4,62 @@ import update from 'immutability-helper';
 import Client from './Client';
 import ExampleModal from './ExampleModal';
 import ContactEdit2 from './ContactEdit2';
+import Autocomplete from 'react-autocomplete'
+//import { getStates, matchStateToTerm, sortStates, styles } from './utils'
 var DateTime=require('react-datetime');
 var host="";
+let styles = {
+  item: {
+    padding: '2px 6px',
+    cursor: 'default'
+  },
+
+  highlightedItem: {
+    color: 'white',
+    background: 'hsl(200, 50%, 50%)',
+    padding: '2px 6px',
+    cursor: 'default'
+  },
+
+  menu: {
+    border: 'solid 1px #ccc'
+  }
+}
+function matchStateToTerm(state, value) {
+  return (
+    state.name.toLowerCase().indexOf(value.toLowerCase()) !== -1 ||
+    state.abbr.toLowerCase().indexOf(value.toLowerCase()) !== -1
+  )
+}
+
+function sortStates(a, b, value) {
+  const aLower = a.name.toLowerCase()
+  const bLower = b.name.toLowerCase()
+  const valueLower = value.toLowerCase()
+  const queryPosA = aLower.indexOf(valueLower)
+  const queryPosB = bLower.indexOf(valueLower)
+  if (queryPosA !== queryPosB) {
+    return queryPosA - queryPosB
+  }
+  return aLower < bLower ? -1 : 1
+}
+// function getStates() {
+//   return [
+//     { abbr: 'AL', name: 'Alabama' },
+//     { abbr: 'AK', name: 'Alaska' },
+//     { abbr: 'AZ', name: 'Arizona' },
+//     { abbr: 'AR', name: 'Arkansas' },
+//   ]
+// }
+function getStates() {
+  return [
+    { abbr: 'CS', name: 'CS-2800' },
+    { abbr: 'CS', name: 'CS-3000' },
+    { abbr: 'O', name: 'O-3000' },
+    { abbr: 'ON', name: 'ON-3000' },
+  ]
+}
+
 class App extends Component {
   mystate = {
     start:0,
@@ -20,6 +74,7 @@ class App extends Component {
     start:0,
     total:0,
     search:"",
+    value: 'Ma',
   }
   componentDidMount=() => {
     Client.contacts(
@@ -217,7 +272,9 @@ class App extends Component {
     ));
     return (
     <div id="todoapp">
-    <DateTime />
+    {
+      //<DateTime />
+    }
     <Navbar className="navbar-inverse">
     <Navbar.Header>
       <Navbar.Brand>
@@ -271,6 +328,22 @@ class App extends Component {
       <a onClick={this.handleNext}>后一页</a>
       <input maxLength="6" size="6" onChange={this.handlePageChange} value={this.state.start+1} />
       <button id="page_go"  className="btn btn-info">跳转</button>
+  <Autocomplete
+          value={this.state.value}
+          inputProps={{ id: 'states-autocomplete' }}
+          items={getStates()}
+          getItemValue={(item) => item.name}
+          shouldItemRender={matchStateToTerm}
+          sortItems={sortStates}
+          onChange={(event, value) => this.setState({ value })}
+          onSelect={value => this.setState({ value })}
+          renderItem={(item, isHighlighted) => (
+            <div
+              style={isHighlighted ? styles.highlightedItem : styles.item}
+              key={item.abbr}
+            >{item.name}</div>
+          )}
+        />
   </div>
     );
   }
