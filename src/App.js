@@ -31,7 +31,12 @@ function matchStateToTerm(state, value) {
     state.abbr.toLowerCase().indexOf(value.toLowerCase()) !== -1
   )
 }
-
+function fakeRequest(value, cb) {
+  setTimeout(cb, 500, value ?
+    getStates().filter(state => matchStateToTerm(state, value)) :
+    getStates()
+  )
+}
 function sortStates(a, b, value) {
   const aLower = a.name.toLowerCase()
   const bLower = b.name.toLowerCase()
@@ -74,7 +79,9 @@ class App extends Component {
     start:0,
     total:0,
     search:"",
-    value: 'Ma',
+    value: '',
+    unitedStates:[],
+    loading: false
   }
   componentDidMount=() => {
     Client.contacts(
@@ -231,6 +238,13 @@ class App extends Component {
     this.componentDidMount();
     console.log(e);
   }
+  auto_change=(event, value)=>{
+    console.log("auto_change");
+    this.setState({ value, loading: true })
+      Client.items(value, (items) => {
+        this.setState({ unitedStates: items.data, loading: false })
+      })
+  }
   onLoginSubmit= (data) => {
     console.log(data);
     Client.login(data.username, data.password, (res) => {
@@ -328,6 +342,28 @@ class App extends Component {
       <a onClick={this.handleNext}>后一页</a>
       <input maxLength="6" size="6" onChange={this.handlePageChange} value={this.state.start+1} />
       <button id="page_go"  className="btn btn-info">跳转</button>
+  <Autocomplete
+          inputProps={{ id: 'states-autocomplete' }}
+          ref="autocomplete"
+          value={this.state.value}
+          items={this.state.unitedStates}
+          getItemValue={(item) => item.name}
+          onSelect={(value, item) => {
+            // set the menu to only the selected item
+            this.setState({ value, unitedStates: [ item ] })
+            // or you could reset it to a default list again
+            // this.setState({ unitedStates: getStates() })
+          }}
+          onChange={this.auto_change
+          }
+          renderItem={(item, isHighlighted) => (
+            <div
+              style={isHighlighted ? styles.highlightedItem : styles.item}
+              key={item.abbr}
+              id={item.abbr}
+            >{item.name}</div>
+          )}
+        />
   <Autocomplete
           value={this.state.value}
           inputProps={{ id: 'states-autocomplete' }}

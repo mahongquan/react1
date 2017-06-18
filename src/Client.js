@@ -33,7 +33,7 @@ function UsePacks(query, cb) {
     .then(cb);
 }
 function items(query, cb) {
-  return fetch(`/rest/Item?name=${query}`, {
+  return fetch(`/rest/Item?search=${query}`, {
     credentials: 'include',
     accept: 'application/json',
   }).then(checkStatus)
@@ -79,7 +79,7 @@ function checkStatus(response) {
   error.status = response.statusText;
   error.response = response;
   console.log(error); // eslint-disable-line no-console
-  //throw error;
+  throw error;
 }
 
 function parseJSON(response) {
