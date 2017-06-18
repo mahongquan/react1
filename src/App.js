@@ -5,7 +5,10 @@ import Client from './Client';
 import ExampleModal from './ExampleModal';
 import ContactEdit2 from './ContactEdit2';
 import Autocomplete from 'react-autocomplete'
+var moment = require('moment');
+require('moment/locale/zh-cn');
 //import { getStates, matchStateToTerm, sortStates, styles } from './utils'
+//import Basic from "./Basic";
 var DateTime=require('react-datetime');
 var host="";
 let styles = {
@@ -41,7 +44,8 @@ class App extends Component {
     search:"",
     auto_value: '',
     auto_items:[],
-    auto_loading: false
+    auto_loading: false,
+    date_open:false,
   }
   componentDidMount=() => {
     Client.contacts(
@@ -252,9 +256,6 @@ class App extends Component {
     ));
     return (
     <div id="todoapp">
-    {
-      //<DateTime />
-    }
     <Navbar className="navbar-inverse">
     <Navbar.Header>
       <Navbar.Brand>
@@ -308,6 +309,7 @@ class App extends Component {
       <a onClick={this.handleNext}>后一页</a>
       <input maxLength="6" size="6" onChange={this.handlePageChange} value={this.state.start+1} />
       <button id="page_go"  className="btn btn-info">跳转</button>
+      <div>
   <Autocomplete
           inputProps={{ id: 'states-autocomplete' }}
           ref="autocomplete"
@@ -316,6 +318,8 @@ class App extends Component {
           getItemValue={(item) => item.name}
           onSelect={(value, item) => {
             // set the menu to only the selected item
+            console.log("selected");
+            console.log(item);
             this.setState({auto_value:value, auto_items: [ item ] })
             // or you could reset it to a default list again
             // this.setState({ unitedStates: getStates() })
@@ -325,11 +329,13 @@ class App extends Component {
           renderItem={(item, isHighlighted) => (
             <div
               style={isHighlighted ? styles.highlightedItem : styles.item}
-              key={item.abbr}
-              id={item.abbr}
+              key={item.id}
+              id={item.id}
             >{item.name}</div>
           )}
         />
+        <DateTime open={false} timeFormat={false} dateFormat="YYYY-MM-DD" />
+        </div>
   </div>
     );
   }
