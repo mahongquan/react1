@@ -25,46 +25,6 @@ let styles = {
     border: 'solid 1px #ccc'
   }
 }
-function matchStateToTerm(state, value) {
-  return (
-    state.name.toLowerCase().indexOf(value.toLowerCase()) !== -1 ||
-    state.abbr.toLowerCase().indexOf(value.toLowerCase()) !== -1
-  )
-}
-function fakeRequest(value, cb) {
-  setTimeout(cb, 500, value ?
-    getStates().filter(state => matchStateToTerm(state, value)) :
-    getStates()
-  )
-}
-function sortStates(a, b, value) {
-  const aLower = a.name.toLowerCase()
-  const bLower = b.name.toLowerCase()
-  const valueLower = value.toLowerCase()
-  const queryPosA = aLower.indexOf(valueLower)
-  const queryPosB = bLower.indexOf(valueLower)
-  if (queryPosA !== queryPosB) {
-    return queryPosA - queryPosB
-  }
-  return aLower < bLower ? -1 : 1
-}
-// function getStates() {
-//   return [
-//     { abbr: 'AL', name: 'Alabama' },
-//     { abbr: 'AK', name: 'Alaska' },
-//     { abbr: 'AZ', name: 'Arizona' },
-//     { abbr: 'AR', name: 'Arkansas' },
-//   ]
-// }
-function getStates() {
-  return [
-    { abbr: 'CS', name: 'CS-2800' },
-    { abbr: 'CS', name: 'CS-3000' },
-    { abbr: 'O', name: 'O-3000' },
-    { abbr: 'ON', name: 'ON-3000' },
-  ]
-}
-
 class App extends Component {
   mystate = {
     start:0,
@@ -79,9 +39,9 @@ class App extends Component {
     start:0,
     total:0,
     search:"",
-    value: '',
-    unitedStates:[],
-    loading: false
+    auto_value: '',
+    auto_items:[],
+    auto_loading: false
   }
   componentDidMount=() => {
     Client.contacts(
@@ -240,10 +200,16 @@ class App extends Component {
   }
   auto_change=(event, value)=>{
     console.log("auto_change");
-    this.setState({ value, loading: true })
+    if (value.length>1)
+    {
+      this.setState({ auto_value:value, auto_loading: true });
       Client.items(value, (items) => {
-        this.setState({ unitedStates: items.data, loading: false })
-      })
+          this.setState({ auto_items: items.data, auto_loading: false })
+      });
+    }
+    else{
+      this.setState({ auto_value:value, auto_loading: false });
+    };
   }
   onLoginSubmit= (data) => {
     console.log(data);
@@ -345,12 +311,12 @@ class App extends Component {
   <Autocomplete
           inputProps={{ id: 'states-autocomplete' }}
           ref="autocomplete"
-          value={this.state.value}
-          items={this.state.unitedStates}
+          value={this.state.auto_value}
+          items={this.state.auto_items}
           getItemValue={(item) => item.name}
           onSelect={(value, item) => {
             // set the menu to only the selected item
-            this.setState({ value, unitedStates: [ item ] })
+            this.setState({auto_value:value, auto_items: [ item ] })
             // or you could reset it to a default list again
             // this.setState({ unitedStates: getStates() })
           }}
@@ -361,22 +327,6 @@ class App extends Component {
               style={isHighlighted ? styles.highlightedItem : styles.item}
               key={item.abbr}
               id={item.abbr}
-            >{item.name}</div>
-          )}
-        />
-  <Autocomplete
-          value={this.state.value}
-          inputProps={{ id: 'states-autocomplete' }}
-          items={getStates()}
-          getItemValue={(item) => item.name}
-          shouldItemRender={matchStateToTerm}
-          sortItems={sortStates}
-          onChange={(event, value) => this.setState({ value })}
-          onSelect={value => this.setState({ value })}
-          renderItem={(item, isHighlighted) => (
-            <div
-              style={isHighlighted ? styles.highlightedItem : styles.item}
-              key={item.abbr}
             >{item.name}</div>
           )}
         />
