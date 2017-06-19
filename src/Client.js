@@ -1,5 +1,17 @@
 /* eslint-disable no-undef */
 import queryString from 'query-string';
+function get(url,data,cb) {
+  var method="GET";
+  url=url+"?"+queryString.stringify(data)
+  return fetch(url,
+  {
+      method: method,
+      credentials: 'include',
+      headers: {'Content-Type':'application/json'},
+  }).then(checkStatus)
+    .then(parseJSON)
+    .then(cb);
+}
 function post(url,data,cb) {
   var method="POST"
   if (data.id){
@@ -32,6 +44,15 @@ function UsePacks(query, cb) {
     .then(parseJSON)
     .then(cb);
 }
+function PackItems(query, cb) {
+  return fetch(`/rest/PackItem?pack=${query}`, {
+    credentials: 'include',
+    accept: 'application/json',
+  }).then(checkStatus)
+    .then(parseJSON)
+    .then(cb);
+}
+
 function items(query, cb) {
   return fetch(`/rest/Item?search=${query}`, {
     credentials: 'include',
@@ -87,5 +108,5 @@ function parseJSON(response) {
   return response.json();
 }
 
-const Client = {contacts,items,login_index,login,logout,post, UsePacks};
+const Client = {contacts,items,login_index,login,logout,UsePacks,PackItems,get,post};
 export default Client;

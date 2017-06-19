@@ -3,7 +3,9 @@ import UsePacks2 from "./UsePacks2";
 import {Modal} from "react-bootstrap";
 import update from 'immutability-helper';
 import Client from './Client';
-import Autocomplete from 'react-autocomplete'
+var moment = require('moment');
+var locale=require('moment/locale/zh-cn');
+var DateTime=require('react-datetime');
 var createReactClass = require('create-react-class');
 const ContactEdit2 = createReactClass({
   getInitialState() {
@@ -12,6 +14,7 @@ const ContactEdit2 = createReactClass({
       contact:{},
       hiddenPacks:true,
       bg:{},
+      date_open:false,
     };
   },
 
@@ -58,11 +61,38 @@ const ContactEdit2 = createReactClass({
         this.old=res.data;
     });
   },
+  yujifahuo_date_change(value){
+    //this.state.yujifahuo_date=value;
+    var e_target_name="yujifahuo_date";
+    console.log(this.old[e_target_name]);
+    var t=null;
+    if (typeof value==="string")
+    {
+      t=value;
+    }
+    else{
+      t=value.format("YYYY-MM-DD");
+    }
+    console.log(t);
+    if(this.old[e_target_name]===t)
+    {
+      this.state.bg[e_target_name]="#ffffff";
+      console.log("equal");
+    }
+    else{
+      console.log("not equal")
+      this.state.bg[e_target_name]="#8888ff"; 
+    }
+    const contact2=update(this.state.contact,{[e_target_name]: {$set:t}});
+    console.log(contact2);
+    this.setState({contact:contact2});
+  },
   handleChange(e){
     console.log("change");
+    console.log(e);
     console.log(e.target.value);
     console.log(e.target.name);
-    if(this.old[e.target.name]==e.target.value)
+    if(this.old[e.target.name]===e.target.value)
     {
       this.state.bg[e.target.name]="#ffffff";
     }
@@ -73,6 +103,7 @@ const ContactEdit2 = createReactClass({
     console.log(contact2);
     this.setState({contact:contact2});
   },
+
   render() {
     console.log(this.state.hiddenPacks);
     return (
@@ -95,72 +126,78 @@ const ContactEdit2 = createReactClass({
                     <label>用户单位:</label>
                 </td>
                 <td>
-                    <input style={{"background-color":this.state.bg.yonghu}}  type="text" id="yonghu" name="yonghu" value={this.state.contact.yonghu} onChange={this.handleChange} />
+                    <input style={{"backgroundColor":this.state.bg.yonghu}}  type="text" id="yonghu" name="yonghu" value={this.state.contact.yonghu} onChange={this.handleChange} />
                 </td>
             </tr><tr>
                 <td>
                     客户地址:
                 </td>
                 <td>
-                    <input  style={{"background-color":this.state.bg.addr}}  type="text" id="addr" name="addr" value={this.state.contact.addr} onChange={this.handleChange} />
+                    <input  style={{"backgroundColor":this.state.bg.addr}}  type="text" id="addr" name="addr" value={this.state.contact.addr} onChange={this.handleChange} />
                 </td>
                 <td>
                     通道配置:
                 </td>
                 <td>
-                    <input  style={{"background-color":this.state.bg.channels}}  type="text" id="channels" name="channels" value={this.state.contact.channels} onChange={this.handleChange} />
+                    <input  style={{"backgroundColor":this.state.bg.channels}}  type="text" id="channels" name="channels" value={this.state.contact.channels} onChange={this.handleChange} />
                 </td>
             </tr><tr>
                 <td>
                     <label>仪器型号:</label>
                 </td>
                 <td>
-                    <input style={{"background-color":this.state.bg.yiqixinghao}} type="text" id="yiqixinghao" name="yiqixinghao" value={this.state.contact.yiqixinghao}  onChange={this.handleChange} />
+                    <input style={{"backgroundColor":this.state.bg.yiqixinghao}} type="text" id="yiqixinghao" name="yiqixinghao" value={this.state.contact.yiqixinghao}  onChange={this.handleChange} />
                 </td>
                 <td>
                     <label>仪器编号:</label>
                 </td>
                 <td>
-                    <input  style={{"background-color":this.state.bg.yiqibh}}  type="text" id="yiqibh" name="yiqibh" value={this.state.contact.yiqibh}  onChange={this.handleChange} />
+                    <input  style={{"backgroundColor":this.state.bg.yiqibh}}  type="text" id="yiqibh" name="yiqibh" value={this.state.contact.yiqibh}  onChange={this.handleChange} />
                 </td>
             </tr><tr>
                 <td>
                     <label>包箱:</label>
                 </td>
                 <td>
-                    <input style={{"background-color":this.state.bg.baoxiang}} type="text" id="baoxiang" name="baoxiang" value={this.state.contact.baoxiang}  onChange={this.handleChange} />
+                    <input style={{"backgroundColor":this.state.bg.baoxiang}} type="text" id="baoxiang" name="baoxiang" value={this.state.contact.baoxiang}  onChange={this.handleChange} />
                 </td>
                 <td>
                     审核:
                 </td>
                 <td>
-                    <input style={{"background-color":this.state.bg.shenhe}} type="text" id="shenhe" name="shenhe" value={this.state.contact.shenhe}  onChange={this.handleChange} />
+                    <input style={{"backgroundColor":this.state.bg.shenhe}} type="text" id="shenhe" name="shenhe" value={this.state.contact.shenhe}  onChange={this.handleChange} />
                 </td>
             </tr><tr>
                 <td>
                     <label>入库时间:</label>
                 </td>
                 <td>
-                    <input  style={{"background-color":this.state.bg.yujifahuo_date}} type="text" className="mydate" id="yujifahuo_date" name="yujifahuo_date" value={this.state.contact.yujifahuo_date}  onChange={this.handleChange} />
+                    <DateTime  ref="datetime1" timeFormat={false} 
+                    inputProps={
+                      {"style":
+                        {"backgroundColor":this.state.bg.yujifahuo_date}
+                      }
+                    } 
+                    id="yujifahuo_date" name="yujifahuo_date"  value={this.state.contact.yujifahuo_date} onChange={this.yujifahuo_date_change} />
                 </td>
                 <td>
                     调试时间:
                 </td>
                 <td>
-                    <input  style={{"background-color":this.state.bg.tiaoshi_date}}  type="text" className="mydate" id="tiaoshi_date" name="tiaoshi_date" value={this.state.contact.tiaoshi_date}  onChange={this.handleChange} />
+                    <input  style={{"backgroundColor":this.state.bg.tiaoshi_date}}  type="text" className="mydate" id="tiaoshi_date" name="tiaoshi_date" value={this.state.contact.tiaoshi_date}  onChange={this.handleChange} />
                 </td>
             </tr><tr>
                 <td>
                     <label>合同编号:</label>
                 </td>
                 <td>
-                    <input  style={{"background-color":this.state.bg.hetongbh}}  type="text" id="hetongbh" name="hetongbh" value={this.state.contact.hetongbh}  onChange={this.handleChange} />
+                    <input  style={{"backgroundColor":this.state.bg.hetongbh}}  type="text" id="hetongbh" name="hetongbh" value={this.state.contact.hetongbh}  onChange={this.handleChange} />
                 </td>
                 <td>
                     方法:
                 </td>
                 <td>
-                <input  style={{"background-color":this.state.bg.method}}  type="text" id="method" name="method" readOnly="true" defaultValue={this.state.contact.method} />
+                <input  style={{"backgroundColor":this.state.bg.method}}  type="text" id="method" name="method" readOnly="true" defaultValue={this.state.contact.method} />
                 <button className="btn" id="bt_file">
                   选取文件
                 </button>
