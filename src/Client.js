@@ -33,7 +33,7 @@ function UsePacks(query, cb) {
     .then(cb);
 }
 function items(query, cb) {
-  return fetch(`/rest/Item?name=${query}`, {
+  return fetch(`/rest/Item?search=${query}`, {
     credentials: 'include',
     accept: 'application/json',
   }).then(checkStatus)
@@ -83,6 +83,7 @@ function checkStatus(response) {
 }
 
 function parseJSON(response) {
+  console.log(response);
   return response.json();
 }
 
