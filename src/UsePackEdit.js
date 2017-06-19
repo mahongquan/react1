@@ -17,7 +17,9 @@ const UsePackEdit = createReactClass({
   close() {
     this.setState({ showModal: false });
   },
-
+  handleChange(){
+    
+  },
   open() {
     this.setState({ showModal: true });
     if (this.props.index==null){
@@ -52,7 +54,7 @@ const UsePackEdit = createReactClass({
                     <label>名称:</label>
                 </td>
                 <td>
-                    <input style={{"background-color":this.state.bg.yonghu}}  type="text" id="yonghu" name="yonghu" value={this.state.usepack.name} onChange={this.handleChange} />
+                    <input style={{"backgroundColor":this.state.bg.yonghu}}  type="text" id="yonghu" name="yonghu" value={this.state.usepack.name} onChange={this.handleChange} />
                 </td>
             </tr></tbody>
             </table>

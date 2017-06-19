@@ -1,6 +1,6 @@
 import React from 'react';
 import UsePacks2 from "./UsePacks2";
-import {Modal} from "react-bootstrap";
+import {Modal,Glyphicon} from "react-bootstrap";
 import update from 'immutability-helper';
 import Client from './Client';
 var moment = require('moment');
@@ -198,12 +198,9 @@ const ContactEdit2 = createReactClass({
                 </td>
                 <td>
                 <input  style={{"backgroundColor":this.state.bg.method}}  type="text" id="method" name="method" readOnly="true" defaultValue={this.state.contact.method} />
-                <button className="btn" id="bt_file">
-                  选取文件
+                <button className="btn" id="bt_file"><Glyphicon glyph="pencil" />
                 </button>
-                <button className="btn" id="bt_removefile">
-                 清除
-                </button>
+                <button className="btn" id="bt_removefile"><Glyphicon glyph="remove" /></button>
                 </td>
             </tr>        
             </tbody>

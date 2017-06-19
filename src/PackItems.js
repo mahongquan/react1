@@ -2,6 +2,7 @@
 import React from 'react';
 import Client from './Client';
 import {Table} from "react-bootstrap";
+import PackItemEdit from './PackItemEdit';
 class PackItems extends React.Component {
   state = {
     items: [],
@@ -50,7 +51,7 @@ class PackItems extends React.Component {
         <td>{item.bh}</td>
         <td >{item.pack}</td>
         <td>
-        <button className="item_edit" onClick={() => this.onEditClick(item.id)}>编辑</button>
+        <PackItemEdit parent={this} index={idx} title="编辑" />
         <button  className="item_delete" onClick={() => this.onDeleteClick(item.id)}>删除</button>
         </td>
       </tr>
@@ -80,7 +81,7 @@ class PackItems extends React.Component {
         </p>
       <p>新包名称：
         <input id="new_pack1"  placeholder="新备件" value={this.state.newPackName} onChange={this.newpackChange}/>
-        <button class="btn btn-info" id="id_new_item" onClick={this.new_pack}>新备件</button>
+        <button className="btn btn-info" id="id_new_item" onClick={this.new_pack}>新备件</button>
       </p>
       </div>
     );
