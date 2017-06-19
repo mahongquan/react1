@@ -2,76 +2,63 @@
 import React from 'react';
 import Client from './Client';
 import {Table} from "react-bootstrap";
+import UsePackEdit from "./UsePackEdit";
 class UsePacks2 extends React.Component {
   state = {
-    foods: [],
+    usepacks: [],
     showRemoveIcon: false,
-    searchValue: '',
+    newPackName: '',
   };
   componentDidMount=()=> {
-      Client.UsePacks(101, (foods) => {
+      Client.UsePacks(this.props.contact_id, (usepacks) => {
         this.setState({
-          foods: foods.data,//.slice(0, MATCHING_ITEM_LIMIT),
+          usepacks: usepacks.data,//.slice(0, MATCHING_ITEM_LIMIT),
         });
       });
   };
-  handleSearchChange = (e) => {
-    const value = e.target.value;
-
-    this.setState({
-      searchValue: value,
+  new_pack= (id) => {
+    var url="/rest/Pack";
+    var data={"name":this.state.newPackName};
+    Client.post(url,data,(res) => {
+        var p=res.data;
+        this.addrow(p)
     });
-
-    if (value === '') {
-      this.setState({
-        foods: [],
-        showRemoveIcon: false,
-      });
-    } else {
-      this.setState({
-        showRemoveIcon: true,
-      });
-
-      Client.search(value, (foods) => {
-        this.setState({
-          foods: foods.data,//.slice(0, MATCHING_ITEM_LIMIT),
-        });
-      });
-    }
   };
-
-  handleSearchCancel = () => {
-    this.setState({
-      foods: [],
-      showRemoveIcon: false,
-      searchValue: '',
+  addrow=(pack1)=>{
+    var url="/rest/UsePack";
+    var data={contact:this.props.contact_id,name:pack1.name,pack:pack1.id};
+    Client.post(url,data,(res) => {
+        //todo 
     });
+  };
+  newpackChange=(e)=>{
+    this.setState({newPackName:e.target.value});
   };
   onEditClick = (id) => {
   };
   onDeleteClick = (id) => {
   };
   render() {
-    const { showRemoveIcon, foods } = this.state;
-    const removeIconStyle = showRemoveIcon ? {} : { visibility: 'hidden' };
-
-    const foodRows = foods.map((food, idx) => (
+    const { usepacks } = this.state;
+    const usepackRows = usepacks.map((usepack, idx) => (
       <tr
         key={idx}
       >
-        <td >{food.id}</td>
-        <td >{food.name}</td>
-        <td >{food.contact}</td>
-        <td >{food.pack}</td>
-        <td >{food.hetongbh}</td>
+        <td >{usepack.id}</td>
+        <td >{usepack.name}</td>
+        <td >{usepack.contact}</td>
+        <td >{usepack.pack}</td>
+        <td >{usepack.hetongbh}</td>
         <td>
-        <button className="usepack_edit" onClick={() => this.onEditClick(food.id)}>编辑</button>
-        <button  className="usepack_delete" onClick={() => this.onDeleteClick(food.id)}>删除</button>
+        <button className="usepack_edit" onClick={() => this.onEditClick(usepack.id)}>编辑</button>
+        <button  className="usepack_delete" onClick={() => this.onDeleteClick(usepack.id)}>删除</button>
+        <UsePackEdit parent={this} index={idx} title="编辑" />
         </td>
       </tr>
     ));
 
     return (
+    <div>
         <Table  responsive bordered condensed>
           <thead>
              <tr>
@@ -84,9 +71,18 @@ class UsePacks2 extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {foodRows}
+            {usepackRows}
           </tbody>
         </Table>
+        <p>
+          <input id="auto_pack1" placeholder="输入包" />
+          <button  id="id_bibei_usepack">必备</button>
+        </p>
+      <p>新包名称：
+        <input id="new_pack1"  placeholder="新包" value={this.state.newPackName} onChange={this.newpackChange}/>
+        <button class="btn btn-info" id="id_new_usepack" onClick={this.new_pack}>新包</button>
+      </p>
+      </div>
     );
   }
 }

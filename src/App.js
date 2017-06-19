@@ -217,7 +217,8 @@ class App extends Component {
     ));
     return (
     <div id="todoapp">
-    <DateTime />
+    {//<DateTime />
+    }
     <Navbar className="navbar-inverse">
     <Navbar.Header>
       <Navbar.Brand>

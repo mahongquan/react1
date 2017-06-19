@@ -34,6 +34,22 @@ const ContactEdit2 = createReactClass({
   onLoginSubmit (data)  {
     this.props.onLoginSubmit(data);
   },
+  handleClear (data) {
+    var url="/rest/Contact";
+    Client.post(url,this.state.contact,(res) => {
+        this.setState({contact:res.data});
+        this.parent.handleContactChange(this.props.index,res.data);
+        this.old=res.data;
+    });
+  },
+  handleCopy(data) {
+    var url="/rest/Contact";
+    Client.post(url,this.state.contact,(res) => {
+        this.setState({contact:res.data});
+        this.parent.handleContactChange(this.props.index,res.data);
+        this.old=res.data;
+    });
+  },
   handleSave (data) {
     var url="/rest/Contact";
     Client.post(url,this.state.contact,(res) => {
@@ -157,10 +173,12 @@ const ContactEdit2 = createReactClass({
             </table>
        <div> 
        <button className="btn btn-primary" id="bt_save" onClick={this.handleSave} >保存</button> 
-       <button  id="bt_clear">清除</button> 
-       <button  id="bt_clearid">复制</button>
+       <button  id="bt_clear" onClick={this.handleClear}>清除</button> 
+       <button  id="bt_clearid" onClick={this.handleCopy}>复制</button>
        </div>
-        <div id="id_usepacks" hidden={this.state.hiddenPacks}><UsePacks2 /></div>
+        <div id="id_usepacks" hidden={this.state.hiddenPacks}>
+        <UsePacks2  contact_id={this.state.contact.id}/>
+        </div>
                 </Modal.Body>
         </Modal>
         </a>
