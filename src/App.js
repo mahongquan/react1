@@ -19,6 +19,7 @@ class App extends Component {
     start:0,
     total:0,
     search:"",
+    start_input:1,
   }
   componentDidMount=() => {
     Client.contacts(
@@ -145,17 +146,20 @@ class App extends Component {
     this.mystate.start=0;
     this.componentDidMount();
   };
-  handlePageChange= (e) => {
-    this.mystate.start=parseInt(e.target.value,10)-1;
+  jump=()=>{
+    this.mystate.start=parseInt(this.state.start_input,10)-1;
     if(this.mystate.start>this.mystate.total-this.mystate.limit) 
         this.mystate.start=this.mystate.total-this.mystate.limit;//total >limit
     if(this.mystate.start<0)
     {
       this.mystate.start=0;
     }
-    //this.setState({start:this.mystate.start});
     this.componentDidMount();
   };
+  handlePageChange= (e) => {
+    this.setState({start_input:e.target.value});
+  };
+
   onDetailClick=(contactid)=>{
     console.log(contactid);
     window.open(host+"/parts/showcontact/?id="+contactid, "detail", 'height=800,width=800,resizable=yes,scrollbars=yes');
@@ -280,8 +284,8 @@ class App extends Component {
       <a onClick={this.handlePrev}>前一页</a> 
       <label id="page">{this.state.start+1}/{this.state.total}</label>
       <a onClick={this.handleNext}>后一页</a>
-      <input maxLength="6" size="6" onChange={this.handlePageChange} value={this.state.start+1} />
-      <button id="page_go"  className="btn btn-info">跳转</button>
+      <input maxLength="6" size="6" onChange={this.handlePageChange} value={this.state.start_input} />
+      <button id="page_go"  className="btn btn-info" onClick={this.jump}>跳转</button>
   </div>
     );
   }

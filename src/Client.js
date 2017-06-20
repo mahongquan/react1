@@ -45,7 +45,7 @@ function UsePacks(query, cb) {
     .then(cb);
 }
 function PackItems(query, cb) {
-  return fetch(`/rest/PackItem?pack=${query}`, {
+  return fetch(`/rest/PackItem?pack=${query}&limit=200`, {
     credentials: 'include',
     accept: 'application/json',
   }).then(checkStatus)

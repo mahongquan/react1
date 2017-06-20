@@ -108,7 +108,8 @@ const ContactEdit2 = createReactClass({
     console.log(this.state.hiddenPacks);
     return (
         <a onClick={this.open}>{this.props.title}
-        <Modal show={this.state.showModal} onHide={this.close}>
+        <div>
+        <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
           <Modal.Header closeButton>
             <Modal.Title>编辑仪器信息</Modal.Title>
           </Modal.Header>
@@ -215,6 +216,7 @@ const ContactEdit2 = createReactClass({
         </div>
                 </Modal.Body>
         </Modal>
+        </div>
         </a>
     );
   }
