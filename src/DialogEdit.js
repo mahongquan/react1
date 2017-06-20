@@ -3,6 +3,7 @@ import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Client from './Client';
+import UsePacks from "./UsePacks"
 export default class DialogEdit extends React.Component {
   state = {
     open: false,
@@ -188,6 +189,15 @@ export default class DialogEdit extends React.Component {
             </tr>        
             </tbody>
             </table>
+            <table>
+            　<thead>
+            　　<tr>
+            　　　<td>ID</td><td>包名称</td><td hidden="true">合同</td><td hidden="true">包</td><td hidden="true">合同号</td><td>操作</td>
+            　　</tr>
+           　</thead> 
+          <tbody id="usepack-list">
+          </tbody>
+          </table>
            <div> 
            <RaisedButton onTouchTap={this.handleSave} >保存</RaisedButton> 
            <RaisedButton  onTouchTap={this.handleClear} >清除</RaisedButton> 
