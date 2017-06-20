@@ -4,11 +4,32 @@ import Client from './Client';
 import {Table} from "react-bootstrap";
 import PackItemEdit from './PackItemEdit';
 import update from 'immutability-helper';
+import Autocomplete from './Autocomplete'
+let styles = {
+  item: {
+    padding: '2px 6px',
+    cursor: 'default'
+  },
+
+  highlightedItem: {
+    color: 'white',
+    background: 'hsl(200, 50%, 50%)',
+    padding: '2px 6px',
+    cursor: 'default'
+  },
+
+  menu: {
+    border: 'solid 1px #ccc'
+  }
+}
 class PackItems extends React.Component {
   state = {
     items: [],
     showRemoveIcon: false,
     newPackName: '',
+     auto_value: '',
+      auto_items:[],
+      auto_loading: false,
   };
   componentDidMount=()=> {
       Client.PackItems(this.props.pack_id, (items) => {
@@ -17,12 +38,33 @@ class PackItems extends React.Component {
         });
       });
   };
-  new_pack= (id) => {
-    var url="/rest/Pack";
-    var data={"name":this.state.newPackName};
+  auto_select=(value, item) => {
+      console.log("selected");
+      console.log(item);
+      this.addrow(item.id);
+      this.setState({auto_value:value, auto_items: [ item ] })
+  }
+  auto_change=(event, value)=>{
+    console.log("auto_change");
+    if (value.length>1)
+    {
+      this.setState({ auto_value:value, auto_loading: true });
+      Client.get("/rest/Item",{query:value} ,(items) => {
+          this.setState({ auto_items: items.data, auto_loading: false })
+      });
+    }
+    else{
+      this.setState({ auto_value:value, auto_loading: false });
+    };
+  };
+  new_packitem= (id) => {
+    var url="/rest/BothPackItem";
+    var data={"name":this.state.newPackName,"pack":this.props.pack_id};
+    console.log(data);
     Client.post(url,data,(res) => {
         var p=res.data;
-        this.addrow(p)
+        const newFoods = this.state.items.concat(p);
+        this.setState({ items: newFoods });
     });
   };
   handlePackItemChange = (idx,contact) => {
@@ -31,11 +73,13 @@ class PackItems extends React.Component {
     console.log(contacts2);
     this.setState({items:contacts2});
   };
-  addrow=(pack1)=>{
+  addrow=(item_id)=>{
     var url="/rest/PackItem";
-    var data={contact:this.props.contact_id,name:pack1.name,pack:pack1.id};
+    var data={pack:this.props.pack_id,itemid:item_id};
     Client.post(url,data,(res) => {
-        //todo 
+        var p=res.data;
+        const newFoods = this.state.items.concat(p);
+        this.setState({ items: newFoods });
     });
   };
   newpackChange=(e)=>{
@@ -90,12 +134,26 @@ class PackItems extends React.Component {
           </tbody>
         </Table>
         <p>
-          <input id="auto_pack1" placeholder="输入备件" />
-          <button  id="id_bibei_item">必备</button>
+          <Autocomplete
+          inputProps={{ id: 'states-autocomplete' }}
+          ref="autocomplete"
+          value={this.state.auto_value}
+          items={this.state.auto_items}
+          getItemValue={(item) => item.name}
+          onSelect={this.auto_select}
+          onChange={this.auto_change}
+          renderItem={(item, isHighlighted) => (
+            <div
+              style={isHighlighted ? styles.highlightedItem : styles.item}
+              key={item.id}
+              id={item.id}
+            >{item.name}</div>
+          )}
+        />
         </p>
-      <p>新包名称：
+      <p>新备件名称：
         <input id="new_pack1"  placeholder="新备件" value={this.state.newPackName} onChange={this.newpackChange}/>
-        <button className="btn btn-info" id="id_new_item" onClick={this.new_pack}>新备件</button>
+        <button className="btn btn-info" id="id_new_item" onClick={this.new_packitem}>新备件</button>
       </p>
       </div>
     );
