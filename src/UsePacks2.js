@@ -50,6 +50,12 @@ class UsePacks2 extends React.Component {
       this.setState({ auto_value:value, auto_loading: false });
     };
   };
+  auto_select=(value, item) => {
+      console.log("selected");
+      console.log(item);
+      this.addrow(item.id);
+      this.setState({auto_value:value, auto_items: [ item ] })
+  }
   new_pack= (id) => {
     var url="/rest/Pack";
     var data={"name":this.state.newPackName};
@@ -58,11 +64,13 @@ class UsePacks2 extends React.Component {
         this.addrow(p)
     });
   };
-  addrow=(pack1)=>{
+  addrow=(pack_id)=>{
     var url="/rest/UsePack";
-    var data={contact:this.props.contact_id,name:pack1.name,pack:pack1.id};
+    var data={contact:this.props.contact_id,pack:pack_id};
     Client.post(url,data,(res) => {
-        //todo 
+        var p=res.data;
+        const newFoods = this.state.usepacks.concat(p);
+        this.setState({ usepacks: newFoods });
     });
   };
   newpackChange=(e)=>{
@@ -70,7 +78,14 @@ class UsePacks2 extends React.Component {
   };
   onEditClick = (id) => {
   };
-  onDeleteClick = (id) => {
+  onDeleteClick = (itemIndex) => {
+    var url="/rest/UsePack";
+    Client.delete1(url,{id:this.state.usepacks[itemIndex].id},(res) => {
+        const filteredFoods = this.state.usepacks.filter(
+          (item, idx) => itemIndex !== idx,
+        );
+        this.setState({ usepacks: filteredFoods });
+    });
   };
   render() {
     const { usepacks } = this.state;
@@ -85,7 +100,7 @@ class UsePacks2 extends React.Component {
         <td >{usepack.hetongbh}</td>
         <td>
         <UsePackEdit parent={this} index={idx} title="编辑" />
-        <button  className="usepack_delete" onClick={() => this.onDeleteClick(usepack.id)}>删除</button>
+        <button  onClick={() => this.onDeleteClick(idx)}>删除</button>
         </td>
       </tr>
     ));
@@ -114,16 +129,8 @@ class UsePacks2 extends React.Component {
           value={this.state.auto_value}
           items={this.state.auto_items}
           getItemValue={(item) => item.name}
-          onSelect={(value, item) => {
-            // set the menu to only the selected item
-            console.log("selected");
-            console.log(item);
-            this.setState({auto_value:value, auto_items: [ item ] })
-            // or you could reset it to a default list again
-            // this.setState({ unitedStates: getStates() })
-          }}
-          onChange={this.auto_change
-          }
+          onSelect={this.auto_select}
+          onChange={this.auto_change}
           renderItem={(item, isHighlighted) => (
             <div
               style={isHighlighted ? styles.highlightedItem : styles.item}
