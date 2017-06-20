@@ -5,9 +5,16 @@
   "proxy": "http://localhost:8000/",
   "dependencies": {
     "bootstrap": "^3.3.7",
+    "create-react-class": ">0.1",
+    "immutability-helper": ">0.1",
+    "material-ui": ">0.1",
     "react": "^15.5.4",
+    "react-autocomplete": "^1.5.7",
     "react-bootstrap": "^0.31.0",
-    "react-dom": "^15.5.4"
+    "react-bootstrap-daterangepicker": "^3.4.0",
+    "react-datetime": "^2.8.10",
+    "react-dom": "^15.5.4",
+    "react-tap-event-plugin": ">0.1"
   },
   "devDependencies": {
     "react-scripts": "1.0.7"

@@ -1,5 +1,29 @@
 /* eslint-disable no-undef */
 import queryString from 'query-string';
+function get(url,data,cb) {
+  var method="GET";
+  url=url+"?"+queryString.stringify(data)
+  return fetch(url,
+  {
+      method: method,
+      credentials: 'include',
+      headers: {'Content-Type':'application/json'},
+  }).then(checkStatus)
+    .then(parseJSON)
+    .then(cb);
+}
+function delete1(url,data,cb) {
+  var method="DELETE";
+  return fetch(url,
+  {
+      method: method,
+      credentials: 'include',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(data)
+  }).then(checkStatus)
+    .then(parseJSON)
+    .then(cb);
+}
 function post(url,data,cb) {
   var method="POST"
   if (data.id){
@@ -15,16 +39,34 @@ function post(url,data,cb) {
     .then(parseJSON)
     .then(cb);
 }
-function contacts(query, cb) {
-  return fetch(`/rest/Contact?baoxiang=${query}&limit=10`, {
+function contacts(data, cb) {
+  var query=queryString.stringify(data)
+  return fetch(`/rest/Contact?${query}`, {
     credentials: 'include',
     accept: 'application/json',
   }).then(checkStatus)
     .then(parseJSON)
     .then(cb);
 }
+function UsePacks(query, cb) {
+  return fetch(`/rest/UsePack?contact=${query}`, {
+    credentials: 'include',
+    accept: 'application/json',
+  }).then(checkStatus)
+    .then(parseJSON)
+    .then(cb);
+}
+function PackItems(query, cb) {
+  return fetch(`/rest/PackItem?pack=${query}&limit=200`, {
+    credentials: 'include',
+    accept: 'application/json',
+  }).then(checkStatus)
+    .then(parseJSON)
+    .then(cb);
+}
+
 function items(query, cb) {
-  return fetch(`/rest/Item?name=${query}`, {
+  return fetch(`/rest/Item?search=${query}`, {
     credentials: 'include',
     accept: 'application/json',
   }).then(checkStatus)
@@ -74,8 +116,9 @@ function checkStatus(response) {
 }
 
 function parseJSON(response) {
+  console.log(response);
   return response.json();
 }
 
-const Client = {contacts,items,login_index,login,logout,post};
+const Client = {contacts,items,login_index,login,logout,UsePacks,PackItems,get,post,delete1};
 export default Client;
