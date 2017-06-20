@@ -29,11 +29,14 @@ const PackItemEdit = createReactClass({
     }
     this.setState({packitem:this.old});
   },
-  handleClear (data) {
-  },
-  handleCopy(data) {
-  },
   handleSave (data) {
+    var url="/rest/BothPackItem";
+    Client.post(url,this.state.packitem,(res) => {
+        this.setState({contact:res.data});
+        this.parent.handlePackItemChange(this.props.index,res.data);
+        this.old=res.data;
+        this.close();
+    });
   },
   handleChange(e){
     console.log("change");
@@ -49,7 +52,7 @@ const PackItemEdit = createReactClass({
     }
     const contact2=update(this.state.packitem,{[e.target.name]: {$set:e.target.value}});
     console.log(contact2);
-    this.setState({contact:contact2});
+    this.setState({packitem:contact2});
   },
   render() {
     return (
@@ -73,21 +76,21 @@ const PackItemEdit = createReactClass({
                     name:
                 </td>
                 <td>
-                    <input  style={{"backgroundColor":this.state.bg.addr}}  type="text" id="addr" name="addr" value={this.state.packitem.name} onChange={this.handleChange} />
+                    <input  style={{"backgroundColor":this.state.bg.addr}}  type="text" id="addr" name="name" value={this.state.packitem.name} onChange={this.handleChange} />
                 </td>
             </tr><tr>
                 <td>
                     <label>guige:</label>
                 </td>
                 <td>
-                    <input style={{"backgroundColor":this.state.bg.yiqixinghao}} type="text" id="yiqixinghao" name="yiqixinghao" value={this.state.packitem.guige}  onChange={this.handleChange} />
+                    <input style={{"backgroundColor":this.state.bg.yiqixinghao}} type="text"  name="guige" value={this.state.packitem.guige}  onChange={this.handleChange} />
                 </td>
             </tr><tr>
                 <td>
                     <label>bh:</label>
                 </td>
                 <td>
-                    <input style={{"backgroundColor":this.state.bg.baoxiang}} type="text" id="baoxiang" name="baoxiang" value={this.state.packitem.bh}  onChange={this.handleChange} />
+                    <input style={{"backgroundColor":this.state.bg.baoxiang}} type="text" id="baoxiang" name="bh" value={this.state.packitem.bh}  onChange={this.handleChange} />
                 </td>
             </tr><tr>
                 <td>
@@ -102,8 +105,6 @@ const PackItemEdit = createReactClass({
             </table>
        <div> 
        <button className="btn btn-primary" id="bt_save" onClick={this.handleSave} >保存</button> 
-       <button  id="bt_clear" onClick={this.handleClear}>清除</button> 
-       <button  id="bt_clearid" onClick={this.handleCopy}>复制</button>
        </div>
                 </Modal.Body>
         </Modal>

@@ -3,6 +3,7 @@ import React from 'react';
 import Client from './Client';
 import {Table} from "react-bootstrap";
 import PackItemEdit from './PackItemEdit';
+import update from 'immutability-helper';
 class PackItems extends React.Component {
   state = {
     items: [],
@@ -24,6 +25,12 @@ class PackItems extends React.Component {
         this.addrow(p)
     });
   };
+  handlePackItemChange = (idx,contact) => {
+    console.log(idx);
+    const contacts2=update(this.state.items,{[idx]: {$set:contact}});
+    console.log(contacts2);
+    this.setState({items:contacts2});
+  };
   addrow=(pack1)=>{
     var url="/rest/PackItem";
     var data={contact:this.props.contact_id,name:pack1.name,pack:pack1.id};
@@ -36,7 +43,14 @@ class PackItems extends React.Component {
   };
   onEditClick = (id) => {
   };
-  onDeleteClick = (id) => {
+  onDeleteClick = (itemIndex) => {
+    var url="/rest/PackItem";
+    Client.delete1(url,{id:this.state.items[itemIndex].id},(res) => {
+        const filteredFoods = this.state.items.filter(
+          (item, idx) => itemIndex !== idx,
+        );
+        this.setState({ items: filteredFoods });
+    });
   };
   render() {
     const { items } = this.state;
@@ -52,7 +66,7 @@ class PackItems extends React.Component {
         <td >{item.pack}</td>
         <td>
         <PackItemEdit parent={this} index={idx} title="编辑" />
-        <button  className="item_delete" onClick={() => this.onDeleteClick(item.id)}>删除</button>
+        <button onClick={() => this.onDeleteClick(idx)}>删除</button>
         </td>
       </tr>
     ));

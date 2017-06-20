@@ -36,7 +36,7 @@ const UsePackEdit = createReactClass({
     console.log(this.state.hiddenusepacks);
     return (
         <a onClick={this.open}>{this.props.title}
-        <Modal show={this.state.showModal} onHide={this.close}>
+        <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
           <Modal.Header closeButton>
             <Modal.Title>编辑包</Modal.Title>
           </Modal.Header>
