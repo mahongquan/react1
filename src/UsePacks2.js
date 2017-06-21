@@ -57,11 +57,12 @@ class UsePacks2 extends React.Component {
       this.setState({auto_value:value, auto_items: [ item ] })
   }
   new_pack= (id) => {
-    var url="/rest/Pack";
-    var data={"name":this.state.newPackName};
+    var url="/rest/UsePackEx";
+    var data={"name":this.state.newPackName,contact:this.props.contact_id};
     Client.post(url,data,(res) => {
         var p=res.data;
-        this.addrow(p)
+        const newFoods = this.state.usepacks.concat(p);
+        this.setState({ usepacks: newFoods });
     });
   };
   addrow=(pack_id)=>{

@@ -4,6 +4,8 @@ import update from 'immutability-helper';
 import Client from './Client';
 import ExampleModal from './ExampleModal';
 import ContactEdit2 from './ContactEdit2';
+import DlgWait from './DlgWait';
+import DlgFolder from './DlgFolder';
 var host="";
 class App extends Component {
   mystate = {
@@ -192,6 +194,19 @@ class App extends Component {
       this.setState({ auto_value:value, auto_loading: false });
     };
   }
+  allfile=(contactid)=>{
+       //  var s=new WaitingView();
+       //  s.showdialog();
+       //  $.getJSON(host+"/parts/allfile?id="+this.model.get("id"), function(result){
+       //     console.info(result);
+       //     s.$el.dialog('close');
+       //     if (!result.success){
+       //      $("<p>"+result.message+"</p>").dialog();
+       //     }
+       // }).fail(function() {
+       //  alert( "error" );
+       // });1
+  }
   onLoginSubmit= (data) => {
     console.log(data);
     Client.login(data.username, data.password, (res) => {
@@ -225,9 +240,9 @@ class App extends Component {
         <td>{contact.method}</td>
         <td><a className="contact_detail" data={contact.id} onClick={() => this.onDetailClick(contact.id)}>详细</a>
          <a className="contact_updatemethod" data={contact.id}>更新方法</a>
-         <a className="contact_allfile" data={contact.id}>全部文件</a>
+         <DlgWait contact_id={contact.id} title="全部文件" />
          <a className="contact_chuku" data={contact.id}>核对备料计划</a>
-        <button className="contact_folder" data={contact.id}>资料文件夹</button>
+        <DlgFolder contact_id={contact.id} title="资料文件夹" />
         </td>
       </tr>
     ));
@@ -265,7 +280,11 @@ class App extends Component {
         <button id="id_bt_search" className="btm btn-info" onClick={this.search}>搜索
         <span className="glyphicon glyphicon-search" aria-hidden="true"></span>
         </button>
+  </td>
+  <td>
         <ContactEdit2 parent={this} index={null} title="新仪器" />
+  </td>
+   <td>
         <button id="id_bt_standard"  className="btn btn-info">导入标样</button>
   </td>
    <td>
