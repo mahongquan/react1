@@ -6,6 +6,9 @@ import ExampleModal from './ExampleModal';
 import ContactEdit2 from './ContactEdit2';
 import DlgWait from './DlgWait';
 import DlgFolder from './DlgFolder';
+import DlgUrl from './DlgUrl';
+import DlgImport from './DlgImport';
+import DlgCheck from './DlgCheck';
 var host="";
 class App extends Component {
   mystate = {
@@ -239,9 +242,9 @@ class App extends Component {
         <td>{contact.hetongbh}</td>
         <td>{contact.method}</td>
         <td><a className="contact_detail" data={contact.id} onClick={() => this.onDetailClick(contact.id)}>详细</a>
-         <a className="contact_updatemethod" data={contact.id}>更新方法</a>
+        <DlgUrl url="/rest/updateMethod" data={{id:contact.id}} title="更新方法" />
          <DlgWait contact_id={contact.id} title="全部文件" />
-         <a className="contact_chuku" data={contact.id}>核对备料计划</a>
+         <DlgCheck title="核对备料计划" />
         <DlgFolder contact_id={contact.id} title="资料文件夹" />
         </td>
       </tr>
@@ -256,10 +259,10 @@ class App extends Component {
     </Navbar.Header>
     <Nav>
       <NavItem eventKey={1} href="#">合同</NavItem>
-      <NavItem eventKey={2} href="#">管理</NavItem>
-      <NavItem eventKey={4} href="#">备件</NavItem>
-      <NavItem eventKey={5} href="#">复制包</NavItem>
-      <NavItem eventKey={6} href="#">统计</NavItem>
+      <NavItem eventKey={2} href="/admin">管理</NavItem>
+      <NavItem eventKey={4} href="/parts/items/">备件</NavItem>
+      <NavItem eventKey={5} href="/parts/copypack/">复制包</NavItem>
+      <NavItem eventKey={6} href="/parts/month12/">统计</NavItem>
     </Nav>
   </Navbar>
     <table>
@@ -285,7 +288,7 @@ class App extends Component {
         <ContactEdit2 parent={this} index={null} title="新仪器" />
   </td>
    <td>
-        <button id="id_bt_standard"  className="btn btn-info">导入标样</button>
+        <DlgImport />
   </td>
    <td>
     <DropdownButton title="过滤" id="id_dropdown2">

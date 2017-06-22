@@ -39,6 +39,17 @@ function post(url,data,cb) {
     .then(parseJSON)
     .then(cb);
 }
+function postForm(url,data,cb) {
+  var method="POST"
+  return fetch(url,
+  {
+      method: method,
+      credentials: 'include',
+      body: data
+  }).then(checkStatus)
+    .then(parseJSON)
+    .then(cb);
+}
 function contacts(data, cb) {
   var query=queryString.stringify(data)
   return fetch(`/rest/Contact?${query}`, {
@@ -120,5 +131,5 @@ function parseJSON(response) {
   return response.json();
 }
 
-const Client = {contacts,items,login_index,login,logout,UsePacks,PackItems,get,post,delete1};
+const Client = {contacts,items,login_index,login,logout,UsePacks,PackItems,get,post,delete1,postForm};
 export default Client;
