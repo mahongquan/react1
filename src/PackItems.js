@@ -27,9 +27,10 @@ class PackItems extends React.Component {
     items: [],
     showRemoveIcon: false,
     newPackName: '',
-     auto_value: '',
-      auto_items:[],
-      auto_loading: false,
+    auto_value: '',
+    auto_items:[],
+    auto_loading: false,
+    release:true,
   };
   componentDidMount=()=> {
       Client.PackItems(this.props.pack_id, (items) => {
@@ -107,7 +108,7 @@ class PackItems extends React.Component {
         <td>{item.guige}</td>
         <td>{item.ct}</td>
         <td>{item.bh}</td>
-        <td >{item.pack}</td>
+        <td  hidden={this.state.release}>{item.pack}</td>
         <td>
         <PackItemEdit parent={this} index={idx} title="编辑" />
         <button onClick={() => this.onDeleteClick(idx)}>删除</button>
@@ -121,11 +122,11 @@ class PackItems extends React.Component {
           <thead>
              <tr>
               <td>id</td>
-              <td>name</td>
-              <td>guige</td>
-              <td>ct</td>
-              <td>bh</td>
-              <td>pack</td>
+              <td>名称</td>
+              <td>规格</td>
+              <td>数量</td>
+              <td>编号</td>
+              <td  hidden={this.state.release}>pack</td>
               <td>操作</td>
             </tr>
           </thead>
@@ -133,7 +134,6 @@ class PackItems extends React.Component {
             {itemRows}
           </tbody>
         </Table>
-        <p>
           <Autocomplete
           inputProps={{ id: 'states-autocomplete' }}
           ref="autocomplete"
@@ -147,10 +147,9 @@ class PackItems extends React.Component {
               style={isHighlighted ? styles.highlightedItem : styles.item}
               key={item.id}
               id={item.id}
-            >{item.name}</div>
+            >{item.bh+"_"+item.name+"_"+item.guige}</div>
           )}
         />
-        </p>
       <p>新备件名称：
         <input id="new_pack1"  placeholder="新备件" value={this.state.newPackName} onChange={this.newpackChange}/>
         <button className="btn btn-info" id="id_new_item" onClick={this.new_packitem}>新备件</button>

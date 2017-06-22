@@ -1,7 +1,6 @@
 import React from 'react';
 import {Modal} from "react-bootstrap";
 import Client from './Client';
-import update from 'immutability-helper';
 var createReactClass = require('create-react-class');
 const DlgCheck = createReactClass({
   getInitialState() {
@@ -46,7 +45,7 @@ const DlgCheck = createReactClass({
             tr["left2"]="";
         }
         if(i<right.length){
-          for(var one in right[i]){
+          for(one in right[i]){
             tr["right"+one]=right[i][one];
           }
         }
@@ -58,14 +57,14 @@ const DlgCheck = createReactClass({
         showdata.push(tr);
        }
       n=notequal.length;
-      for(var i=0;i<n/2;i++){
-        var tr={};
+      for(i=0;i<n/2;i++){
+        tr={};
         var l=2*i+0;
-          for(var one in notequal[l]){
+          for(one in notequal[l]){
             tr["left"+one]=notequal[l][one];
           }
           var r=2*i+1;
-          for(var one in notequal[r]){
+          for(one in notequal[r]){
             tr["right"+one]=notequal[r][one];
           }
         showdata.push(tr);
@@ -89,7 +88,7 @@ const DlgCheck = createReactClass({
       </tr>
     ));   
     return (
-        <button className="btn btn-info" onClick={this.open}>{this.props.title}
+        <a onClick={this.open}>{this.props.title}
         <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
           <Modal.Header closeButton>
             <Modal.Title>{this.props.title}</Modal.Title>
@@ -116,7 +115,7 @@ const DlgCheck = createReactClass({
           </div>
           </Modal.Body>
         </Modal>
-        </button>
+        </a>
     );
   }
 });

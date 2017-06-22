@@ -1,9 +1,6 @@
 import React from 'react';
 import PackItems from "./PackItems";
 import {Modal} from "react-bootstrap";
-import update from 'immutability-helper';
-import Client from './Client';
-import Autocomplete from 'react-autocomplete'
 var createReactClass = require('create-react-class');
 const UsePackEdit = createReactClass({
   getInitialState() {
