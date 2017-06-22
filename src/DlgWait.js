@@ -29,7 +29,6 @@ const DlgWait = createReactClass({
    })
   },
   render() {
-    console.log(this.state.hiddenPacks);
     return (
         <a  className="contact_allfile"  onClick={this.open}>{this.props.title}
         <div>

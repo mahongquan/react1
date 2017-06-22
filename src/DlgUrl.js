@@ -29,7 +29,6 @@ const DlgUrl = createReactClass({
    })
   },
   render() {
-    console.log(this.state.hiddenPacks);
     return (
         <a  style={{marginLeft:"10px"}} onClick={this.open}>{this.props.title}
         <div>

@@ -145,7 +145,6 @@ const ContactEdit2 = createReactClass({
   },
 
   render() {
-    console.log(this.state.hiddenPacks);
     return (
         <button className="btn btn-primary" onClick={this.open}>{this.props.title}
         <div>
