@@ -226,6 +226,8 @@ class App extends Component {
     });
   };
   render() {
+    var page=this.state.start+this.mystate.limit;
+    if (page>this.state.total) page=this.state.total;
     const contactRows = this.state.contacts.map((contact, idx) => (
       <tr key={idx} >
         <td>{contact.id}</td>
@@ -306,7 +308,8 @@ class App extends Component {
 <Table responsive bordered condensed><thead><tr><th>ID</th><th>用户单位</th><th>客户地址</th><th>通道配置</th><th>仪器型号</th><th>仪器编号</th><th>包箱</th><th>审核</th>
 <th>入库时间</th><th>调试时间</th><th>合同编号</th><th>方法</th><th>操作</th></tr></thead><tbody id="contact-list">{contactRows}</tbody></Table>
       <a onClick={this.handlePrev}>前一页</a> 
-      <label id="page">{this.state.start+1}/{this.state.total}</label>
+      <label id="page">{this.state.start+1}..
+      {page}/{this.state.total}</label>
       <a onClick={this.handleNext}>后一页</a>
       <input maxLength="6" size="6" onChange={this.handlePageChange} value={this.state.start_input} />
       <button id="page_go"  className="btn btn-info" onClick={this.jump}>跳转</button>
