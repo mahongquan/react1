@@ -7,7 +7,8 @@ const DlgCheck = createReactClass({
     return { 
       showModal: false,
       error:"",
-      packs:[]
+      packs:[],
+      hideTable:true,
     };
   },
 
@@ -71,10 +72,12 @@ const DlgCheck = createReactClass({
       }
       console.log(showdata);
       self.setState({packs: showdata});
+      self.setState({hideTable:false});
     });
   },
   open() {
     this.setState({ showModal: true });
+    this.setState({hideTable:true});
   },
   render() {
     const contactRows = this.state.packs.map((pack, idx) => (
@@ -88,7 +91,7 @@ const DlgCheck = createReactClass({
       </tr>
     ));   
     return (
-        <a onClick={this.open}>{this.props.title}
+        <a  style={{marginLeft:"10px"}} onClick={this.open}>{this.props.title}
         <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
           <Modal.Header closeButton>
             <Modal.Title>{this.props.title}</Modal.Title>
@@ -99,7 +102,7 @@ const DlgCheck = createReactClass({
           <input style={{margin:"10px 10px 10px 10px"}} id="file"  accept="application/vnd.ms-excel" type="file" name="file" ref={(ref) => this.fileUpload = ref}/>
           <button  style={{margin:"10px 10px 10px 10px"}} className="btn btn-primary" onClick={this.upload} type="button">上传</button>
           </form>
-          <div style={{"minHeight":"200px"}}>
+          <div hidden={this.state.hideTable} style={{"minHeight":"200px"}}>
           <table className="table-bordered">
           <tbody>
           <tr>

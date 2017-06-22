@@ -111,7 +111,7 @@ class PackItems extends React.Component {
         <td  hidden={this.state.release}>{item.pack}</td>
         <td>
         <PackItemEdit parent={this} index={idx} title="编辑" />
-        <button onClick={() => this.onDeleteClick(idx)}>删除</button>
+        <a style={{marginLeft:"10px"}} onClick={() => this.onDeleteClick(idx)}>删除</a>
         </td>
       </tr>
     ));
@@ -134,7 +134,7 @@ class PackItems extends React.Component {
             {itemRows}
           </tbody>
         </Table>
-          <Autocomplete
+        输入备件<Autocomplete
           inputProps={{ id: 'states-autocomplete' }}
           ref="autocomplete"
           value={this.state.auto_value}

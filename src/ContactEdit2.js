@@ -256,7 +256,7 @@ const ContactEdit2 = createReactClass({
             </table>
        <div> 
        <button className="btn btn-primary" id="bt_save" onClick={this.handleSave} >保存</button> 
-       <button style={{margin:"20px 20px 20px 20px"}} id="bt_clearid" onClick={this.handleCopy}>复制</button>
+       <button className="btn" style={{margin:"20px 20px 20px 20px"}} id="bt_clearid" onClick={this.handleCopy}>复制</button>
        </div>
         <div id="id_usepacks" hidden={this.state.hiddenPacks}>
         <UsePacks2  contact_id={this.state.contact.id}/>
