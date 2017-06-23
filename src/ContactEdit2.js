@@ -27,11 +27,20 @@ const ContactEdit2 = createReactClass({
 
   open() {
     this.setState({ showModal: true });
+    this.setState({bg:{}});
     this.parent=this.props.parent;
     if (this.props.index==null){
       this.old={
         yujifahuo_date:moment().format("YYYY-MM-DD"),
-        tiaoshi_date:moment().format("YYYY-MM-DD")
+        tiaoshi_date:moment().format("YYYY-MM-DD"),
+        addr:"",
+        channels:"",
+        baoxiang:"",
+        hetongbh:"",
+        shenhe:"",
+        yonghu:"",
+        yiqibh:"",
+        yiqixinghao:""
       };
     }
     else{
