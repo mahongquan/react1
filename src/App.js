@@ -6,6 +6,7 @@ import ExampleModal from './ExampleModal';
 import ContactEdit2 from './ContactEdit2';
 import DlgWait from './DlgWait';
 import DlgFolder from './DlgFolder';
+import DialogImportStandard from './DialogImportStandard';
 var host="";
 class App extends Component {
   mystate = {
@@ -285,7 +286,7 @@ class App extends Component {
         <ContactEdit2 parent={this} index={null} title="新仪器" />
   </td>
    <td>
-        <button id="id_bt_standard"  className="btn btn-info">导入标样</button>
+        <DialogImportStandard title="导入标样" />
   </td>
    <td>
     <DropdownButton title="过滤" id="id_dropdown2">
