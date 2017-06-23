@@ -1,4 +1,4 @@
-'use strict';
+//'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -69,7 +69,7 @@ var Autocomplete = function (_React$Component) {
   }, {
     key: 'componentDidUpdate',
     value: function componentDidUpdate(prevProps, prevState) {
-      if (this.state.isOpen && !prevState.isOpen || 'open' in this.props && this.props.open && !prevProps.open) this.setMenuPositions();
+      if ((this.state.isOpen && !prevState.isOpen) || ('open' in this.props && this.props.open && !prevProps.open)) this.setMenuPositions();
 
       this.maybeScrollItemIntoView();
       if (prevState.isOpen !== this.state.isOpen) {
@@ -162,13 +162,13 @@ var Autocomplete = function (_React$Component) {
     value: function setMenuPositions() {
       var node = this.refs.input;
       var rect = node.getBoundingClientRect();
-      var computedStyle = global.window.getComputedStyle(node);
-      var marginBottom = parseInt(computedStyle.marginBottom, 10) || 0;
-      var marginLeft = parseInt(computedStyle.marginLeft, 10) || 0;
-      var marginRight = parseInt(computedStyle.marginRight, 10) || 0;
-      console.log("setMenuPositions================");
-      console.log(rect);
-      console.log(computedStyle);
+      // var computedStyle = global.window.getComputedStyle(node);
+      // var marginBottom = parseInt(computedStyle.marginBottom, 10) || 0;
+      // var marginLeft = parseInt(computedStyle.marginLeft, 10) || 0;
+      // var marginRight = parseInt(computedStyle.marginRight, 10) || 0;
+      // console.log("setMenuPositions================");
+      // console.log(rect);
+      // console.log(computedStyle);
       this.setState({
         menuTop: 0,//rect.bottom,
         menuLeft:0,// rect.left ,

@@ -1,6 +1,6 @@
 import React from 'react';
 import UsePacks2 from "./UsePacks2";
-import {Modal,Glyphicon} from "react-bootstrap";
+import {Modal} from "react-bootstrap";
 import update from 'immutability-helper';
 import Client from './Client';
 var moment = require('moment');
@@ -11,7 +11,10 @@ const ContactEdit2 = createReactClass({
   getInitialState() {
     return { 
       showModal: false,
-      contact:{},
+      contact:{
+        yujifahuo_date:moment(),
+        tiaoshi_date:moment(),
+          },
       hiddenPacks:true,
       bg:{},
       date_open:false,
@@ -24,11 +27,14 @@ const ContactEdit2 = createReactClass({
 
   open() {
     this.setState({ showModal: true });
+    this.parent=this.props.parent;
     if (this.props.index==null){
-      this.old={};
+      this.old={
+        yujifahuo_date:moment().format("YYYY-MM-DD"),
+        tiaoshi_date:moment().format("YYYY-MM-DD")
+      };
     }
     else{
-      this.parent=this.props.parent;
       this.old=this.parent.state.contacts[this.props.index];
       this.setState({hiddenPacks:false});
     }
@@ -52,10 +58,15 @@ const ContactEdit2 = createReactClass({
   handleSave (data) {
     var url="/rest/Contact";
     Client.post(url,this.state.contact,(res) => {
+      if(res.success){
         this.setState({contact:res.data});
         this.parent.handleContactChange(this.props.index,res.data);
         this.old=res.data;
         this.setState({bg:{}});
+      }
+      else{
+        alert(res.message);
+      }
     });
   },
   tiaoshi_date_change(value){

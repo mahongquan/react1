@@ -1,22 +1,19 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {Modal} from "react-bootstrap";
 import Client from './Client';
-var createReactClass = require('create-react-class');
-const DlgUrl = createReactClass({
-  getInitialState() {
-    return { 
+class DlgUrl extends Component{
+  state= { 
       showModal: false,
       hiddenPacks:true,
       error:"",
-    };
-  },
+  }
 
-  close() {
+  close=()=> {
     this.setState({ showModal: false });
-  },
+  }
 
-  open() {
-    var self=this;
+  open=()=>{
+   var self=this;
    this.setState({ showModal: true });
    Client.get(this.props.url,this.props.data, function(result){
        console.info(result);
@@ -27,8 +24,8 @@ const DlgUrl = createReactClass({
           self.close();
        }
    })
-  },
-  render() {
+  }
+  render=()=> {
     return (
         <a  style={{marginLeft:"10px"}} onClick={this.open}>{this.props.title}
         <div>
@@ -44,5 +41,5 @@ const DlgUrl = createReactClass({
         </a>
     );
   }
-});
+}
 export default DlgUrl;

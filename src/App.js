@@ -62,8 +62,15 @@ class App extends Component {
   };
   handleContactChange = (idx,contact) => {
     console.log(idx);
-    const contacts2=update(this.state.contacts,{[idx]: {$set:contact}});
-    console.log(contacts2);
+    var contacts2=null;
+    if(idx==null){
+      contacts2=update(this.state.contacts,{$push: [contact]});
+      console.log(contacts2);
+    }
+    else{
+      contacts2=update(this.state.contacts,{[idx]: {$set:contact}});
+      console.log(contacts2);
+    }
     this.setState({contacts:contacts2});
   };
   oncontactClick=(key) => {
@@ -229,7 +236,7 @@ class App extends Component {
     var page=this.state.start+this.mystate.limit;
     if (page>this.state.total) page=this.state.total;
     var prev_hidden=false;
-    if (this.state.start==0) prev_hidden=true;
+    if (this.state.start===0) prev_hidden=true;
     var next_hidden=false;
     if (this.state.start+this.mystate.limit>=this.state.total) next_hidden=true;
     console.log("next_hidden"+next_hidden);

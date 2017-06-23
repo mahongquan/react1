@@ -37,10 +37,8 @@ const DlgImport = createReactClass({
        //    self.setState({error:result.message});
        // }
        // else
-       {
           self.setState({packs:result.data});
           console.log(result.data);
-       }
    })
   },
   render() {

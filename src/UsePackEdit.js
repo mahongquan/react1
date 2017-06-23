@@ -30,7 +30,6 @@ const UsePackEdit = createReactClass({
     this.setState({usepack:this.old});
   },
   render() {
-    console.log(this.state.hiddenusepacks);
     return (
         <a onClick={this.open}>{this.props.title}
         <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">

@@ -32,11 +32,13 @@ class UsePacks2 extends React.Component {
     release:true,
   };
   componentDidMount=()=> {
+    if(this.props.contact_id){
       Client.UsePacks(this.props.contact_id, (usepacks) => {
         this.setState({
           usepacks: usepacks.data,//.slice(0, MATCHING_ITEM_LIMIT),
         });
       });
+    }
   };
   auto_change=(event, value)=>{
     console.log("auto_change");
