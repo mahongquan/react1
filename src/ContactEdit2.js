@@ -1,6 +1,6 @@
 import React from 'react';
 import UsePacks2 from "./UsePacks2";
-import {Modal,Glyphicon} from "react-bootstrap";
+import {Modal} from "react-bootstrap";
 import update from 'immutability-helper';
 import Client from './Client';
 var moment = require('moment');
@@ -11,7 +11,10 @@ const ContactEdit2 = createReactClass({
   getInitialState() {
     return { 
       showModal: false,
-      contact:{},
+      contact:{
+        yujifahuo_date:moment(),
+        tiaoshi_date:moment(),
+          },
       hiddenPacks:true,
       bg:{},
       date_open:false,
@@ -24,11 +27,23 @@ const ContactEdit2 = createReactClass({
 
   open() {
     this.setState({ showModal: true });
+    this.setState({bg:{}});
+    this.parent=this.props.parent;
     if (this.props.index==null){
-      this.old={};
+      this.old={
+        yujifahuo_date:moment().format("YYYY-MM-DD"),
+        tiaoshi_date:moment().format("YYYY-MM-DD"),
+        addr:"",
+        channels:"",
+        baoxiang:"",
+        hetongbh:"",
+        shenhe:"",
+        yonghu:"",
+        yiqibh:"",
+        yiqixinghao:""
+      };
     }
     else{
-      this.parent=this.props.parent;
       this.old=this.parent.state.contacts[this.props.index];
       this.setState({hiddenPacks:false});
     }
@@ -37,30 +52,65 @@ const ContactEdit2 = createReactClass({
   onLoginSubmit (data)  {
     this.props.onLoginSubmit(data);
   },
-  handleClear (data) {
-    var url="/rest/Contact";
-    Client.post(url,this.state.contact,(res) => {
-        this.setState({contact:res.data});
-        this.parent.handleContactChange(this.props.index,res.data);
-        this.old=res.data;
-    });
-  },
+  // handleClear (data) {
+  //   console.log("clear");
+  //   var contact2={id:"",hetongbh:"",name:"",addr:""};
+  //   console.log(contact2);
+  //   this.setState({contact:contact2});
+  // },
   handleCopy(data) {
-    var url="/rest/Contact";
-    Client.post(url,this.state.contact,(res) => {
-        this.setState({contact:res.data});
-        this.parent.handleContactChange(this.props.index,res.data);
-        this.old=res.data;
-    });
+     console.log("copy");
+     var contact2=update(this.state.contact,{id:{$set:""}});
+     console.log(contact2);
+     this.setState({contact:contact2});
   },
   handleSave (data) {
     var url="/rest/Contact";
     Client.post(url,this.state.contact,(res) => {
+      if(res.success){
         this.setState({contact:res.data});
         this.parent.handleContactChange(this.props.index,res.data);
         this.old=res.data;
+        this.setState({bg:{}});
+      }
+      else{
+        alert(res.message);
+      }
     });
   },
+  tiaoshi_date_change(value){
+    //this.state.yujifahuo_date=value;
+    var e_target_name="tiaoshi_date";
+    console.log(this.old[e_target_name]);
+    var t=null;
+    if (typeof value==="string")
+    {
+      t=value;
+    }
+    else{
+      t=value.format("YYYY-MM-DD");
+    }
+    console.log(t);
+    if(this.old[e_target_name]===t)
+    {
+      const bg2=update(this.state.bg,{[e_target_name]:{$set:"#ffffff"}})
+      //this.state.bg[e_target_name]="#ffffff";
+      //console.log("equal");
+      this.setState({bg:bg2});
+    }
+    else{
+      //console.log("not equal")
+      //this.state.bg[e_target_name]="#8888ff"; 
+      const bg2=update(this.state.bg,{[e_target_name]:{$set:"#8888ff"}})
+      //this.state.bg[e_target_name]="#ffffff";
+      //console.log("equal");
+      this.setState({bg:bg2});
+    }
+    const contact2=update(this.state.contact,{[e_target_name]: {$set:t}});
+    console.log(contact2);
+    this.setState({contact:contact2});
+  },
+
   yujifahuo_date_change(value){
     //this.state.yujifahuo_date=value;
     var e_target_name="yujifahuo_date";
@@ -76,12 +126,16 @@ const ContactEdit2 = createReactClass({
     console.log(t);
     if(this.old[e_target_name]===t)
     {
-      this.state.bg[e_target_name]="#ffffff";
-      console.log("equal");
+      const bg2=update(this.state.bg,{[e_target_name]:{$set:"#ffffff"}})
+      //this.state.bg[e_target_name]="#ffffff";
+      //console.log("equal");
+      this.setState({bg:bg2});
     }
     else{
-      console.log("not equal")
-      this.state.bg[e_target_name]="#8888ff"; 
+     const bg2=update(this.state.bg,{[e_target_name]:{$set:"#8888ff"}})
+      //this.state.bg[e_target_name]="#ffffff";
+      //console.log("equal");
+      this.setState({bg:bg2});
     }
     const contact2=update(this.state.contact,{[e_target_name]: {$set:t}});
     console.log(contact2);
@@ -94,10 +148,16 @@ const ContactEdit2 = createReactClass({
     console.log(e.target.name);
     if(this.old[e.target.name]===e.target.value)
     {
-      this.state.bg[e.target.name]="#ffffff";
+     const bg2=update(this.state.bg,{[e.target.name]:{$set:"#ffffff"}})
+      //this.state.bg[e_target_name]="#ffffff";
+      //console.log("equal");
+      this.setState({bg:bg2});
     }
     else{
-      this.state.bg[e.target.name]="#8888ff"; 
+      const bg2=update(this.state.bg,{[e.target.name]:{$set:"#8888ff"}})
+      //this.state.bg[e_target_name]="#ffffff";
+      //console.log("equal");
+      this.setState({bg:bg2});
     }
     const contact2=update(this.state.contact,{[e.target.name]: {$set:e.target.value}});
     console.log(contact2);
@@ -105,9 +165,8 @@ const ContactEdit2 = createReactClass({
   },
 
   render() {
-    console.log(this.state.hiddenPacks);
     return (
-        <a onClick={this.open}>{this.props.title}
+        <button className="btn btn-primary" onClick={this.open}>{this.props.title}
         <div>
         <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
           <Modal.Header closeButton>
@@ -121,7 +180,7 @@ const ContactEdit2 = createReactClass({
                     ID:
                 </td>
                 <td >
-                    <input type="text" id="id" name="id" readOnly="true"  disabled="disabled"    defaultValue={this.state.contact.id} />
+                    <input type="text" id="id" name="id" disabled="disabled"    value={this.state.contact.id} />
                 </td>
                 <td>
                     <label>用户单位:</label>
@@ -185,7 +244,13 @@ const ContactEdit2 = createReactClass({
                     调试时间:
                 </td>
                 <td>
-                    <input  style={{"backgroundColor":this.state.bg.tiaoshi_date}}  type="text" className="mydate" id="tiaoshi_date" name="tiaoshi_date" value={this.state.contact.tiaoshi_date}  onChange={this.handleChange} />
+                <DateTime  ref="datetime2" timeFormat={false} 
+                    inputProps={
+                      {"style":
+                        {"backgroundColor":this.state.bg.tiaoshi_date}
+                      }
+                    } 
+                    name="tiaoshi_date"  value={this.state.contact.tiaoshi_date} onChange={this.tiaoshi_date_change} />
                 </td>
             </tr><tr>
                 <td>
@@ -198,18 +263,19 @@ const ContactEdit2 = createReactClass({
                     方法:
                 </td>
                 <td>
-                <input  style={{"backgroundColor":this.state.bg.method}}  type="text" id="method" name="method" readOnly="true" defaultValue={this.state.contact.method} />
-                <button className="btn" id="bt_file"><Glyphicon glyph="pencil" />
-                </button>
-                <button className="btn" id="bt_removefile"><Glyphicon glyph="remove" /></button>
+                <input  style={{"backgroundColor":this.state.bg.method}}  type="text" id="method" name="method" disabled="true" defaultValue={this.state.contact.method} />
+                {
+                //<button className="btn" id="bt_file"><Glyphicon glyph="pencil" />
+                //</button>
+                //<button className="btn" id="bt_removefile"><Glyphicon glyph="remove" /></button>
+                }
                 </td>
             </tr>        
             </tbody>
             </table>
        <div> 
        <button className="btn btn-primary" id="bt_save" onClick={this.handleSave} >保存</button> 
-       <button  id="bt_clear" onClick={this.handleClear}>清除</button> 
-       <button  id="bt_clearid" onClick={this.handleCopy}>复制</button>
+       <button className="btn" style={{margin:"20px 20px 20px 20px"}} id="bt_clearid" onClick={this.handleCopy}>复制</button>
        </div>
         <div id="id_usepacks" hidden={this.state.hiddenPacks}>
         <UsePacks2  contact_id={this.state.contact.id}/>
@@ -217,7 +283,7 @@ const ContactEdit2 = createReactClass({
                 </Modal.Body>
         </Modal>
         </div>
-        </a>
+        </button>
     );
   }
 });

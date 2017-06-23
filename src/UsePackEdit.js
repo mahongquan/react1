@@ -1,9 +1,6 @@
 import React from 'react';
 import PackItems from "./PackItems";
 import {Modal} from "react-bootstrap";
-import update from 'immutability-helper';
-import Client from './Client';
-import Autocomplete from 'react-autocomplete'
 var createReactClass = require('create-react-class');
 const UsePackEdit = createReactClass({
   getInitialState() {
@@ -33,7 +30,6 @@ const UsePackEdit = createReactClass({
     this.setState({usepack:this.old});
   },
   render() {
-    console.log(this.state.hiddenusepacks);
     return (
         <a onClick={this.open}>{this.props.title}
         <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
@@ -54,7 +50,7 @@ const UsePackEdit = createReactClass({
                     <label>名称:</label>
                 </td>
                 <td>
-                    <input style={{"backgroundColor":this.state.bg.yonghu}}  type="text" id="yonghu" name="yonghu" value={this.state.usepack.name} onChange={this.handleChange} />
+                    <label>{this.state.usepack.name}</label>
                 </td>
             </tr></tbody>
             </table>

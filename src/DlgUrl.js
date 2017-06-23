@@ -1,24 +1,21 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {Modal} from "react-bootstrap";
 import Client from './Client';
-var createReactClass = require('create-react-class');
-const DlgWait = createReactClass({
-  getInitialState() {
-    return { 
+class DlgUrl extends Component{
+  state= { 
       showModal: false,
       hiddenPacks:true,
       error:"",
-    };
-  },
+  }
 
-  close() {
+  close=()=> {
     this.setState({ showModal: false });
-  },
+  }
 
-  open() {
-    var self=this;
+  open=()=>{
+   var self=this;
    this.setState({ showModal: true });
-   Client.get("/parts/allfile",{id:this.props.contact_id}, function(result){
+   Client.get(this.props.url,this.props.data, function(result){
        console.info(result);
        if (!result.success){
           self.setState({error:result.message});
@@ -27,10 +24,10 @@ const DlgWait = createReactClass({
           self.close();
        }
    })
-  },
-  render() {
+  }
+  render=()=> {
     return (
-        <a  className="contact_allfile"  onClick={this.open}>{this.props.title}
+        <a  style={{marginLeft:"10px"}} onClick={this.open}>{this.props.title}
         <div>
         <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
           <Modal.Header closeButton>
@@ -44,5 +41,5 @@ const DlgWait = createReactClass({
         </a>
     );
   }
-});
-export default DlgWait;
+}
+export default DlgUrl;

@@ -45,10 +45,16 @@ const PackItemEdit = createReactClass({
     console.log(e.target.name);
     if(this.old[e.target.name]===e.target.value)
     {
-      this.state.bg[e.target.name]="#ffffff";
+      const bg2=update(this.state.bg,{[e.target.name]:{$set:"#ffffff"}})
+      //this.state.bg[e_target_name]="#ffffff";
+      //console.log("equal");
+      this.setState({bg:bg2});
     }
     else{
-      this.state.bg[e.target.name]="#8888ff"; 
+       const bg2=update(this.state.bg,{[e.target.name]:{$set:"#8888ff"}})
+      //this.state.bg[e_target_name]="#ffffff";
+      //console.log("equal");
+      this.setState({bg:bg2}); 
     }
     const contact2=update(this.state.packitem,{[e.target.name]: {$set:e.target.value}});
     console.log(contact2);
@@ -73,28 +79,28 @@ const PackItemEdit = createReactClass({
                 </td>
             </tr><tr>
                 <td>
-                    name:
+                    名称:
                 </td>
                 <td>
                     <input  style={{"backgroundColor":this.state.bg.addr}}  type="text" id="addr" name="name" value={this.state.packitem.name} onChange={this.handleChange} />
                 </td>
             </tr><tr>
                 <td>
-                    <label>guige:</label>
+                    <label>规格:</label>
                 </td>
                 <td>
                     <input style={{"backgroundColor":this.state.bg.yiqixinghao}} type="text"  name="guige" value={this.state.packitem.guige}  onChange={this.handleChange} />
                 </td>
             </tr><tr>
                 <td>
-                    <label>bh:</label>
+                    <label>编号:</label>
                 </td>
                 <td>
                     <input style={{"backgroundColor":this.state.bg.baoxiang}} type="text" id="baoxiang" name="bh" value={this.state.packitem.bh}  onChange={this.handleChange} />
                 </td>
             </tr><tr>
                 <td>
-                    <label>ct:</label>
+                    <label>数量:</label>
                 </td>
                 <td>
                     <input type="text" style={{"backgroundColor":this.state.bg.ct}}

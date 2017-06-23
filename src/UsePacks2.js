@@ -26,16 +26,19 @@ class UsePacks2 extends React.Component {
     usepacks: [],
     showRemoveIcon: false,
     newPackName: '',
-          auto_value: '',
-      auto_items:[],
-      auto_loading: false,
+    auto_value: '',
+    auto_items:[],
+    auto_loading: false,
+    release:true,
   };
   componentDidMount=()=> {
+    if(this.props.contact_id){
       Client.UsePacks(this.props.contact_id, (usepacks) => {
         this.setState({
           usepacks: usepacks.data,//.slice(0, MATCHING_ITEM_LIMIT),
         });
       });
+    }
   };
   auto_change=(event, value)=>{
     console.log("auto_change");
@@ -56,6 +59,10 @@ class UsePacks2 extends React.Component {
       this.addrow(item.id);
       this.setState({auto_value:value, auto_items: [ item ] })
   }
+  bibei= (id) => {
+    //this.setState({auto_value:"必备"});
+    this.auto_change(null,"必备");
+  };
   new_pack= (id) => {
     var url="/rest/UsePackEx";
     var data={"name":this.state.newPackName,contact:this.props.contact_id};
@@ -96,12 +103,12 @@ class UsePacks2 extends React.Component {
       >
         <td >{usepack.id}</td>
         <td >{usepack.name}</td>
-        <td >{usepack.contact}</td>
-        <td >{usepack.pack}</td>
-        <td >{usepack.hetongbh}</td>
+        <td hidden={this.state.release}>{usepack.contact}</td>
+        <td hidden={this.state.release} >{usepack.pack}</td>
+        <td hidden={this.state.release} >{usepack.hetongbh}</td>
         <td>
         <UsePackEdit parent={this} index={idx} title="编辑" />
-        <button  onClick={() => this.onDeleteClick(idx)}>删除</button>
+        <a  onClick={() => this.onDeleteClick(idx)} style={{marginLeft:"10px"}}>删除</a>
         </td>
       </tr>
     ));
@@ -112,10 +119,10 @@ class UsePacks2 extends React.Component {
           <thead>
              <tr>
               <td>id</td>
-              <td>name</td>
-              <td>contact</td>
-              <td>pack</td>
-              <td>hetongbh</td>
+              <td>名称</td>
+              <td hidden={this.state.release}>contact</td>
+              <td hidden={this.state.release}>pack</td>
+              <td hidden={this.state.release}>hetongbh</td>
               <td>操作</td>
             </tr>
           </thead>
@@ -124,7 +131,7 @@ class UsePacks2 extends React.Component {
           </tbody>
         </Table>
         <div>
-          <Autocomplete
+        输入包<Autocomplete
           inputProps={{ id: 'states-autocomplete' }}
           ref="autocomplete"
           value={this.state.auto_value}
@@ -140,7 +147,7 @@ class UsePacks2 extends React.Component {
             >{item.name}</div>
           )}
         />
-          <button  id="id_bibei_usepack">必备</button>
+          <button  className="btn" onClick={this.bibei}>必备</button>
         </div>
       <div>新包名称：
         <input id="new_pack1"  placeholder="新包" value={this.state.newPackName} onChange={this.newpackChange}/>

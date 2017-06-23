@@ -6,7 +6,9 @@ import ExampleModal from './ExampleModal';
 import ContactEdit2 from './ContactEdit2';
 import DlgWait from './DlgWait';
 import DlgFolder from './DlgFolder';
-import DialogImportStandard from './DialogImportStandard';
+import DlgUrl from './DlgUrl';
+import DlgImport from './DlgImport';
+import DlgCheck from './DlgCheck';
 var host="";
 class App extends Component {
   mystate = {
@@ -60,8 +62,15 @@ class App extends Component {
   };
   handleContactChange = (idx,contact) => {
     console.log(idx);
-    const contacts2=update(this.state.contacts,{[idx]: {$set:contact}});
-    console.log(contacts2);
+    var contacts2=null;
+    if(idx==null){
+      contacts2=update(this.state.contacts,{$push: [contact]});
+      console.log(contacts2);
+    }
+    else{
+      contacts2=update(this.state.contacts,{[idx]: {$set:contact}});
+      console.log(contacts2);
+    }
     this.setState({contacts:contacts2});
   };
   oncontactClick=(key) => {
@@ -179,6 +188,7 @@ class App extends Component {
   };
   onSelectBaoxiang=(e) => {
     this.mystate.baoxiang=e;
+    this.mystate.start=0;
     this.componentDidMount();
     console.log(e);
   }
@@ -223,6 +233,13 @@ class App extends Component {
     });
   };
   render() {
+    var page=this.state.start+this.mystate.limit;
+    if (page>this.state.total) page=this.state.total;
+    var prev_hidden=false;
+    if (this.state.start===0) prev_hidden=true;
+    var next_hidden=false;
+    if (this.state.start+this.mystate.limit>=this.state.total) next_hidden=true;
+    console.log("next_hidden"+next_hidden);
     const contactRows = this.state.contacts.map((contact, idx) => (
       <tr key={idx} >
         <td>{contact.id}</td>
@@ -239,11 +256,12 @@ class App extends Component {
         <td>{contact.tiaoshi_date}</td>
         <td>{contact.hetongbh}</td>
         <td>{contact.method}</td>
-        <td><a className="contact_detail" data={contact.id} onClick={() => this.onDetailClick(contact.id)}>详细</a>
-         <a className="contact_updatemethod" data={contact.id}>更新方法</a>
-         <DlgWait contact_id={contact.id} title="全部文件" />
-         <a className="contact_chuku" data={contact.id}>核对备料计划</a>
-        <DlgFolder contact_id={contact.id} title="资料文件夹" />
+        <td>
+          <a data={contact.id} onClick={() => this.onDetailClick(contact.id)}>详细</a>
+          <DlgUrl url="/rest/updateMethod" data={{id:contact.id}} title="更新方法" />
+          <DlgWait contact_id={contact.id} title="全部文件" />
+          <DlgCheck yiqibh={contact.yiqibh} contact_id={contact.id} title="核对备料计划" />
+          <DlgFolder contact_id={contact.id} title="资料文件夹" />
         </td>
       </tr>
     ));
@@ -257,10 +275,10 @@ class App extends Component {
     </Navbar.Header>
     <Nav>
       <NavItem eventKey={1} href="#">合同</NavItem>
-      <NavItem eventKey={2} href="#">管理</NavItem>
-      <NavItem eventKey={4} href="#">备件</NavItem>
-      <NavItem eventKey={5} href="#">复制包</NavItem>
-      <NavItem eventKey={6} href="#">统计</NavItem>
+      <NavItem eventKey={2} href="/admin">管理</NavItem>
+      <NavItem eventKey={4} href="/parts/items/">备件</NavItem>
+      <NavItem eventKey={5} href="/parts/copypack/">复制包</NavItem>
+      <NavItem eventKey={6} href="/parts/month12/">统计</NavItem>
     </Nav>
   </Navbar>
     <table>
@@ -286,7 +304,7 @@ class App extends Component {
         <ContactEdit2 parent={this} index={null} title="新仪器" />
   </td>
    <td>
-        <DialogImportStandard title="导入标样" />
+        <DlgImport />
   </td>
    <td>
     <DropdownButton title="过滤" id="id_dropdown2">
@@ -301,9 +319,10 @@ class App extends Component {
  </table>
 <Table responsive bordered condensed><thead><tr><th>ID</th><th>用户单位</th><th>客户地址</th><th>通道配置</th><th>仪器型号</th><th>仪器编号</th><th>包箱</th><th>审核</th>
 <th>入库时间</th><th>调试时间</th><th>合同编号</th><th>方法</th><th>操作</th></tr></thead><tbody id="contact-list">{contactRows}</tbody></Table>
-      <a onClick={this.handlePrev}>前一页</a> 
-      <label id="page">{this.state.start+1}/{this.state.total}</label>
-      <a onClick={this.handleNext}>后一页</a>
+      <a hidden={prev_hidden} onClick={this.handlePrev}>前一页</a> 
+      <label id="page">{this.state.start+1}..
+      {page}/{this.state.total}</label>
+      <a hidden={next_hidden} onClick={this.handleNext}>后一页</a>
       <input maxLength="6" size="6" onChange={this.handlePageChange} value={this.state.start_input} />
       <button id="page_go"  className="btn btn-info" onClick={this.jump}>跳转</button>
   </div>
