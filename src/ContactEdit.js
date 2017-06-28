@@ -6,6 +6,8 @@ import Client from './Client';
 import UsePacks from './UsePacks';
 import update from 'immutability-helper';
 import { Table, TableBody, TableHeader, TableHeaderColumn, tr, td } from 'material-ui/Table';
+import AutoComplete from 'material-ui/AutoComplete';
+import DatePicker from 'material-ui/DatePicker';
 export default class ContactEdit extends React.Component {
   state = {
     open: false,
@@ -15,12 +17,32 @@ export default class ContactEdit extends React.Component {
     id:null,
     baoxiang:null,
     yonghu:null,
-    tiaoshi_date:null,
+    tiaoshi_date:"",
     channels:null,
     yiqibh:null,
     addr:null,
-    yujifahuo_date:null,
+    yujifahuo_date:"",
+
+    yiqixinghao_items:["CS-2800","ON-3000"],
+    channels_items:["2C+1S","2O"],
   };
+  yiqixinghao_change=(value)=>{
+  };
+  yiqixinghao_select=(data) => {
+      console.log("selected");
+      console.log(data);
+      //this.addrow(data.value);
+      this.setState({yiqixinghao:data});
+  }
+  channels_change=(value)=>{
+  };
+  channels_select=(data) => {
+      console.log("selected");
+      console.log(data);
+      //this.addrow(data.value);
+      this.setState({channels:data});
+  }
+
   handleOpen = () => {
     console.log("open");
     this.contact_idx=this.props.contact;
@@ -125,16 +147,29 @@ export default class ContactEdit extends React.Component {
         id:"",
     })
   };
-  render() {
+  tiaoshi_date_change=(e,d)=>{
+    this.setState({tiaoshi_date:d.toDateString()});
+  }
+ yujifahuo_date_change=(e,d)=>{
+    this.setState({yujifahuo_date:d.toDateString()});
+  }
 
+  render() {
+    const customContentStyle = {
+      width: '100%',
+      maxWidth: 'none',
+    };
+    var m1 = new Date(this.state.yujifahuo_date.replace(/-/,"/"));
+    var m2 = new Date(this.state.tiaoshi_date.replace(/-/,"/"));
     return (
       <div>
         <RaisedButton label={this.props.title} onTouchTap={this.handleOpen} />
         <Dialog
-          title={this.props.title}
           modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose}
+          contentStyle={customContentStyle}
+          autoScrollBodyContent={true}
         >
             <table>
             <tbody>
@@ -162,14 +197,26 @@ export default class ContactEdit extends React.Component {
                     通道配置:
                 </td>
                 <td>
-                    <TextField type="text" id="channels" name="channels" value={this.state.channels} onChange={this.handleChange} />
+                    <AutoComplete name="channels"
+                      openOnFocus={true}
+                      searchText={this.state.channels}
+                      onUpdateInput={this.channels_change}
+                      dataSource={this.state.channels_items}
+                      onNewRequest={this.channels_select}
+                    />
                 </td>
             </tr><tr>
                 <td>
                     <label>仪器型号:</label>
                 </td>
                 <td>
-                    <TextField type="text" id="yiqixinghao" name="yiqixinghao" value={this.state.yiqixinghao} onChange={this.handleChange} />
+                    <AutoComplete name="yiqixinghao"
+                      openOnFocus={true}
+                      searchText={this.state.yiqixinghao}
+                      onUpdateInput={this.yiqixinghao_change}
+                      dataSource={this.state.yiqixinghao_items}
+                      onNewRequest={this.yiqixinghao_select}
+                    />
                 </td>
                 <td>
                     <label>仪器编号:</label>
@@ -200,13 +247,13 @@ export default class ContactEdit extends React.Component {
                     <label>入库时间:</label>
                 </td>
                 <td>
-                    <TextField type="text" className="mydate" id="yujifahuo_date" name="yujifahuo_date" value={this.state.yujifahuo_date}  onChange={this.handleChange} />
+                    <DatePicker hintText="yujifahuo_date" onChange={this.yujifahuo_date_change} value={m1}/>
                 </td>
                 <td>
                     调试时间:
                 </td>
                 <td>
-                    <TextField type="text" className="mydate" id="tiaoshi_date" name="tiaoshi_date" value={this.state.tiaoshi_date}  onChange={this.handleChange} />
+                    <DatePicker hintText="tiaoshi_date" onChange={this.tiaoshi_date_change} value={m2}/>
                 </td>
             </tr><tr>
                 <td>
@@ -220,8 +267,6 @@ export default class ContactEdit extends React.Component {
                 </td>
                 <td>
                 <TextField type="text" id="method" name="method"   disabled={true} value={this.state.method} />
-                <RaisedButton>选择文件</RaisedButton>
-                <RaisedButton>清除</RaisedButton>
                 </td>
             </tr>        
             </tbody>
@@ -230,7 +275,7 @@ export default class ContactEdit extends React.Component {
            <RaisedButton onTouchTap={this.handleSave} >保存</RaisedButton> 
            <RaisedButton  onTouchTap={this.handleClear} >清除</RaisedButton> 
            <RaisedButton onTouchTap={this.handleCopy} >复制</RaisedButton>
-           <UsePacks contact_id={this.state.id} />
+           <UsePacks contact_id={this.state.id}/>
            </div>
         </Dialog>
         </div>
