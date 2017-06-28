@@ -8,6 +8,15 @@ import update from 'immutability-helper';
 import { Table, TableBody, TableHeader, TableHeaderColumn, tr, td } from 'material-ui/Table';
 import AutoComplete from 'material-ui/AutoComplete';
 import DatePicker from 'material-ui/DatePicker';
+import areIntlLocalesSupported from 'intl-locales-supported';
+let DateTimeFormat;
+if (areIntlLocalesSupported( ['zh-Hans'])) {
+  DateTimeFormat = global.Intl.DateTimeFormat;
+} else {
+  const IntlPolyfill = require('intl');
+  DateTimeFormat = IntlPolyfill.DateTimeFormat;
+  require('intl/locale-data/jsonp/zh-Hans');
+}
 export default class ContactEdit extends React.Component {
   state = {
     open: false,
@@ -247,13 +256,13 @@ export default class ContactEdit extends React.Component {
                     <label>入库时间:</label>
                 </td>
                 <td>
-                    <DatePicker hintText="yujifahuo_date" onChange={this.yujifahuo_date_change} value={m1}/>
+                    <DatePicker  locale="zh-Hans" hintText="yujifahuo_date" onChange={this.yujifahuo_date_change} value={m1}/>
                 </td>
                 <td>
                     调试时间:
                 </td>
                 <td>
-                    <DatePicker hintText="tiaoshi_date" onChange={this.tiaoshi_date_change} value={m2}/>
+                    <DatePicker locale="zh-Hans" hintText="tiaoshi_date" onChange={this.tiaoshi_date_change} value={m2}/>
                 </td>
             </tr><tr>
                 <td>
