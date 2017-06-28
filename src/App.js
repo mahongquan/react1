@@ -1,52 +1,65 @@
 import React, { Component } from 'react';
-import {Navbar,Nav,NavItem,MenuItem,DropdownButton,Table} from "react-bootstrap";
-import update from 'immutability-helper';
+import './App.css';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+import RaisedButton from 'material-ui/RaisedButton';
+import Popover from 'material-ui/Popover';
+import Menu from 'material-ui/Menu';
+import MenuItem from 'material-ui/MenuItem';
+import TextField from 'material-ui/TextField';
+import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar';
+import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import Client from './Client';
-import ExampleModal from './ExampleModal';
-import ContactEdit2 from './ContactEdit2';
-import DlgWait from './DlgWait';
-import DlgFolder from './DlgFolder';
-import DlgUrl from './DlgUrl';
-import DlgImport from './DlgImport';
-import DlgCheck from './DlgCheck';
-var host="";
+import DialogExampleSimple from "./DialogExampleSimple"
+import DialogImportStandard from "./DialogImportStandard"
+import ContactEdit from "./ContactEdit"
+import update from 'immutability-helper';
+injectTapEventPlugin();
+var user = "";
 class App extends Component {
-  mystate = {
-    start:0,
-    limit:5,
-    baoxiang:"",
-    logined: false,
-    search:""
-  }
-   state = {
+  state = {
     contacts: [],
+    showRemoveIcon: false,
+    searchValue: '',
+    open: false,
+    logined: false,
     user: "AnonymousUser",
-    start:0,
-    total:0,
-    search:"",
-    start_input:1,
+    selected:null,
+  //csrf_token:"",
   }
+
   componentDidMount=() => {
-    Client.contacts(
-      { start:this.mystate.start,
-        limit:this.mystate.limit,
-        search:this.mystate.search,
-        baoxiang:this.mystate.baoxiang,
-      }, 
-      (contacts) => {
-        var user=contacts.user;
-        if(user===undefined){
-          user="AnonymousUser"
-        }
+    Client.contacts("", (contacts) => {
+      var user=contacts.user;
+      if(user==undefined){
+        user="AnonymousUser"
+      }
+      this.setState({
+        contacts: contacts.data, //.slice(0, MATCHING_ITEM_LIMIT),
+        user: user,
+      });
+      if (user === "AnonymousUser") {
         this.setState({
-          contacts: contacts.data, //.slice(0, MATCHING_ITEM_LIMIT),
-          user: user,
-          total:contacts.total,
-          start:this.mystate.start
+          logined: false
         });
-        this.mystate.total=contacts.total;
+      } else {
+        this.setState({
+          logined: true
+        });
+      }
     });
   };
+  // removeFoodItem = (itemIndex) => {
+  //   const filteredFoods = this.state.selectedFoods.filter(
+  //     (item, idx) => itemIndex !== idx,
+  //   );
+  //   this.setState({ selectedFoods: filteredFoods });
+  // }
+
+  // addFood = (food) => {
+  //   const newFoods = this.state.selectedFoods.concat(food);
+  //   this.setState({ selectedFoods: newFoods });
+  // }
   handleTest = () => {
     //const contact2=update(this.state.contacts[this.state.selected],{baoxiang: {$set: "test"}});
     // console.log("handleTest");
@@ -62,15 +75,8 @@ class App extends Component {
   };
   handleContactChange = (idx,contact) => {
     console.log(idx);
-    var contacts2=null;
-    if(idx==null){
-      contacts2=update(this.state.contacts,{$push: [contact]});
-      console.log(contacts2);
-    }
-    else{
-      contacts2=update(this.state.contacts,{[idx]: {$set:contact}});
-      console.log(contacts2);
-    }
+    const contacts2=update(this.state.contacts,{[idx]: {$set:contact}});
+    console.log(contacts2);
     this.setState({contacts:contacts2});
   };
   oncontactClick=(key) => {
@@ -132,8 +138,6 @@ class App extends Component {
       this.setState({
         logined: false,
         user: "AnonymousUser",
-        total:0,
-        start:0,
       });
       this.handleUserChange(this.state.user);
     });
@@ -144,80 +148,29 @@ class App extends Component {
     });
   };
   handleSearchChange = (e) => {
-    this.mystate.search=e.target.value;
-    this.setState({search:this.mystate.search});
-    //this.componentDidMount();
-  };
-  handlePrev = (e) => {
-    this.mystate.start=this.mystate.start-this.mystate.limit;
-    if(this.mystate.start<0) {this.mystate.start=0;}
-    //this.setState({start:start});
-    this.componentDidMount();
-  };
-  search = (e) => {
-    this.mystate.start=0;
-    this.componentDidMount();
-  };
-  jump=()=>{
-    this.mystate.start=parseInt(this.state.start_input,10)-1;
-    if(this.mystate.start>this.mystate.total-this.mystate.limit) 
-        this.mystate.start=this.mystate.total-this.mystate.limit;//total >limit
-    if(this.mystate.start<0)
-    {
-      this.mystate.start=0;
-    }
-    this.componentDidMount();
-  };
-  handlePageChange= (e) => {
-    this.setState({start_input:e.target.value});
-  };
+    const value = e.target.value;
 
-  onDetailClick=(contactid)=>{
-    console.log(contactid);
-    window.open(host+"/parts/showcontact/?id="+contactid, "detail", 'height=800,width=800,resizable=yes,scrollbars=yes');
-  }
-  handleNext = (e) => {
-    this.mystate.start=this.mystate.start+this.mystate.limit;
-    if(this.mystate.start>this.mystate.total-this.mystate.limit) 
-        this.mystate.start=this.mystate.total-this.mystate.limit;//total >limit
-    if(this.mystate.start<0)
-    {
-      this.mystate.start=0;
-    }
-    this.componentDidMount();
-  };
-  onSelectBaoxiang=(e) => {
-    this.mystate.baoxiang=e;
-    this.mystate.start=0;
-    this.componentDidMount();
-    console.log(e);
-  }
-  auto_change=(event, value)=>{
-    console.log("auto_change");
-    if (value.length>1)
-    {
-      this.setState({ auto_value:value, auto_loading: true });
-      Client.get("/rest/Pack",{search:value} ,(items) => {
-          this.setState({ auto_items: items.data, auto_loading: false })
+    this.setState({
+      searchValue: value,
+    });
+
+    if (value === '') {
+      this.setState({
+        contacts: [],
+        showRemoveIcon: false,
+      });
+    } else {
+      this.setState({
+        showRemoveIcon: true,
+      });
+
+      Client.contacts(value, (contacts) => {
+        this.setState({
+          contacts: contacts.data, //.slice(0, MATCHING_ITEM_LIMIT),
+        });
       });
     }
-    else{
-      this.setState({ auto_value:value, auto_loading: false });
-    };
-  }
-  allfile=(contactid)=>{
-       //  var s=new WaitingView();
-       //  s.showdialog();
-       //  $.getJSON(host+"/parts/allfile?id="+this.model.get("id"), function(result){
-       //     console.info(result);
-       //     s.$el.dialog('close');
-       //     if (!result.success){
-       //      $("<p>"+result.message+"</p>").dialog();
-       //     }
-       // }).fail(function() {
-       //  alert( "error" );
-       // });1
-  }
+  };
   onLoginSubmit= (data) => {
     console.log(data);
     Client.login(data.username, data.password, (res) => {
@@ -233,99 +186,85 @@ class App extends Component {
     });
   };
   render() {
-    var page=this.state.start+this.mystate.limit;
-    if (page>this.state.total) page=this.state.total;
-    var prev_hidden=false;
-    if (this.state.start===0) prev_hidden=true;
-    var next_hidden=false;
-    if (this.state.start+this.mystate.limit>=this.state.total) next_hidden=true;
-    console.log("next_hidden"+next_hidden);
     const contactRows = this.state.contacts.map((contact, idx) => (
-      <tr key={idx} >
-        <td>{contact.id}</td>
-        <td>{contact.yonghu}</td>
-        <td>{contact.addr}</td>
-        <td>{contact.channels}</td>
-        <td>{contact.yiqixinghao}</td>
-        <td>
-          <ContactEdit2 parent={this} index={idx} title={contact.yiqibh} />
-        </td>
-        <td>{contact.baoxiang}</td>
-        <td>{contact.shenhe}</td>
-        <td>{contact.yujifahuo_date}</td>
-        <td>{contact.tiaoshi_date}</td>
-        <td>{contact.hetongbh}</td>
-        <td>{contact.method}</td>
-        <td>
-          <a data={contact.id} onClick={() => this.onDetailClick(contact.id)}>详细</a>
-          <DlgUrl url="/rest/updateMethod" data={{id:contact.id}} title="更新方法" />
-          <DlgWait contact_id={contact.id} title="全部文件" />
-          <DlgCheck yiqibh={contact.yiqibh} contact_id={contact.id} title="核对备料计划" />
-          <DlgFolder contact_id={contact.id} title="资料文件夹" />
-        </td>
-      </tr>
+      <TableRow      key={idx}      onTouchTap={() => this.oncontactClick(idx)}>
+        <TableRowColumn>{contact.id}</TableRowColumn>
+        <TableRowColumn>{contact.hetongbh}</TableRowColumn>
+        <TableRowColumn>{contact.yonghu}</TableRowColumn>
+        <TableRowColumn>{contact.baoxiang}</TableRowColumn>
+        <TableRowColumn>{contact.yiqixinghao}</TableRowColumn>
+      </TableRow>
     ));
     return (
-    <div id="todoapp">
-    <Navbar className="navbar-inverse">
-    <Navbar.Header>
-      <Navbar.Brand>
-        <a>装箱单</a>
-      </Navbar.Brand>
-    </Navbar.Header>
-    <Nav>
-      <NavItem eventKey={1} href="#">合同</NavItem>
-      <NavItem eventKey={2} href="/admin">管理</NavItem>
-      <NavItem eventKey={4} href="/parts/items/">备件</NavItem>
-      <NavItem eventKey={5} href="/parts/copypack/">复制包</NavItem>
-      <NavItem eventKey={6} href="/parts/month12/">统计</NavItem>
-    </Nav>
-  </Navbar>
-    <table>
-    <tbody>
-    <tr>
-   <td>
-     <DropdownButton title={this.state.user} id="id_dropdown1">
-        <li hidden={this.state.user!=="AnonymousUser"}>
-          <ExampleModal onLoginSubmit={this.onLoginSubmit} title="登录" />
-        </li>
-        <li  hidden={this.state.user==="AnonymousUser"} >
-          <a onClick={this.handleLogout}>注销</a>
-        </li>
-     </DropdownButton>
-  </td>
-  <td>
-        <input type="text" value={this.state.search}  placeholder="合同 or 仪器编号" onChange={this.handleSearchChange} />
-        <button id="id_bt_search" className="btm btn-info" onClick={this.search}>搜索
-        <span className="glyphicon glyphicon-search" aria-hidden="true"></span>
-        </button>
-  </td>
-  <td>
-        <ContactEdit2 parent={this} index={null} title="新仪器" />
-  </td>
-   <td>
-        <DlgImport />
-  </td>
-   <td>
-    <DropdownButton title="过滤" id="id_dropdown2">
-      <MenuItem onSelect={() => this.onSelectBaoxiang("马红权")}>马红权</MenuItem>
-      <MenuItem onSelect={() => this.onSelectBaoxiang("陈旺")}>陈旺</MenuItem>
-      <MenuItem onSelect={() => this.onSelectBaoxiang("吴振宁")}>吴振宁</MenuItem>
-      <MenuItem onSelect={() => this.onSelectBaoxiang("")}>*</MenuItem>
-    </DropdownButton>
-  </td>
-  </tr>
-  </tbody>
- </table>
-<Table responsive bordered condensed><thead><tr><th>ID</th><th>用户单位</th><th>客户地址</th><th>通道配置</th><th>仪器型号</th><th>仪器编号</th><th>包箱</th><th>审核</th>
-<th>入库时间</th><th>调试时间</th><th>合同编号</th><th>方法</th><th>操作</th></tr></thead><tbody id="contact-list">{contactRows}</tbody></Table>
-      <a hidden={prev_hidden} onClick={this.handlePrev}>前一页</a> 
-      <label id="page">{this.state.start+1}..
-      {page}/{this.state.total}</label>
-      <a hidden={next_hidden} onClick={this.handleNext}>后一页</a>
-      <input maxLength="6" size="6" onChange={this.handlePageChange} value={this.state.start_input} />
-      <button id="page_go"  className="btn btn-info" onClick={this.jump}>跳转</button>
-  </div>
+      <div className="App">
+        <MuiThemeProvider>
+        <div>
+         <Toolbar>
+        <ToolbarGroup>
+          <ToolbarTitle text="仪器信息" />
+          <TextField
+      id="id_search"
+      type='text'
+      placeholder='Search instrument...'
+      value={this.state.searchValue}
+      onChange={this.handleSearchChange}
+      >
+          </TextField>
+         <div>
+         <DialogImportStandard title="导入标样" disabled={this.state.logined}  onLoginSubmit={this.onLoginSubmit} />
+         </div>
+         <div>
+         <ContactEdit  title="编辑仪器信息" contact={this.state.selected} parent={this}/>
+         </div>
+          <div>
+          <RaisedButton  onTouchTap={this.handleTest}
+            label="test" >
+        </RaisedButton>
+        <RaisedButton  onTouchTap={this.handleTouchTap}
+      label={this.state.user}>
+        </RaisedButton>
+        <Popover
+      open={this.state.open}
+      anchorEl={this.state.anchorEl}
+      anchorOrigin={{
+        horizontal: 'left',
+        vertical: 'bottom'
+      }}
+      targetOrigin={{
+        horizontal: 'left',
+        vertical: 'top'
+      }}
+      onRequestClose={this.handleRequestClose}
+      >
+          <Menu>
+            <MenuItem primaryText="注销" disabled={!this.state.logined} onTouchTap={this.handleLogout} />
+          </Menu>
+
+        </Popover>
+       </div>
+        </ToolbarGroup>
+        <ToolbarGroup>
+                <DialogExampleSimple title="登录" disabled={this.state.logined}  onLoginSubmit={this.onLoginSubmit}>
+                </DialogExampleSimple>
+        </ToolbarGroup>
+      </Toolbar>
+        <Table>
+    <TableHeader>
+      <TableRow>
+        <TableHeaderColumn>id</TableHeaderColumn>
+        <TableHeaderColumn>合同编号</TableHeaderColumn>
+        <TableHeaderColumn>用户单位</TableHeaderColumn>
+        <TableHeaderColumn>包箱</TableHeaderColumn>
+        <TableHeaderColumn>仪器型号</TableHeaderColumn>
+      </TableRow>
+    </TableHeader>
+         <TableBody>
+            {contactRows}
+          </TableBody>
+        </Table>
+        </div>
+      </MuiThemeProvider>
+      </div>
     );
   }
 }

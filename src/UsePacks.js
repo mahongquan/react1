@@ -9,11 +9,13 @@ class UsePacks extends React.Component {
     searchValue: '',
   };
   componentDidMount=()=> {
-      Client.UsePacks(101, (foods) => {
+    if(this.props.contact_id){
+      Client.UsePacks(this.props.contact_id, (usepacks) => {
         this.setState({
-          foods: foods.data,//.slice(0, MATCHING_ITEM_LIMIT),
+          foods: usepacks.data,//.slice(0, MATCHING_ITEM_LIMIT),
         });
       });
+    }
   };
   handleSearchChange = (e) => {
     const value = e.target.value;

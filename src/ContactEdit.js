@@ -5,7 +5,7 @@ import TextField from 'material-ui/TextField';
 import Client from './Client';
 import UsePacks from './UsePacks';
 import update from 'immutability-helper';
-import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
+import { Table, TableBody, TableHeader, TableHeaderColumn, tr, td } from 'material-ui/Table';
 export default class ContactEdit extends React.Component {
   state = {
     open: false,
@@ -136,101 +136,101 @@ export default class ContactEdit extends React.Component {
           open={this.state.open}
           onRequestClose={this.handleClose}
         >
-            <Table>
-            <TableBody>
-            <TableRow >
-                <TableRowColumn >
+            <table>
+            <tbody>
+            <tr >
+                <td >
                     ID:
-                </TableRowColumn>
-                <TableRowColumn >
+                </td>
+                <td >
                     <TextField type="text" id="id" name="id"  disabled={true}    value={this.state.id} />
-                </TableRowColumn>
-                <TableRowColumn>
+                </td>
+                <td>
                     <label>用户单位:</label>
-                </TableRowColumn>
-                <TableRowColumn>
+                </td>
+                <td>
                     <TextField type="text" id="yonghu" name="yonghu" value={this.state.yonghu}  onChange={this.handleChange} />
-                </TableRowColumn>
-            </TableRow><TableRow>
-                <TableRowColumn>
+                </td>
+            </tr><tr>
+                <td>
                     客户地址:
-                </TableRowColumn>
-                <TableRowColumn>
+                </td>
+                <td>
                     <TextField type="text" id="addr" name="addr" value={this.state.addr}  onChange={this.handleChange} /> 
-                </TableRowColumn>
-                <TableRowColumn>
+                </td>
+                <td>
                     通道配置:
-                </TableRowColumn>
-                <TableRowColumn>
+                </td>
+                <td>
                     <TextField type="text" id="channels" name="channels" value={this.state.channels} onChange={this.handleChange} />
-                </TableRowColumn>
-            </TableRow><TableRow>
-                <TableRowColumn>
+                </td>
+            </tr><tr>
+                <td>
                     <label>仪器型号:</label>
-                </TableRowColumn>
-                <TableRowColumn>
+                </td>
+                <td>
                     <TextField type="text" id="yiqixinghao" name="yiqixinghao" value={this.state.yiqixinghao} onChange={this.handleChange} />
-                </TableRowColumn>
-                <TableRowColumn>
+                </td>
+                <td>
                     <label>仪器编号:</label>
-                </TableRowColumn>
-                <TableRowColumn>
+                </td>
+                <td>
                     <TextField type="text" id="yiqibh" name="yiqibh" value={this.state.yiqibh} onChange={this.handleChange} />
-                </TableRowColumn>
-            </TableRow><TableRow>
-                <TableRowColumn>
+                </td>
+            </tr><tr>
+                <td>
                     <label>包箱:</label>
-                </TableRowColumn>
-                <TableRowColumn>
+                </td>
+                <td>
                     <TextField type="text" id="baoxiang" name="baoxiang" value={this.state.baoxiang}  
                     onChange={this.handleChange} 
                     style={{
                       backgroundColor: this.state.bxbg,
                     }}
                     />
-                </TableRowColumn>
-                <TableRowColumn>
+                </td>
+                <td>
                     审核:
-                </TableRowColumn>
-                <TableRowColumn>
+                </td>
+                <td>
                     <TextField type="text" id="shenhe" name="shenhe" value={this.state.shenhe} onChange={this.handleChange}  />
-                </TableRowColumn>
-            </TableRow><TableRow>
-                <TableRowColumn>
+                </td>
+            </tr><tr>
+                <td>
                     <label>入库时间:</label>
-                </TableRowColumn>
-                <TableRowColumn>
+                </td>
+                <td>
                     <TextField type="text" className="mydate" id="yujifahuo_date" name="yujifahuo_date" value={this.state.yujifahuo_date}  onChange={this.handleChange} />
-                </TableRowColumn>
-                <TableRowColumn>
+                </td>
+                <td>
                     调试时间:
-                </TableRowColumn>
-                <TableRowColumn>
+                </td>
+                <td>
                     <TextField type="text" className="mydate" id="tiaoshi_date" name="tiaoshi_date" value={this.state.tiaoshi_date}  onChange={this.handleChange} />
-                </TableRowColumn>
-            </TableRow><TableRow>
-                <TableRowColumn>
+                </td>
+            </tr><tr>
+                <td>
                     <label>合同编号:</label>
-                </TableRowColumn>
-                <TableRowColumn>
+                </td>
+                <td>
                     <TextField type="text" id="hetongbh" name="hetongbh" value={this.state.hetongbh} onChange={this.handleChange}  />
-                </TableRowColumn>
-                <TableRowColumn>
+                </td>
+                <td>
                     方法:
-                </TableRowColumn>
-                <TableRowColumn>
+                </td>
+                <td>
                 <TextField type="text" id="method" name="method"   disabled={true} value={this.state.method} />
                 <RaisedButton>选择文件</RaisedButton>
                 <RaisedButton>清除</RaisedButton>
-                </TableRowColumn>
-            </TableRow>        
-            </TableBody>
-            </Table>
+                </td>
+            </tr>        
+            </tbody>
+            </table>
            <div> 
            <RaisedButton onTouchTap={this.handleSave} >保存</RaisedButton> 
            <RaisedButton  onTouchTap={this.handleClear} >清除</RaisedButton> 
            <RaisedButton onTouchTap={this.handleCopy} >复制</RaisedButton>
-           <UsePacks />
+           <UsePacks contact_id={this.state.id} />
            </div>
         </Dialog>
         </div>
