@@ -1,7 +1,7 @@
 
 import React from 'react';
 import Client from './Client';
-import { Table, TableBody, TableHeader,TableHeaderColumn, TableRowColumn, TableRow, } from 'material-ui/Table';
+import { Table, TableBody, TableHeader,TableRowColumn,  TableRow, } from 'material-ui/Table';
 class UsePacks extends React.Component {
   state = {
     foods: [],
@@ -9,10 +9,12 @@ class UsePacks extends React.Component {
     searchValue: '',
   };
   componentDidMount=()=> {
-      Client.UsePacks(101, (foods) => {
-        this.setState({
+      var self=this;
+      Client.UsePacks(this.props.contact_id, (foods) => {
+        self.setState({
           foods: foods.data,//.slice(0, MATCHING_ITEM_LIMIT),
         });
+        console.log(foods);
       });
   };
   handleSearchChange = (e) => {
@@ -53,33 +55,27 @@ class UsePacks extends React.Component {
     const removeIconStyle = showRemoveIcon ? {} : { visibility: 'hidden' };
 
     const foodRows = foods.map((food, idx) => (
-      <TableRow
-        key={idx}
-        onClick={() => this.props.onFoodClick(food)}
-      >
-        <TableRowColumn>{food.yiqibh}</TableRowColumn>
-        <TableRowColumn >{food.id}</TableRowColumn>
-        <TableRowColumn >{food.name}</TableRowColumn>
-        <TableRowColumn >{food.contact}</TableRowColumn>
-        <TableRowColumn >{food.pack}</TableRowColumn>
-        <TableRowColumn >{food.hetongbh}</TableRowColumn>
+      <TableRow key={idx} onClick={() => this.props.onFoodClick(food)}>
+        <TableRowColumn>{food.id}</TableRowColumn>
+        <TableRowColumn>{food.name}</TableRowColumn>
+        <TableRowColumn>{food.contact}</TableRowColumn>
+        <TableRowColumn>{food.pack}</TableRowColumn>
+        <TableRowColumn>{food.hetongbh}</TableRowColumn>
       </TableRow>
     ));
 
     return (
         <Table>
-          <TableHeader>
-             <TableRow>
-              <TableHeaderColumn>id</TableHeaderColumn>
-              <TableHeaderColumn>name</TableHeaderColumn>
-              <TableHeaderColumn>contact</TableHeaderColumn>
-              <TableHeaderColumn>pack</TableHeaderColumn>
-              <TableHeaderColumn>hetongbh</TableHeaderColumn>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {foodRows}
-          </TableBody>
+        <TableBody>
+        <TableRow>
+          <TableRowColumn>id</TableRowColumn>
+          <TableRowColumn>name</TableRowColumn>
+          <TableRowColumn>contact</TableRowColumn>
+          <TableRowColumn>pack</TableRowColumn>
+          <TableRowColumn>hetongbh</TableRowColumn>
+        </TableRow>
+        {foodRows}
+        </TableBody>
         </Table>
     );
   }
