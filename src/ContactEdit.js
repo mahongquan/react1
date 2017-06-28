@@ -4,7 +4,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Client from './Client';
 import UsePacks from './UsePacks';
-import update from 'immutability-helper';
+//import update from 'immutability-helper';
 export default class ContactEdit extends React.Component {
   state = {
     open: false,
