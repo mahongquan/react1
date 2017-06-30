@@ -41,6 +41,7 @@ export default class ContactEdit extends React.Component {
 
     yiqixinghao_items:["CS-2800","ON-3000"],
     channels_items:["2C+1S","2O"],
+    bg:{},
   };
   yiqixinghao_change=(value)=>{
   };
@@ -61,10 +62,10 @@ export default class ContactEdit extends React.Component {
   setdata=(contact)=>{
     console.log(contact);
     var arr2 = contact.yujifahuo_date.split("-");
-    var date2 = new Date(arr2[0],parseInt(arr2[1])-1,arr2[2]); 
+    var date2 = new Date(arr2[0],parseInt(arr2[1],10)-1,arr2[2]); 
     arr2 = contact.tiaoshi_date.split("-");
-    var date1 = new Date(arr2[0],parseInt(arr2[1])-1,arr2[2]); 
-
+    var date1 = new Date(arr2[0],parseInt(arr2[1],10)-1,arr2[2]); 
+    this.old=contact;
     this.setState({
         open:true,
         yujifahuo_date:date2,
@@ -103,8 +104,19 @@ export default class ContactEdit extends React.Component {
     //   backgroundColor: '#ffd699',
     // };
     console.log(e.target.value);
-    //e.target.style.backgroundColor="rgba(0x88,0x88,0xff,0)";
-    //var contact1={};
+    if(this.old[e.target.name]===e.target.value)
+    {
+      const bg2=update(this.state.bg,{[e.target.name]:{$set:"#ffffff"}})
+      //this.state.bg[e_target_name]="#ffffff";
+      //console.log("equal");
+      this.setState({bg:bg2});
+    }
+    else{
+       const bg2=update(this.state.bg,{[e.target.name]:{$set:"#8888ff"}})
+      //this.state.bg[e_target_name]="#ffffff";
+      //console.log("equal");
+      this.setState({bg:bg2}); 
+    }
     switch(e.target.name)
     {
         case "baoxiang":
@@ -151,6 +163,7 @@ export default class ContactEdit extends React.Component {
 
     Client.post(url,data1,(res) => {
         this.setdata(res.data);
+        this.setState({bg:{}});
         this.parent.handleContactChange(this.contact_idx,res.data);
     });
   };
@@ -213,7 +226,8 @@ export default class ContactEdit extends React.Component {
                     <label>用户单位:</label>
                 </td>
                 <td>
-                    <TextField type="text" id="yonghu" name="yonghu" value={this.state.yonghu}  onChange={this.handleChange} />
+                    <TextField type="text" id="yonghu" name="yonghu" value={this.state.yonghu}  
+                    onChange={this.handleChange} />
                 </td>
             </tr><tr>
                 <td>
@@ -251,7 +265,13 @@ export default class ContactEdit extends React.Component {
                     <label>仪器编号:</label>
                 </td>
                 <td>
-                    <TextField type="text" id="yiqibh" name="yiqibh" value={this.state.yiqibh} onChange={this.handleChange} />
+                    <TextField type="text" 
+                    id="yiqibh" name="yiqibh" 
+                    value={this.state.yiqibh} onChange={this.handleChange} 
+                    inputStyle={{
+                      backgroundColor: this.state.yiqibh,
+                    }}
+                    />
                 </td>
             </tr><tr>
                 <td>
@@ -260,8 +280,8 @@ export default class ContactEdit extends React.Component {
                 <td>
                     <TextField type="text" id="baoxiang" name="baoxiang" value={this.state.baoxiang}  
                     onChange={this.handleChange} 
-                    style={{
-                      backgroundColor: this.state.bxbg,
+                    inputStyle={{
+                      backgroundColor: this.state.bg.baoxiang,
                     }}
                     />
                 </td>
@@ -269,7 +289,12 @@ export default class ContactEdit extends React.Component {
                     审核:
                 </td>
                 <td>
-                    <TextField type="text" id="shenhe" name="shenhe" value={this.state.shenhe} onChange={this.handleChange}  />
+                    <TextField  id="shenhe" 
+                    name="shenhe" value={this.state.shenhe} onChange={this.handleChange}  
+                    inputStyle={{
+                      backgroundColor: this.state.bg.shenhe,
+                    }}
+                    />
                 </td>
             </tr><tr>
                 <td>
