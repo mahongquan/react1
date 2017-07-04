@@ -15,7 +15,7 @@ import DialogImportStandard from "./DialogImportStandard"
 import ContactEdit from "./ContactEdit"
 import update from 'immutability-helper';
 injectTapEventPlugin();
-var user = "";
+//var user = "";
 class App extends Component {
   state = {
     contacts: [],
@@ -31,7 +31,7 @@ class App extends Component {
   componentDidMount=() => {
     Client.contacts("", (contacts) => {
       var user=contacts.user;
-      if(user==undefined){
+      if(user===undefined){
         user="AnonymousUser"
       }
       this.setState({

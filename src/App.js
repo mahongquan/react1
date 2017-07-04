@@ -2,51 +2,56 @@ import React, { Component } from 'react';
 import {Navbar,Nav,NavItem,MenuItem,DropdownButton} from "react-bootstrap";
 import update from 'immutability-helper';
 import Client from './Client';
-import ExampleModal from './ExampleModal';
-import ContactEdit2 from './ContactEdit2';
-import DlgWait from './DlgWait';
-import DlgFolder from './DlgFolder';
-import DlgUrl from './DlgUrl';
-import DlgImport from './DlgImport';
-import DlgCheck from './DlgCheck';
-var host="";
+import DialogExampleSimple from "./DialogExampleSimple"
+import DialogImportStandard from "./DialogImportStandard"
+import ContactEdit from "./ContactEdit"
+import update from 'immutability-helper';
+injectTapEventPlugin();
+var user = "";
 class App extends Component {
-  mystate = {
-    start:0,
-    limit:5,
-    baoxiang:"",
-    logined: false,
-    search:""
-  }
-   state = {
+  state = {
     contacts: [],
+    showRemoveIcon: false,
+    searchValue: '',
+    open: false,
+    logined: false,
     user: "AnonymousUser",
-    start:0,
-    total:0,
-    search:"",
-    start_input:1,
+    selected:null,
+  //csrf_token:"",
   }
+
   componentDidMount=() => {
-    Client.contacts(
-      { start:this.mystate.start,
-        limit:this.mystate.limit,
-        search:this.mystate.search,
-        baoxiang:this.mystate.baoxiang,
-      }, 
-      (contacts) => {
-        var user=contacts.user;
-        if(user===undefined){
-          user="AnonymousUser"
-        }
+    Client.contacts("", (contacts) => {
+      var user=contacts.user;
+      if(user==undefined){
+        user="AnonymousUser"
+      }
+      this.setState({
+        contacts: contacts.data, //.slice(0, MATCHING_ITEM_LIMIT),
+        user: user,
+      });
+      if (user === "AnonymousUser") {
         this.setState({
-          contacts: contacts.data, //.slice(0, MATCHING_ITEM_LIMIT),
-          user: user,
-          total:contacts.total,
-          start:this.mystate.start
+          logined: false
         });
-        this.mystate.total=contacts.total;
+      } else {
+        this.setState({
+          logined: true
+        });
+      }
     });
   };
+  // removeFoodItem = (itemIndex) => {
+  //   const filteredFoods = this.state.selectedFoods.filter(
+  //     (item, idx) => itemIndex !== idx,
+  //   );
+  //   this.setState({ selectedFoods: filteredFoods });
+  // }
+
+  // addFood = (food) => {
+  //   const newFoods = this.state.selectedFoods.concat(food);
+  //   this.setState({ selectedFoods: newFoods });
+  // }
   handleTest = () => {
     //const contact2=update(this.state.contacts[this.state.selected],{baoxiang: {$set: "test"}});
     // console.log("handleTest");
@@ -62,15 +67,8 @@ class App extends Component {
   };
   handleContactChange = (idx,contact) => {
     console.log(idx);
-    var contacts2=null;
-    if(idx==null){
-      contacts2=update(this.state.contacts,{$push: [contact]});
-      console.log(contacts2);
-    }
-    else{
-      contacts2=update(this.state.contacts,{[idx]: {$set:contact}});
-      console.log(contacts2);
-    }
+    const contacts2=update(this.state.contacts,{[idx]: {$set:contact}});
+    console.log(contacts2);
     this.setState({contacts:contacts2});
   };
   oncontactClick=(key) => {
@@ -132,8 +130,6 @@ class App extends Component {
       this.setState({
         logined: false,
         user: "AnonymousUser",
-        total:0,
-        start:0,
       });
       this.handleUserChange(this.state.user);
     });
@@ -144,80 +140,29 @@ class App extends Component {
     });
   };
   handleSearchChange = (e) => {
-    this.mystate.search=e.target.value;
-    this.setState({search:this.mystate.search});
-    //this.componentDidMount();
-  };
-  handlePrev = (e) => {
-    this.mystate.start=this.mystate.start-this.mystate.limit;
-    if(this.mystate.start<0) {this.mystate.start=0;}
-    //this.setState({start:start});
-    this.componentDidMount();
-  };
-  search = (e) => {
-    this.mystate.start=0;
-    this.componentDidMount();
-  };
-  jump=()=>{
-    this.mystate.start=parseInt(this.state.start_input,10)-1;
-    if(this.mystate.start>this.mystate.total-this.mystate.limit) 
-        this.mystate.start=this.mystate.total-this.mystate.limit;//total >limit
-    if(this.mystate.start<0)
-    {
-      this.mystate.start=0;
-    }
-    this.componentDidMount();
-  };
-  handlePageChange= (e) => {
-    this.setState({start_input:e.target.value});
-  };
+    const value = e.target.value;
 
-  onDetailClick=(contactid)=>{
-    console.log(contactid);
-    window.open(host+"/parts/showcontact/?id="+contactid, "detail", 'height=800,width=800,resizable=yes,scrollbars=yes');
-  }
-  handleNext = (e) => {
-    this.mystate.start=this.mystate.start+this.mystate.limit;
-    if(this.mystate.start>this.mystate.total-this.mystate.limit) 
-        this.mystate.start=this.mystate.total-this.mystate.limit;//total >limit
-    if(this.mystate.start<0)
-    {
-      this.mystate.start=0;
-    }
-    this.componentDidMount();
-  };
-  onSelectBaoxiang=(e) => {
-    this.mystate.baoxiang=e;
-    this.mystate.start=0;
-    this.componentDidMount();
-    console.log(e);
-  }
-  auto_change=(event, value)=>{
-    console.log("auto_change");
-    if (value.length>1)
-    {
-      this.setState({ auto_value:value, auto_loading: true });
-      Client.get("/rest/Pack",{search:value} ,(items) => {
-          this.setState({ auto_items: items.data, auto_loading: false })
+    this.setState({
+      searchValue: value,
+    });
+
+    if (value === '') {
+      this.setState({
+        contacts: [],
+        showRemoveIcon: false,
+      });
+    } else {
+      this.setState({
+        showRemoveIcon: true,
+      });
+
+      Client.contacts(value, (contacts) => {
+        this.setState({
+          contacts: contacts.data, //.slice(0, MATCHING_ITEM_LIMIT),
+        });
       });
     }
-    else{
-      this.setState({ auto_value:value, auto_loading: false });
-    };
-  }
-  allfile=(contactid)=>{
-       //  var s=new WaitingView();
-       //  s.showdialog();
-       //  $.getJSON(host+"/parts/allfile?id="+this.model.get("id"), function(result){
-       //     console.info(result);
-       //     s.$el.dialog('close');
-       //     if (!result.success){
-       //      $("<p>"+result.message+"</p>").dialog();
-       //     }
-       // }).fail(function() {
-       //  alert( "error" );
-       // });1
-  }
+  };
   onLoginSubmit= (data) => {
     console.log(data);
     Client.login(data.username, data.password, (res) => {
@@ -233,37 +178,14 @@ class App extends Component {
     });
   };
   render() {
-    var page=this.state.start+this.mystate.limit;
-    if (page>this.state.total) page=this.state.total;
-    var prev_hidden=false;
-    if (this.state.start===0) prev_hidden=true;
-    var next_hidden=false;
-    if (this.state.start+this.mystate.limit>=this.state.total) next_hidden=true;
-    console.log("next_hidden"+next_hidden);
     const contactRows = this.state.contacts.map((contact, idx) => (
-      <tr key={idx} >
-        <td>{contact.id}</td>
-        <td>{contact.yonghu}</td>
-        <td>{contact.addr}</td>
-        <td>{contact.channels}</td>
-        <td>{contact.yiqixinghao}</td>
-        <td>
-          <ContactEdit2 parent={this} index={idx} title={contact.yiqibh} />
-        </td>
-        <td>{contact.baoxiang}</td>
-        <td>{contact.shenhe}</td>
-        <td>{contact.yujifahuo_date}</td>
-        <td>{contact.tiaoshi_date}</td>
-        <td>{contact.hetongbh}</td>
-        <td>{contact.method}</td>
-        <td>
-          <a data={contact.id} onClick={() => this.onDetailClick(contact.id)}>详细</a>
-          <DlgUrl url="/rest/updateMethod" data={{id:contact.id}} title="更新方法" />
-          <DlgWait contact_id={contact.id} title="全部文件" />
-          <DlgCheck yiqibh={contact.yiqibh} contact_id={contact.id} title="核对备料计划" />
-          <DlgFolder contact_id={contact.id} title="资料文件夹" />
-        </td>
-      </tr>
+      <TableRow      key={idx}      onTouchTap={() => this.oncontactClick(idx)}>
+        <TableRowColumn>{contact.id}</TableRowColumn>
+        <TableRowColumn>{contact.hetongbh}</TableRowColumn>
+        <TableRowColumn>{contact.yonghu}</TableRowColumn>
+        <TableRowColumn>{contact.baoxiang}</TableRowColumn>
+        <TableRowColumn>{contact.yiqixinghao}</TableRowColumn>
+      </TableRow>
     ));
     return (
     <div className="container table-responsive" id="todoapp">

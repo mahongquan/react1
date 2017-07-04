@@ -4,8 +4,26 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Client from './Client';
 import UsePacks from './UsePacks';
+import AutoComplete from 'material-ui/AutoComplete';
+import DatePicker from 'material-ui/DatePicker';
+import areIntlLocalesSupported from 'intl-locales-supported';
 import update from 'immutability-helper';
-import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
+let DateTimeFormat;
+if (areIntlLocalesSupported( ['zh-Hans'])) {
+  var date = new Date(Date.UTC(2012, 11, 20, 3, 0, 0));
+  DateTimeFormat = global.Intl.DateTimeFormat;
+  console.log(new DateTimeFormat('zh-Hans').format(date));
+} else {
+  console.log("intl");
+  const IntlPolyfill = require('intl');
+  DateTimeFormat = IntlPolyfill.DateTimeFormat;
+  require('intl/locale-data/jsonp/zh-Hans');
+}
+console.log(DateTimeFormat());
+function toDateStr(d){
+  var m=d.getMonth()+1;
+  return d.getFullYear()+"-"+m+"-"+d.getDate()
+}
 export default class ContactEdit extends React.Component {
   state = {
     open: false,
@@ -20,7 +38,49 @@ export default class ContactEdit extends React.Component {
     yiqibh:null,
     addr:null,
     yujifahuo_date:null,
+
+    yiqixinghao_items:["CS-2800","ON-3000"],
+    channels_items:["2C+1S","2O"],
+    bg:{},
   };
+  yiqixinghao_change=(value)=>{
+  };
+  yiqixinghao_select=(data) => {
+      console.log("selected");
+      console.log(data);
+      //this.addrow(data.value);
+      this.setState({yiqixinghao:data});
+  }
+  channels_change=(value)=>{
+  };
+  channels_select=(data) => {
+      console.log("selected");
+      console.log(data);
+      //this.addrow(data.value);
+      this.setState({channels:data});
+  }
+  setdata=(contact)=>{
+    console.log(contact);
+    var arr2 = contact.yujifahuo_date.split("-");
+    var date2 = new Date(arr2[0],parseInt(arr2[1],10)-1,arr2[2]); 
+    arr2 = contact.tiaoshi_date.split("-");
+    var date1 = new Date(arr2[0],parseInt(arr2[1],10)-1,arr2[2]); 
+    this.old=contact;
+    this.setState({
+        open:true,
+        yujifahuo_date:date2,
+        yonghu:contact.yonghu,
+        yiqixinghao:contact.yiqixinghao,
+        addr:contact.addr,
+        hetongbh:contact.hetongbh,
+        shenhe:contact.shenhe,
+        tiaoshi_date:date1,
+        id:contact.id,
+        yiqibh:contact.yiqibh,
+        baoxiang:contact.baoxiang,
+        channels:contact.channels,
+    })
+  }
   handleOpen = () => {
     console.log("open");
     this.contact_idx=this.props.contact;
@@ -29,21 +89,7 @@ export default class ContactEdit extends React.Component {
     if (contact==null){
         contact={}
     }
-    console.log(contact);
-    this.setState({
-        open:true,
-        yujifahuo_date:contact.yujifahuo_date,
-        yonghu:contact.yonghu,
-        yiqixinghao:contact.yiqixinghao,
-        addr:contact.addr,
-        hetongbh:contact.hetongbh,
-        shenhe:contact.shenhe,
-        tiaoshi_date:contact.tiaoshi_date,
-        id:contact.id,
-        yiqibh:contact.yiqibh,
-        baoxiang:contact.baoxiang,
-        channels:contact.channels,
-    })
+    this.setdata(contact);
   };
 
   handleClose = () => {
@@ -58,8 +104,19 @@ export default class ContactEdit extends React.Component {
     //   backgroundColor: '#ffd699',
     // };
     console.log(e.target.value);
-    //e.target.style.backgroundColor="rgba(0x88,0x88,0xff,0)";
-    //var contact1={};
+    if(this.old[e.target.name]===e.target.value)
+    {
+      const bg2=update(this.state.bg,{[e.target.name]:{$set:"#ffffff"}})
+      //this.state.bg[e_target_name]="#ffffff";
+      //console.log("equal");
+      this.setState({bg:bg2});
+    }
+    else{
+       const bg2=update(this.state.bg,{[e.target.name]:{$set:"#8888ff"}})
+      //this.state.bg[e_target_name]="#ffffff";
+      //console.log("equal");
+      this.setState({bg:bg2}); 
+    }
     switch(e.target.name)
     {
         case "baoxiang":
@@ -98,8 +155,15 @@ export default class ContactEdit extends React.Component {
   };
   handleSave= (data) => {
     var url="/rest/Contact";
-    Client.post(url,this.state,(res) => {
-        this.setState(res.data);
+    let newdate;
+    let newdate2
+    newdate=toDateStr(this.state.yujifahuo_date);
+    newdate2=toDateStr(this.state.tiaoshi_date);
+    var data1=update(this.state,{tiaoshi_date:{$set:newdate2},yujifahuo_date:{$set:newdate}});
+
+    Client.post(url,data1,(res) => {
+        this.setdata(res.data);
+        this.setState({bg:{}});
         this.parent.handleContactChange(this.contact_idx,res.data);
     });
   };
@@ -125,112 +189,154 @@ export default class ContactEdit extends React.Component {
         id:"",
     })
   };
-  render() {
+  tiaoshi_date_change=(e,d)=>{
+    this.setState({tiaoshi_date:d});
+  }
+  yujifahuo_date_change=(e,d)=>{
+    this.setState({yujifahuo_date:d});
+  }
 
+  render() {
+    const customContentStyle = {
+      width: '100%',
+      maxWidth: 'none',
+    };
+    //var m1 = new Date(this.state.yujifahuo_date.replace(/-/,"/"));
+    //var m2 = new Date(this.state.tiaoshi_date.replace(/-/,"/"));
     return (
       <div>
         <RaisedButton label={this.props.title} onTouchTap={this.handleOpen} />
         <Dialog
-          title={this.props.title}
           modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose}
+          contentStyle={customContentStyle}
+          autoScrollBodyContent={true}
         >
-            <Table>
-            <TableBody>
-            <TableRow >
-                <TableRowColumn >
+            <table>
+            <tbody>
+            <tr >
+                <td >
                     ID:
-                </TableRowColumn>
-                <TableRowColumn >
+                </td>
+                <td >
                     <TextField type="text" id="id" name="id"  disabled={true}    value={this.state.id} />
-                </TableRowColumn>
-                <TableRowColumn>
+                </td>
+                <td>
                     <label>用户单位:</label>
-                </TableRowColumn>
-                <TableRowColumn>
-                    <TextField type="text" id="yonghu" name="yonghu" value={this.state.yonghu}  onChange={this.handleChange} />
-                </TableRowColumn>
-            </TableRow><TableRow>
-                <TableRowColumn>
+                </td>
+                <td>
+                    <TextField type="text" id="yonghu" name="yonghu" value={this.state.yonghu}  
+                    onChange={this.handleChange} />
+                </td>
+            </tr><tr>
+                <td>
                     客户地址:
-                </TableRowColumn>
-                <TableRowColumn>
+                </td>
+                <td>
                     <TextField type="text" id="addr" name="addr" value={this.state.addr}  onChange={this.handleChange} /> 
-                </TableRowColumn>
-                <TableRowColumn>
+                </td>
+                <td>
                     通道配置:
-                </TableRowColumn>
-                <TableRowColumn>
-                    <TextField type="text" id="channels" name="channels" value={this.state.channels} onChange={this.handleChange} />
-                </TableRowColumn>
-            </TableRow><TableRow>
-                <TableRowColumn>
+                </td>
+                <td>
+                    <AutoComplete name="channels"
+                      openOnFocus={true}
+                      searchText={this.state.channels}
+                      onUpdateInput={this.channels_change}
+                      dataSource={this.state.channels_items}
+                      onNewRequest={this.channels_select}
+                    />
+                </td>
+            </tr><tr>
+                <td>
                     <label>仪器型号:</label>
-                </TableRowColumn>
-                <TableRowColumn>
-                    <TextField type="text" id="yiqixinghao" name="yiqixinghao" value={this.state.yiqixinghao} onChange={this.handleChange} />
-                </TableRowColumn>
-                <TableRowColumn>
+                </td>
+                <td>
+                    <AutoComplete name="yiqixinghao"
+                      openOnFocus={true}
+                      searchText={this.state.yiqixinghao}
+                      onUpdateInput={this.yiqixinghao_change}
+                      dataSource={this.state.yiqixinghao_items}
+                      onNewRequest={this.yiqixinghao_select}
+                    />
+                </td>
+                <td>
                     <label>仪器编号:</label>
-                </TableRowColumn>
-                <TableRowColumn>
-                    <TextField type="text" id="yiqibh" name="yiqibh" value={this.state.yiqibh} onChange={this.handleChange} />
-                </TableRowColumn>
-            </TableRow><TableRow>
-                <TableRowColumn>
-                    <label>包箱:</label>
-                </TableRowColumn>
-                <TableRowColumn>
-                    <TextField type="text" id="baoxiang" name="baoxiang" value={this.state.baoxiang}  
-                    onChange={this.handleChange} 
-                    style={{
-                      backgroundColor: this.state.bxbg,
+                </td>
+                <td>
+                    <TextField type="text" 
+                    id="yiqibh" name="yiqibh" 
+                    value={this.state.yiqibh} onChange={this.handleChange} 
+                    inputStyle={{
+                      backgroundColor: this.state.yiqibh,
                     }}
                     />
-                </TableRowColumn>
-                <TableRowColumn>
+                </td>
+            </tr><tr>
+                <td>
+                    <label>包箱:</label>
+                </td>
+                <td>
+                    <TextField type="text" id="baoxiang" name="baoxiang" value={this.state.baoxiang}  
+                    onChange={this.handleChange} 
+                    inputStyle={{
+                      backgroundColor: this.state.bg.baoxiang,
+                    }}
+                    />
+                </td>
+                <td>
                     审核:
-                </TableRowColumn>
-                <TableRowColumn>
-                    <TextField type="text" id="shenhe" name="shenhe" value={this.state.shenhe} onChange={this.handleChange}  />
-                </TableRowColumn>
-            </TableRow><TableRow>
-                <TableRowColumn>
+                </td>
+                <td>
+                    <TextField  id="shenhe" 
+                    name="shenhe" value={this.state.shenhe} onChange={this.handleChange}  
+                    inputStyle={{
+                      backgroundColor: this.state.bg.shenhe,
+                    }}
+                    />
+                </td>
+            </tr><tr>
+                <td>
                     <label>入库时间:</label>
-                </TableRowColumn>
-                <TableRowColumn>
-                    <TextField type="text" className="mydate" id="yujifahuo_date" name="yujifahuo_date" value={this.state.yujifahuo_date}  onChange={this.handleChange} />
-                </TableRowColumn>
-                <TableRowColumn>
+                </td>
+                <td>
+                    <DatePicker  DateTimeFormat={DateTimeFormat} 
+                    locale="zh-Hans" hintText="yujifahuo_date" 
+                    onChange={this.yujifahuo_date_change} value={this.state.yujifahuo_date}
+                    />
+                </td>
+                <td>
                     调试时间:
-                </TableRowColumn>
-                <TableRowColumn>
-                    <TextField type="text" className="mydate" id="tiaoshi_date" name="tiaoshi_date" value={this.state.tiaoshi_date}  onChange={this.handleChange} />
-                </TableRowColumn>
-            </TableRow><TableRow>
-                <TableRowColumn>
+                </td>
+                <td>
+                    <DatePicker   
+                    DateTimeFormat={DateTimeFormat} locale="zh-Hans" hintText="tiaoshi_date" 
+                    onChange={this.tiaoshi_date_change} 
+                    value={this.state.tiaoshi_date}
+                    />
+                </td>
+            </tr><tr>
+                <td>
                     <label>合同编号:</label>
-                </TableRowColumn>
-                <TableRowColumn>
+                </td>
+                <td>
                     <TextField type="text" id="hetongbh" name="hetongbh" value={this.state.hetongbh} onChange={this.handleChange}  />
-                </TableRowColumn>
-                <TableRowColumn>
+                </td>
+                <td>
                     方法:
-                </TableRowColumn>
-                <TableRowColumn>
+                </td>
+                <td>
                 <TextField type="text" id="method" name="method"   disabled={true} value={this.state.method} />
-                <RaisedButton>选择文件</RaisedButton>
-                <RaisedButton>清除</RaisedButton>
-                </TableRowColumn>
-            </TableRow>        
-            </TableBody>
-            </Table>
+                </td>
+            </tr>        
+            </tbody>
+            </table>
            <div> 
            <RaisedButton onTouchTap={this.handleSave} >保存</RaisedButton> 
            <RaisedButton  onTouchTap={this.handleClear} >清除</RaisedButton> 
            <RaisedButton onTouchTap={this.handleCopy} >复制</RaisedButton>
-           <UsePacks />
+           <UsePacks contact_id={this.state.id}/>
            </div>
         </Dialog>
         </div>
