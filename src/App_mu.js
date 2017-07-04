@@ -25,6 +25,7 @@ class App extends Component {
     logined: false,
     user: "AnonymousUser",
     selected:null,
+    test_input:"",
   //csrf_token:"",
   }
 
@@ -185,6 +186,13 @@ class App extends Component {
       }
     });
   };
+  inputChange=(e)=>{
+    console.log(this.refs.input);
+    console.log(this.refs.style);
+    var style=getComputedStyle(this.refs.input, null)
+    console.log(style);
+    this.setState({test_input:e.target.value});
+  };
   render() {
     const contactRows = this.state.contacts.map((contact, idx) => (
       <TableRow      key={idx}      onTouchTap={() => this.oncontactClick(idx)}>
@@ -197,6 +205,7 @@ class App extends Component {
     ));
     return (
       <div className="App">
+        <input onChange={this.inputChange} ref="input" value={this.state.test_input}></input>
         <MuiThemeProvider>
         <div>
          <Toolbar>
