@@ -269,7 +269,7 @@ export default class ContactEdit extends React.Component {
                     id="yiqibh" name="yiqibh" 
                     value={this.state.yiqibh} onChange={this.handleChange} 
                     inputStyle={{
-                      backgroundColor: this.state.yiqibh,
+                      backgroundColor: this.state.bg.yiqibh,
                     }}
                     />
                 </td>
