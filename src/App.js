@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Navbar,Nav,NavItem,MenuItem,DropdownButton,Table} from "react-bootstrap";
+import {Navbar,Nav,NavItem,MenuItem,DropdownButton} from "react-bootstrap";
 import update from 'immutability-helper';
 import Client from './Client';
 import ExampleModal from './ExampleModal';
@@ -266,7 +266,7 @@ class App extends Component {
       </tr>
     ));
     return (
-    <div id="todoapp">
+    <div className="container table-responsive" id="todoapp">
     <Navbar className="navbar-inverse">
     <Navbar.Header>
       <Navbar.Brand>
@@ -317,8 +317,9 @@ class App extends Component {
   </tr>
   </tbody>
  </table>
-<Table responsive bordered condensed><thead><tr><th>ID</th><th>用户单位</th><th>客户地址</th><th>通道配置</th><th>仪器型号</th><th>仪器编号</th><th>包箱</th><th>审核</th>
-<th>入库时间</th><th>调试时间</th><th>合同编号</th><th>方法</th><th>操作</th></tr></thead><tbody id="contact-list">{contactRows}</tbody></Table>
+<table className="table-bordered"><thead><tr><th>ID</th><th>用户单位</th><th>客户地址</th><th>通道配置</th><th>仪器型号</th><th>仪器编号</th><th>包箱</th><th>审核</th>
+<th>入库时间</th><th>调试时间</th><th>合同编号</th><th>方法</th><th>操作</th></tr></thead><tbody id="contact-list">{contactRows}</tbody>
+</table>
       <a hidden={prev_hidden} onClick={this.handlePrev}>前一页</a> 
       <label id="page">{this.state.start+1}..
       {page}/{this.state.total}</label>
