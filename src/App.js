@@ -1,14 +1,6 @@
 import React, { Component } from 'react';
-import './App.css';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import injectTapEventPlugin from 'react-tap-event-plugin';
-import RaisedButton from 'material-ui/RaisedButton';
-import Popover from 'material-ui/Popover';
-import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/MenuItem';
-import TextField from 'material-ui/TextField';
-import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar';
-import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
+import {Navbar,Nav,NavItem,MenuItem,DropdownButton} from "react-bootstrap";
+import update from 'immutability-helper';
 import Client from './Client';
 import DialogExampleSimple from "./DialogExampleSimple"
 import DialogImportStandard from "./DialogImportStandard"
@@ -196,75 +188,67 @@ class App extends Component {
       </TableRow>
     ));
     return (
-      <div className="App">
-        <MuiThemeProvider>
-        <div>
-         <Toolbar>
-        <ToolbarGroup>
-          <ToolbarTitle text="仪器信息" />
-          <TextField
-      id="id_search"
-      type='text'
-      placeholder='Search instrument...'
-      value={this.state.searchValue}
-      onChange={this.handleSearchChange}
-      >
-          </TextField>
-         <div>
-         <DialogImportStandard title="导入标样" disabled={this.state.logined}  onLoginSubmit={this.onLoginSubmit} />
-         </div>
-         <div>
-         <ContactEdit  title="编辑仪器信息" contact={this.state.selected} parent={this}/>
-         </div>
-          <div>
-          <RaisedButton  onTouchTap={this.handleTest}
-            label="test" >
-        </RaisedButton>
-        <RaisedButton  onTouchTap={this.handleTouchTap}
-      label={this.state.user}>
-        </RaisedButton>
-        <Popover
-      open={this.state.open}
-      anchorEl={this.state.anchorEl}
-      anchorOrigin={{
-        horizontal: 'left',
-        vertical: 'bottom'
-      }}
-      targetOrigin={{
-        horizontal: 'left',
-        vertical: 'top'
-      }}
-      onRequestClose={this.handleRequestClose}
-      >
-          <Menu>
-            <MenuItem primaryText="注销" disabled={!this.state.logined} onTouchTap={this.handleLogout} />
-          </Menu>
-
-        </Popover>
-       </div>
-        </ToolbarGroup>
-        <ToolbarGroup>
-                <DialogExampleSimple title="登录" disabled={this.state.logined}  onLoginSubmit={this.onLoginSubmit}>
-                </DialogExampleSimple>
-        </ToolbarGroup>
-      </Toolbar>
-        <Table>
-    <TableHeader>
-      <TableRow>
-        <TableHeaderColumn>id</TableHeaderColumn>
-        <TableHeaderColumn>合同编号</TableHeaderColumn>
-        <TableHeaderColumn>用户单位</TableHeaderColumn>
-        <TableHeaderColumn>包箱</TableHeaderColumn>
-        <TableHeaderColumn>仪器型号</TableHeaderColumn>
-      </TableRow>
-    </TableHeader>
-         <TableBody>
-            {contactRows}
-          </TableBody>
-        </Table>
-        </div>
-      </MuiThemeProvider>
-      </div>
+    <div className="container table-responsive" id="todoapp">
+    <Navbar className="navbar-inverse">
+    <Navbar.Header>
+      <Navbar.Brand>
+        <a>装箱单</a>
+      </Navbar.Brand>
+    </Navbar.Header>
+    <Nav>
+      <NavItem eventKey={1} href="#">合同</NavItem>
+      <NavItem eventKey={2} href="/admin">管理</NavItem>
+      <NavItem eventKey={4} href="/parts/items/">备件</NavItem>
+      <NavItem eventKey={5} href="/parts/copypack/">复制包</NavItem>
+      <NavItem eventKey={6} href="/parts/month12/">统计</NavItem>
+    </Nav>
+  </Navbar>
+    <table>
+    <tbody>
+    <tr>
+   <td>
+     <DropdownButton title={this.state.user} id="id_dropdown1">
+        <li hidden={this.state.user!=="AnonymousUser"}>
+          <ExampleModal onLoginSubmit={this.onLoginSubmit} title="登录" />
+        </li>
+        <li  hidden={this.state.user==="AnonymousUser"} >
+          <a onClick={this.handleLogout}>注销</a>
+        </li>
+     </DropdownButton>
+  </td>
+  <td>
+        <input type="text" value={this.state.search}  placeholder="合同 or 仪器编号" onChange={this.handleSearchChange} />
+        <button id="id_bt_search" className="btm btn-info" onClick={this.search}>搜索
+        <span className="glyphicon glyphicon-search" aria-hidden="true"></span>
+        </button>
+  </td>
+  <td>
+        <ContactEdit2 parent={this} index={null} title="新仪器" />
+  </td>
+   <td>
+        <DlgImport />
+  </td>
+   <td>
+    <DropdownButton title="过滤" id="id_dropdown2">
+      <MenuItem onSelect={() => this.onSelectBaoxiang("马红权")}>马红权</MenuItem>
+      <MenuItem onSelect={() => this.onSelectBaoxiang("陈旺")}>陈旺</MenuItem>
+      <MenuItem onSelect={() => this.onSelectBaoxiang("吴振宁")}>吴振宁</MenuItem>
+      <MenuItem onSelect={() => this.onSelectBaoxiang("")}>*</MenuItem>
+    </DropdownButton>
+  </td>
+  </tr>
+  </tbody>
+ </table>
+<table className="table-bordered"><thead><tr><th>ID</th><th>用户单位</th><th>客户地址</th><th>通道配置</th><th>仪器型号</th><th>仪器编号</th><th>包箱</th><th>审核</th>
+<th>入库时间</th><th>调试时间</th><th>合同编号</th><th>方法</th><th>操作</th></tr></thead><tbody id="contact-list">{contactRows}</tbody>
+</table>
+      <a hidden={prev_hidden} onClick={this.handlePrev}>前一页</a> 
+      <label id="page">{this.state.start+1}..
+      {page}/{this.state.total}</label>
+      <a hidden={next_hidden} onClick={this.handleNext}>后一页</a>
+      <input maxLength="6" size="6" onChange={this.handlePageChange} value={this.state.start_input} />
+      <button id="page_go"  className="btn btn-info" onClick={this.jump}>跳转</button>
+  </div>
     );
   }
 }

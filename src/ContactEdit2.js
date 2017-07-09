@@ -166,7 +166,7 @@ const ContactEdit2 = createReactClass({
 
   render() {
     return (
-        <button className="btn btn-primary" onClick={this.open}>{this.props.title}
+        <a  onClick={this.open}>{this.props.title}
         <div>
         <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
           <Modal.Header closeButton>
@@ -283,7 +283,7 @@ const ContactEdit2 = createReactClass({
                 </Modal.Body>
         </Modal>
         </div>
-        </button>
+        </a>
     );
   }
 });
