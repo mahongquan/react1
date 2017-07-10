@@ -41,7 +41,7 @@ class MyRect extends React.Component {
 class App extends Component {
     render(){
       return(
-      <Stage width={700} height={700}>
+      <Stage width={900} height={900}>
         <Layer>
             <MyRect/>
         </Layer>
