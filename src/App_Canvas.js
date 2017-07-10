@@ -6,7 +6,9 @@ class MyRect extends React.Component {
     constructor(...args) {
       super(...args);
       this.state = {
-        color: 'green'
+        color: 'green',
+        x:10,
+        y:10,
       };
       this.handleClick = this.handleClick.bind(this);
     }
@@ -15,13 +17,23 @@ class MyRect extends React.Component {
         color: Konva.Util.getRandomColor()
       });
     }
+    handleDragend(){
+      console.log("onMouseover");
+      console.info(this.refs.rect.x());
+      this.setState({x:this.refs.rect.x(),y:this.refs.rect.y()});
+    }
     render() {
         return (
             <Rect
-                x={10} y={10} width={500} height={500}
+                ref="rect"
+                x={this.state.x} y={this.state.y} width={500} height={500}
                 fill={this.state.color}
                 shadowBlur={10}
                 onClick={this.handleClick}
+                onDragend={()=>this.handleDragend(this)}
+                draggable={true}
+                stroke='black'
+                strokeWidth={8}
             />
         );
     }
