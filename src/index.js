@@ -3,7 +3,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App_Canvas';
-//import BasicExample from './BasicExample'
 //import registerServiceWorker from './registerServiceWorker';
 import './index.css';
 import './react-datetime.css';
