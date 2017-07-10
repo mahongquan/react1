@@ -1,7 +1,7 @@
-import React from 'react';
 import ReactDOM from 'react-dom';
 import {Layer, Rect, Stage, Group} from 'react-konva';
-
+import React, { Component } from 'react';
+var Konva = require('konva');
 class MyRect extends React.Component {
     constructor(...args) {
       super(...args);
@@ -18,7 +18,7 @@ class MyRect extends React.Component {
     render() {
         return (
             <Rect
-                x={10} y={10} width={50} height={50}
+                x={10} y={10} width={500} height={500}
                 fill={this.state.color}
                 shadowBlur={10}
                 onClick={this.handleClick}
