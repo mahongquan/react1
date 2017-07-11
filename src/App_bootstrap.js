@@ -6,6 +6,7 @@ import ExampleModal from './ExampleModal';
 import ContactEdit2 from './ContactEdit2';
 import DlgWait from './DlgWait';
 import DlgFolder from './DlgFolder';
+import DlgStat from './DlgStat';
 var host="";
 class App extends Component {
   mystate = {
@@ -259,7 +260,7 @@ class App extends Component {
       <NavItem eventKey={2} href="#">管理</NavItem>
       <NavItem eventKey={4} href="#">备件</NavItem>
       <NavItem eventKey={5} href="#">复制包</NavItem>
-      <NavItem eventKey={6} href="#">统计</NavItem>
+      <DlgStat />
     </Nav>
   </Navbar>
     <table>
