@@ -63,7 +63,7 @@ const ContactEdit2 = createReactClass({
   },
   handleSave (data) {
     var url="/rest/Contact";
-    Client.post(url,this.state.contact,(res) => {
+    Client.postOrPut(url,this.state.contact,(res) => {
       if(res.success){
         this.setState({contact:res.data});
         this.parent.handleContactChange(this.props.index,res.data);

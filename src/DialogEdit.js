@@ -80,7 +80,7 @@ export default class DialogEdit extends React.Component {
   };
   handleSave= (data) => {
     var url="/rest/Contact";
-    Client.post(url,this.state.contact,(res) => {
+    Client.postOrPut(url,this.state.contact,(res) => {
         console.log(res);
     });
   };

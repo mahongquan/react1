@@ -161,7 +161,7 @@ export default class ContactEdit extends React.Component {
     newdate2=toDateStr(this.state.tiaoshi_date);
     var data1=update(this.state,{tiaoshi_date:{$set:newdate2},yujifahuo_date:{$set:newdate}});
 
-    Client.post(url,data1,(res) => {
+    Client.postOrPut(url,data1,(res) => {
         this.setdata(res.data);
         this.setState({bg:{}});
         this.parent.handleContactChange(this.contact_idx,res.data);

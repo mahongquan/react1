@@ -26,6 +26,18 @@ function delete1(url,data,cb) {
 }
 function post(url,data,cb) {
   var method="POST"
+  return fetch(url,
+  {
+      method: method,
+      credentials: 'include',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(data)
+  }).then(checkStatus)
+    .then(parseJSON)
+    .then(cb);
+}
+function postOrPut(url,data,cb) {
+  var method="POST"
   if (data.id){
     method="PUT"
   }
@@ -131,5 +143,5 @@ function parseJSON(response) {
   return response.json();
 }
 
-const Client = {contacts,items,login_index,login,logout,UsePacks,PackItems,get,post,delete1,postForm};
+const Client = {contacts,items,login_index,login,logout,UsePacks,PackItems,get,post,postOrPut,delete1,postForm};
 export default Client;

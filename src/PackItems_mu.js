@@ -48,7 +48,7 @@ class PackItems extends React.Component {
     var url="/rest/BothPackItem";
     var data={"name":this.state.newPackName,"pack":this.props.pack_id};
     console.log(data);
-    Client.post(url,data,(res) => {
+    Client.postOrPut(url,data,(res) => {
         var p=res.data;
         const newFoods = this.state.items.concat(p);
         this.setState({ items: newFoods });
@@ -64,7 +64,7 @@ class PackItems extends React.Component {
   addrow=(item_id)=>{
     var url="/rest/PackItem";
     var data={pack:this.props.pack_id,itemid:item_id};
-    Client.post(url,data,(res) => {
+    Client.postOrPut(url,data,(res) => {
         var p=res.data;
         const newFoods = this.state.items.concat(p);
         this.setState({ items: newFoods });

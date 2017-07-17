@@ -33,7 +33,7 @@ const PackItemEdit = createReactClass({
   handleSave (data) {
     var url="/rest/BothPackItem";
     var self=this;
-    Client.post(url,this.state.packitem,(res) => {
+    Client.postOrPut(url,this.state.packitem,(res) => {
         console.log("post");
         console.log(self.props.index);
         console.log(res.data);
