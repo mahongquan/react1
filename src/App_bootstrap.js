@@ -10,6 +10,7 @@ import DlgStat from './DlgStat';
 import DlgImport from './DlgImport';
 import DlgCheck from './DlgCheck'
 import DlgUrl from './DlgUrl';
+import DlgCopyPack from './DlgCopyPack';
 var host="";
 class App extends Component {
   mystate = {
@@ -262,7 +263,7 @@ class App extends Component {
       <NavItem eventKey={1} href="#">合同</NavItem>
       <NavItem eventKey={2} href="/admin/">管理</NavItem>
       <NavItem eventKey={4} href="/parts/items/">备件</NavItem>
-      <NavItem eventKey={5} href="/parts/copypack/">复制包</NavItem>
+      <DlgCopyPack />
       <DlgStat />
     </Nav>
   </Navbar>
