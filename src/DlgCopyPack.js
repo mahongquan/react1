@@ -32,10 +32,24 @@ const DlgCopyPack = createReactClass({
       lbls:[],
       values:[],
       newPackName: '',
+      newname:"",
       auto_value: '',
       auto_items:[],
       auto_loading: false,
     };
+  },
+  newnameChange(event){
+    this.setState({newname:event.target.value});
+  },
+  copy_pack(){
+    console.log(this.src_id+" "+this.state.newname);
+    var self=this;
+    var data1=new FormData();
+    data1.append("oldid",this.src_id);
+    data1.append("newname",this.state.newname);
+    Client.postForm("/rest/copypack/",data1,(result) => {
+          self.setState({ error:result.message})
+    });
   },
   auto_change(event, value){
     console.log("auto_change");
@@ -53,19 +67,16 @@ const DlgCopyPack = createReactClass({
   auto_select(value, item)  {
       console.log("selected");
       console.log(item);
-      this.addrow(item.id);
+      //todo this.addrow(item.id);
+      this.src_id=item.id;
       this.setState({auto_value:value, auto_items: [ item ] })
   },
   close() {
     this.setState({ showModal: false });
   },
   open() {
-    var self=this;
    this.setState({ showModal: true });
-   var data= { limit:10,search:"xls"};
-   Client.get("/rest/month12",data, function(result){
-          self.setState({lbls:result.lbls,values:result.values});
-   })
+   this.src_id=null;
   },
   render() {
     var bg=new Array();//values.length);
@@ -98,7 +109,6 @@ const DlgCopyPack = createReactClass({
             <Modal.Title>复制包</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-          <form method="post" action="/parts/copypack/">
             <table>
             <tr>
               <td>
@@ -126,12 +136,12 @@ const DlgCopyPack = createReactClass({
             <tr>
               <td><label for="id_to">新包名称:</label></td>
               <td>
-                <input id="nameto" type="text" id="newname"  name="newname" size="15" value="" maxlength="30" />
+                <input id="nameto" type="text" onChange={this.newnameChange} size="15" value={this.state.newname} maxlength="30" />
               </td>
             </tr>
             </table>
-          <input type="submit" value="复制" />
-          </form>
+          <button onClick={this.copy_pack}>复制</button>
+          <p>{this.state.error}</p>
           </Modal.Body>
         </Modal>
         </NavItem>
