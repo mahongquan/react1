@@ -37,7 +37,7 @@ const DlgStat = createReactClass({
               label: '调试台数',
               data: this.state.values,
               backgroundColor:bg,
-              borderWidth: 1
+              borderWidth:2
           }]
       };
       console.log(data);

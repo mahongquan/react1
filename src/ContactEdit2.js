@@ -49,9 +49,6 @@ const ContactEdit2 = createReactClass({
     }
     this.setState({contact:this.old});
   },
-  onLoginSubmit (data)  {
-    this.props.onLoginSubmit(data);
-  },
   // handleClear (data) {
   //   console.log("clear");
   //   var contact2={id:"",hetongbh:"",name:"",addr:""};
@@ -72,6 +69,7 @@ const ContactEdit2 = createReactClass({
         this.parent.handleContactChange(this.props.index,res.data);
         this.old=res.data;
         this.setState({bg:{}});
+        this.setState({hiddenPacks:false});
       }
       else{
         alert(res.message);
