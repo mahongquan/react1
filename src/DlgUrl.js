@@ -21,6 +21,7 @@ class DlgUrl extends Component{
           self.setState({error:result.message});
        }
        else{
+          self.props.parent.handleContactChange(self.props.index,result.data);
           self.close();
        }
    })
