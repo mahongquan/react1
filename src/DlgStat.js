@@ -1,31 +1,28 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {Modal} from "react-bootstrap";
 import Client from './Client';
 import {NavItem,} from "react-bootstrap";
-var BarChart = require("react-chartjs").Bar;
-var createReactClass = require('create-react-class');
-const DlgStat = createReactClass({
-  getInitialState() {
-    return { 
+import {Bar} from "react-chartjs-2";
+class DlgStat extends Component {
+  state={
       showModal: false,
       error:"",
       lbls:[],
       values:[],
-    };
-  },
+  }
 
-  close() {
+  close=()=>{
     this.setState({ showModal: false });
-  },
-  open() {
+  }
+  open=()=>{
     var self=this;
    this.setState({ showModal: true });
    var data= { limit:10,search:"xls"};
    Client.get("/rest/month12",data, function(result){
           self.setState({lbls:result.lbls,values:result.values});
    })
-  },
-  render() {
+  }
+  render=()=>{
     var bg=[];//values.length);
     for(var i=0;i<this.state.values.length;i++){
       bg.push('rgba(95, 192, 99, 1)');
@@ -56,11 +53,11 @@ const DlgStat = createReactClass({
             <Modal.Title>统计</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-          <BarChart data={data} options={options} width="600" height="300"/>
+          <Bar data={data} options={options} width={600} height={300} />
           </Modal.Body>
         </Modal>
         </NavItem>
     );
   }
-});
+}
 export default DlgStat;
