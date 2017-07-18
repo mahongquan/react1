@@ -84,18 +84,28 @@ class DlgItems extends Component {
   handlePageChange= (e) => {
     this.setState({start_input:e.target.value});
   };
+  mapfunc=(contact, idx) => {
+      if (contact.image==="")
+        return (<tr key={idx} >
+          <td>{contact.id}</td>
+          <td>{contact.bh}</td>
+          <td>{contact.name}</td>
+          <td>{contact.guige}</td>
+          <td>{contact.danwei}</td>
+          <td></td>
+        </tr>);
+      else
+        return (<tr key={idx} >
+          <td>{contact.id}</td>
+          <td>{contact.bh}</td>
+          <td>{contact.name}</td>
+          <td>{contact.guige}</td>
+          <td>{contact.danwei}</td>
+          <td><img alt="no" src={"/media/"+contact.image} width="100" height="100"></img></td>
+        </tr>);
+  }
   render=()=>{
-      const contactRows = this.state.contacts.map((contact, idx) => (
-      <tr key={idx} >
-        <td>{contact.id}</td>
-        <td>{contact.bh}</td>
-        <td>{contact.name}</td>
-        <td>{contact.guige}</td>
-        <td>{contact.danwei}</td>
-        <td><img alt="no" src={"/media/"+contact.image} width="100" height="100"></img></td>
-      </tr>
-    ));
-
+    const contactRows = this.state.contacts.map(this.mapfunc);
     return (
         <NavItem eventKey={4} href="#" onClick={this.open}>备件
         <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
