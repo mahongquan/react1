@@ -1,7 +1,6 @@
 import React from 'react';
 import {Modal} from "react-bootstrap";
 import Client from './Client';
-import update from 'immutability-helper';
 import {NavItem,} from "react-bootstrap";
 var BarChart = require("react-chartjs").Bar;
 var createReactClass = require('create-react-class');
@@ -27,7 +26,7 @@ const DlgStat = createReactClass({
    })
   },
   render() {
-    var bg=new Array();//values.length);
+    var bg=[];//values.length);
     for(var i=0;i<this.state.values.length;i++){
       bg.push('rgba(95, 192, 99, 1)');
     }

@@ -1,10 +1,8 @@
 import React from 'react';
 import {Modal} from "react-bootstrap";
 import Client from './Client';
-import update from 'immutability-helper';
 import {NavItem,} from "react-bootstrap";
 import Autocomplete from './Autocomplete'
-var BarChart = require("react-chartjs").Bar;
 var createReactClass = require('create-react-class');
 let styles = {
   item: {
@@ -79,29 +77,6 @@ const DlgCopyPack = createReactClass({
    this.src_id=null;
   },
   render() {
-    var bg=new Array();//values.length);
-    for(var i=0;i<this.state.values.length;i++){
-      bg.push('rgba(95, 192, 99, 1)');
-    }
-    var data= {
-          labels:this.state.lbls,
-          datasets: [{
-              label: '调试台数',
-              data: this.state.values,
-              backgroundColor:bg,
-              borderWidth:2
-          }]
-      };
-      console.log(data);
-      var options= {
-          scales: {
-              yAxes: [{
-                  ticks: {
-                      beginAtZero:true
-                  }
-              }]
-          }
-      }
     return (
         <NavItem eventKey={5} href="#" onClick={this.open}>复制包
         <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">

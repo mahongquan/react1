@@ -11,6 +11,7 @@ import DlgImport from './DlgImport';
 import DlgCheck from './DlgCheck'
 import DlgUrl from './DlgUrl';
 import DlgCopyPack from './DlgCopyPack';
+import DlgItems from './DlgItems';
 var host="";
 class App extends Component {
   mystate = {
@@ -261,8 +262,7 @@ class App extends Component {
     </Navbar.Header>
     <Nav>
       <NavItem eventKey={1} href="#">合同</NavItem>
-      <NavItem eventKey={2} href="/admin/">管理</NavItem>
-      <NavItem eventKey={4} href="/parts/items/">备件</NavItem>
+      <DlgItems />
       <DlgCopyPack />
       <DlgStat />
     </Nav>
