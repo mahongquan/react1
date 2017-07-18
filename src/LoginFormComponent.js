@@ -3,8 +3,8 @@ var createReactClass = require('create-react-class');
 var LoginFormComponent = createReactClass({
   getInitialState: function() {
     return {
-      name: "",
-      pwd: ""
+      name: "mahongquan",
+      pwd: "333333"
     };
   },
   handleNameChange: function(e) {
@@ -55,10 +55,10 @@ var LoginFormComponent = createReactClass({
           </tr>
           <tr>
                 <td>
-                    <input type="submit" value="ok" />
+                    <input type="submit" value="确定" />
                 </td>
                 <td>
-                    <button onClick={this.handleCandel}>Cancel </button>
+                    <button onClick={this.handleCandel}>取消</button>
                 </td>
           </tr>
         </tbody>

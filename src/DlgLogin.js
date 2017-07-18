@@ -1,8 +1,8 @@
 var LoginFormComponent = React.createClass({
   getInitialState: function() {
     return {
-      name: "",
-      pwd: ""
+      name: "mahongquan",
+      pwd: "333333"
     };
   },
   handleNameChange: function(e) {

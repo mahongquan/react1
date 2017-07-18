@@ -66,6 +66,7 @@ function contacts(data, cb) {
   var query=queryString.stringify(data)
   return fetch(`/rest/Contact?${query}`, {
     credentials: 'include',
+    'Content-Type': 'application/json',
     accept: 'application/json',
   }).then(checkStatus)
     .then(parseJSON)
@@ -139,8 +140,10 @@ function checkStatus(response) {
 }
 
 function parseJSON(response) {
-  console.log(response);
-  return response.json();
+  console.log("parse");
+  console.log(response.body);
+  var r= response.json();
+  return r;
 }
 
 const Client = {contacts,items,login_index,login,logout,UsePacks,PackItems,get,post,postOrPut,delete1,postForm};
