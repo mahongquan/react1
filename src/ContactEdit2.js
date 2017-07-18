@@ -3,10 +3,28 @@ import UsePacks2 from "./UsePacks2";
 import {Modal} from "react-bootstrap";
 import update from 'immutability-helper';
 import Client from './Client';
+import Autocomplete from './Autocomplete';
 var moment = require('moment');
 var locale=require('moment/locale/zh-cn');
 var DateTime=require('react-datetime');
 var createReactClass = require('create-react-class');
+let styles = {
+  item: {
+    padding: '2px 6px',
+    cursor: 'default'
+  },
+
+  highlightedItem: {
+    color: 'white',
+    background: 'hsl(200, 50%, 50%)',
+    padding: '2px 6px',
+    cursor: 'default'
+  },
+
+  menu: {
+    border: 'solid 1px #ccc'
+  }
+}
 const ContactEdit2 = createReactClass({
   getInitialState() {
     return { 
@@ -139,6 +157,48 @@ const ContactEdit2 = createReactClass({
     console.log(contact2);
     this.setState({contact:contact2});
   },
+  channels_change(event, value){
+    console.log("auto_change");
+    //this.setState({ yiqixinghao_value:value, auto_loading: false });
+    this.channels_select(null,value) 
+  },
+  channels_select(value, item) {
+      console.log("selected");
+      console.log(item);
+      if(this.old.channels===item)
+      {
+       const bg2=update(this.state.bg,{channels:{$set:"#ffffff"}})
+        this.setState({bg:bg2});
+      }
+      else{
+        const bg2=update(this.state.bg,{channels:{$set:"#8888ff"}})
+        this.setState({bg:bg2});
+      }
+      const contact2=update(this.state.contact,{channels: {$set:item}});
+      console.log(contact2);
+      this.setState({contact:contact2});
+  },
+  yiqixinghao_change(event, value){
+    console.log("auto_change");
+    //this.setState({ yiqixinghao_value:value, auto_loading: false });
+    this.yiqixinghao_select(null,value) 
+  },
+  yiqixinghao_select(value, item) {
+      console.log("selected");
+      console.log(item);
+      if(this.old.yiqixinghao===item)
+      {
+       const bg2=update(this.state.bg,{yiqixinghao:{$set:"#ffffff"}})
+        this.setState({bg:bg2});
+      }
+      else{
+        const bg2=update(this.state.bg,{yiqixinghao:{$set:"#8888ff"}})
+        this.setState({bg:bg2});
+      }
+      const contact2=update(this.state.contact,{yiqixinghao: {$set:item}});
+      console.log(contact2);
+      this.setState({contact:contact2});
+  },
   handleChange(e){
     console.log("change");
     console.log(e);
@@ -161,7 +221,9 @@ const ContactEdit2 = createReactClass({
     console.log(contact2);
     this.setState({contact:contact2});
   },
-
+  matchStateToTerm(state, value){
+     return      state.toLowerCase().indexOf(value.toLowerCase()) !== -1 ;
+  },
   render() {
     return (
         <a  onClick={this.open}>{this.props.title}
@@ -197,14 +259,75 @@ const ContactEdit2 = createReactClass({
                     通道配置:
                 </td>
                 <td>
-                    <input  style={{"backgroundColor":this.state.bg.channels}}  type="text" id="channels" name="channels" value={this.state.contact.channels} onChange={this.handleChange} />
+                  <Autocomplete
+                      value={this.state.contact.channels}
+                      inputProps={
+                        { 
+                          id: 'channels-autocomplete',
+                          style:{backgroundColor:this.state.bg.channels}
+                        }
+                      }
+                      items={[
+                        "1O(低氧)",
+                        "1O(高氧)",
+                        "1O(低氧)+2N",
+                        "1C(低碳)+2S",
+                        "1C(高碳)+2S",
+                        "2C+1S(低硫)",
+                        "2C+1S(高硫)",
+                        "2C+2S",
+                        "2O+2N",
+                        "2O",
+                      ]}
+                      getItemValue={(item) => item}
+                      onSelect={this.channels_select}
+                      onChange={this.channels_change}
+                      shouldItemRender={this.matchStateToTerm}
+                      renderItem={(item, isHighlighted) => (
+                        <div
+                          style={isHighlighted ? styles.highlightedItem : styles.item}
+                          key={item}
+                        >{item}</div>
+                      )}
+                    />
                 </td>
             </tr><tr>
                 <td>
                     <label>仪器型号:</label>
                 </td>
                 <td>
-                    <input style={{"backgroundColor":this.state.bg.yiqixinghao}} type="text" id="yiqixinghao" name="yiqixinghao" value={this.state.contact.yiqixinghao}  onChange={this.handleChange} />
+                    <Autocomplete
+                      value={this.state.contact.yiqixinghao}
+                      inputProps={
+                        { 
+                          id: 'yiqixinghao-autocomplete',
+                          style:{backgroundColor:this.state.bg.yiqixinghao}
+                        }
+                      }
+                      items={[
+                        "CS-1011C",
+                        "CS-2800",
+                        "CS-3000",
+                        "CS-3000G",
+                        "HD-5",
+                        "N-3000",
+                        "O-3000",
+                        "OH-3000",
+                        "ON-3000",
+                        "ON-4000",
+                        "ONH-3000"
+                      ]}
+                      getItemValue={(item) => item}
+                      onSelect={this.yiqixinghao_select}
+                      onChange={this.yiqixinghao_change}
+                      shouldItemRender={this.matchStateToTerm}
+                      renderItem={(item, isHighlighted) => (
+                        <div
+                          style={isHighlighted ? styles.highlightedItem : styles.item}
+                          key={item}
+                        >{item}</div>
+                      )}
+                    />
                 </td>
                 <td>
                     <label>仪器编号:</label>
