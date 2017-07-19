@@ -2,7 +2,7 @@
 import React from 'react';
 import Client from './Client';
 import {Table} from "react-bootstrap";
-import PackItemEdit from './PackItemEdit';
+import PackItemEditNew from './PackItemEditNew';
 import update from 'immutability-helper';
 import Autocomplete from './Autocomplete'
 let styles = {
@@ -31,6 +31,8 @@ class PackItems extends React.Component {
     auto_items:[],
     auto_loading: false,
     release:true,
+    currentIndex:null,
+    showModal: false,
   };
   componentDidMount=()=> {
       Client.PackItems(this.props.pack_id, (items) => {
@@ -97,6 +99,10 @@ class PackItems extends React.Component {
         this.setState({ items: filteredFoods });
     });
   };
+  handleEdit=(idx)=>{
+    this.setState({currentIndex:idx});
+    this.setState({showModal:true});
+  }
   render() {
     const { items } = this.state;
     const itemRows = items.map((item, idx) => (
@@ -111,12 +117,11 @@ class PackItems extends React.Component {
         <td  hidden={this.state.release}>{item.pack}</td>
         <td><input type="checkbox" disabled="disabled" name="quehuo" defaultChecked={item.quehuo}  /></td>
         <td>
-        <PackItemEdit parent={this} index={idx} title="编辑" />
+        <a onClick={()=>this.handleEdit(idx)}>编辑</a>
         <a style={{marginLeft:"10px"}} onClick={() => this.onDeleteClick(idx)}>删除</a>
         </td>
       </tr>
     ));
-
     return (
     <div>
         <Table  responsive bordered condensed>
@@ -156,6 +161,7 @@ class PackItems extends React.Component {
         <input id="new_pack1"  placeholder="新备件" value={this.state.newPackName} onChange={this.newpackChange}/>
         <button className="btn btn-info" id="id_new_item" onClick={this.new_packitem}>新备件</button>
       </p>
+      <PackItemEditNew parent={this} index={this.state.currentIndex} showModal={this.state.showModal} />
       </div>
     );
   }
