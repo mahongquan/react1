@@ -28,8 +28,7 @@ class DlgUrl extends Component{
   }
   render=()=> {
     return (
-        <a  style={{marginLeft:"10px"}} onClick={this.open}>{this.props.title}
-        <div>
+        <a  style={{marginLeft:"4px"}} onClick={this.open}>{this.props.title}
         <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
           <Modal.Header closeButton>
             <Modal.Title>请等待。。。</Modal.Title>
@@ -38,7 +37,6 @@ class DlgUrl extends Component{
           <div>{this.state.error}</div>
           </Modal.Body>
         </Modal>
-        </div>
         </a>
     );
   }

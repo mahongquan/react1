@@ -226,7 +226,7 @@ const ContactEdit2 = createReactClass({
   },
   render() {
     return (
-        <a  onClick={this.open}>{this.props.title}
+        <a  className="yiqixinxi" onClick={this.open}>{this.props.title}
         <div>
         <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
           <Modal.Header closeButton>

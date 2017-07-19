@@ -30,7 +30,7 @@ const DlgFolder = createReactClass({
   },
   render() {
     return (
-        <a   style={{marginLeft:"10px"}} onClick={this.open}>{this.props.title}
+        <a   style={{marginLeft:"2px"}} onClick={this.open}>{this.props.title}
         <div>
         <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
           <Modal.Header closeButton>

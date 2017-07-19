@@ -38,9 +38,26 @@ const PackItemEdit = createReactClass({
         this.close();
     });
   },
+  quehuoChange(e){
+    var quehuo=this.state.packitem.quehuo;
+    quehuo=!quehuo;
+    if(this.old.quehuo===quehuo)
+    {
+      const bg2=update(this.state.bg,{[e.target.name]:{$set:"#ffffff"}})
+      this.setState({bg:bg2});
+    }
+    else{
+       const bg2=update(this.state.bg,{[e.target.name]:{$set:"#8888ff"}})
+      this.setState({bg:bg2}); 
+    }
+    const contact2=update(this.state.packitem,{quehuo: {$set:quehuo}});
+    console.log(contact2);
+    this.setState({packitem:contact2});
+  },
   handleChange(e){
     console.log("change");
     console.log(e);
+    console.log(e.target);
     console.log(e.target.value);
     console.log(e.target.name);
     if(this.old[e.target.name]===e.target.value)
@@ -105,6 +122,14 @@ const PackItemEdit = createReactClass({
                 <td>
                     <input type="text" style={{"backgroundColor":this.state.bg.ct}}
                     id="yujifahuo_date" name="ct"  value={this.state.packitem.ct} onChange={this.handleChange} />
+                </td>
+            </tr>  
+            <tr>
+                <td>
+                    <label>缺货:</label>
+                </td>
+                <td>
+                    <input type="checkbox" id="quehuo" name="quehuo" checked={this.state.packitem.quehuo}  onChange={this.quehuoChange} />
                 </td>
             </tr>        
             </tbody>

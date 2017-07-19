@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Navbar,Nav,NavItem,MenuItem,DropdownButton,Table} from "react-bootstrap";
+import {Navbar,Nav,NavItem,MenuItem,DropdownButton} from "react-bootstrap";
 import update from 'immutability-helper';
 import Client from './Client';
 import ExampleModal from './ExampleModal';
@@ -16,7 +16,7 @@ var host="";
 class App extends Component {
   mystate = {
     start:0,
-    limit:5,
+    limit:10,
     baoxiang:"",
     logined: false,
     search:""
@@ -50,32 +50,11 @@ class App extends Component {
         this.mystate.total=contacts.total;
     });
   };
-  handleTest = () => {
-    //const contact2=update(this.state.contacts[this.state.selected],{baoxiang: {$set: "test"}});
-    // console.log("handleTest");
-    //console.log(contact2);
-    //var one=this.state.contacts[this.state.selected];
-    var idx=this.state.selected;
-    console.log(idx);
-    const contacts2=update(this.state.contacts,{[idx]: {baoxiang:{$set:"test111"}}});
-    console.log(contacts2);
-    //this.state.contacts[this.state.selected].baoxiang="test";
-    this.setState({contacts:contacts2});
-    //this.forceUpdate();
-  };
   handleContactChange = (idx,contact) => {
     console.log(idx);
     const contacts2=update(this.state.contacts,{[idx]: {$set:contact}});
     console.log(contacts2);
     this.setState({contacts:contacts2});
-  };
-  oncontactClick=(key) => {
-    console.log("click row");
-    console.log(key);
-    this.setState({selected:key});
-  };
-  handleImportStandard=() => {
-    console.log("import row");
   };
   handleUserChange = (user) => {
     if (user === "AnonymousUser") {
@@ -93,34 +72,6 @@ class App extends Component {
     });
     this.componentDidMount();
   };
-  handleTouchTap = (event) => {
-    // This prevents ghost click.
-    event.preventDefault();
-
-    this.setState({
-      open: true,
-      anchorEl: event.currentTarget
-    });
-  };
-  showlogin = () => {
-    console.log("showlogin");
-    var data = {
-      username: "mahongquan",
-      password: "333333"
-    };
-    this.onLoginSubmit(data);
-  };
-  handleLogin = () => {
-    console.log("login");
-    Client.login_index((data) => {
-      //console.log(data.csrf_token);
-      // const cookies = new Cookies();
-
-      // cookies.set('csrftoken', this.state.csrf_token, { path: '/' });
-      this.showlogin();
-    });
-
-  };
   handleLogout = () => {
     console.log("logout");
     Client.logout((data) => {
@@ -132,11 +83,6 @@ class App extends Component {
         start:0,
       });
       this.handleUserChange(this.state.user);
-    });
-  };
-  handleRequestClose = () => {
-    this.setState({
-      open: false,
     });
   };
   handleSearchChange = (e) => {
@@ -200,19 +146,6 @@ class App extends Component {
       this.setState({ auto_value:value, auto_loading: false });
     };
   }
-  allfile=(contactid)=>{
-       //  var s=new WaitingView();
-       //  s.showdialog();
-       //  $.getJSON(host+"/parts/allfile?id="+this.model.get("id"), function(result){
-       //     console.info(result);
-       //     s.$el.dialog('close');
-       //     if (!result.success){
-       //      $("<p>"+result.message+"</p>").dialog();
-       //     }
-       // }).fail(function() {
-       //  alert( "error" );
-       // });1
-  }
   onLoginSubmit= (data) => {
     console.log(data);
     Client.login(data.username, data.password, (res) => {
@@ -253,7 +186,7 @@ class App extends Component {
       </tr>
     ));
     return (
-    <div id="todoapp">
+    <div id="todoapp" className="table-responsive">
     <Navbar className="navbar-inverse">
     <Navbar.Header>
       <Navbar.Brand>
@@ -303,8 +236,9 @@ class App extends Component {
   </tr>
   </tbody>
  </table>
-<Table responsive bordered condensed><thead><tr><th>ID</th><th>用户单位</th><th>客户地址</th><th>通道配置</th><th>仪器型号</th><th>仪器编号</th><th>包箱</th><th>审核</th>
-<th>入库时间</th><th>调试时间</th><th>合同编号</th><th>方法</th><th>操作</th></tr></thead><tbody id="contact-list">{contactRows}</tbody></Table>
+<table className="table-bordered"><thead><tr><th>ID</th><th>用户单位</th><th>客户地址</th><th>通道配置</th><th>仪器型号</th><th>仪器编号</th><th>包箱</th><th>审核</th>
+<th>入库时间</th><th>调试时间</th><th>合同编号</th><th>方法</th><th>操作</th></tr></thead><tbody id="contact-list">{contactRows}</tbody>
+</table>
       <a onClick={this.handlePrev}>前一页</a> 
       <label id="page">{this.state.start+1}/{this.state.total}</label>
       <a onClick={this.handleNext}>后一页</a>
