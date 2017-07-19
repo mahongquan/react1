@@ -3,7 +3,7 @@ import {Navbar,Nav,NavItem,MenuItem,DropdownButton} from "react-bootstrap";
 import update from 'immutability-helper';
 import Client from './Client';
 import ExampleModal from './ExampleModal';
-import ContactEdit2 from './ContactEdit2';
+import ContactEdit2New from './ContactEdit2New';
 import DlgWait from './DlgWait';
 import DlgFolder from './DlgFolder';
 import DlgStat from './DlgStat';
@@ -28,6 +28,8 @@ class App extends Component {
     total:0,
     search:"",
     start_input:1,
+    showContactEdit:false,
+    currentIndex:null,
   }
   componentDidMount=() => {
     Client.contacts(
@@ -160,6 +162,9 @@ class App extends Component {
       }
     });
   };
+  handleEdit=(idx)=>{
+    this.setState({currentIndex:idx,showContactEdit:true});
+  }
   render() {
     const contactRows = this.state.contacts.map((contact, idx) => (
       <tr key={idx} >
@@ -169,7 +174,7 @@ class App extends Component {
         <td>{contact.channels}</td>
         <td>{contact.yiqixinghao}</td>
         <td>
-          <ContactEdit2 parent={this} index={idx} title={contact.yiqibh} />
+          <a onClick={()=>this.handleEdit(idx)}>{contact.yiqibh}</a>
         </td>
         <td>{contact.baoxiang}</td>
         <td>{contact.shenhe}</td>
@@ -187,6 +192,7 @@ class App extends Component {
     ));
     return (
     <div id="todoapp" className="table-responsive">
+    <ContactEdit2New parent={this}   index={this.state.currentIndex} title="编辑" showModal={this.state.showContactEdit} />
     <Navbar className="navbar-inverse">
     <Navbar.Header>
       <Navbar.Brand>
@@ -220,7 +226,7 @@ class App extends Component {
         </button>
   </td>
   <td>
-        <ContactEdit2 parent={this} index={null} title="新仪器" />
+       <a onClick={()=>this.handleEdit(null)}>新仪器</a>
   </td>
    <td>
         <DlgImport/>

@@ -2,7 +2,7 @@
 import React from 'react';
 import Client from './Client';
 import {Table} from "react-bootstrap";
-import UsePackEdit from "./UsePackEdit";
+import UsePackEditNew from "./UsePackEditNew";
 import Autocomplete from './Autocomplete'
 let styles = {
   item: {
@@ -95,6 +95,9 @@ class UsePacks2 extends React.Component {
         this.setState({ usepacks: filteredFoods });
     });
   };
+   handleEdit=(idx)=>{
+    this.setState({currentIndex:idx,showModal:true});
+  }
   render() {
     const { usepacks } = this.state;
     const usepackRows = usepacks.map((usepack, idx) => (
@@ -107,7 +110,7 @@ class UsePacks2 extends React.Component {
         <td hidden={this.state.release} >{usepack.pack}</td>
         <td hidden={this.state.release} >{usepack.hetongbh}</td>
         <td>
-        <UsePackEdit parent={this} index={idx} title="编辑" />
+        <a onClick={()=>this.handleEdit(idx)}>编辑</a>
         <a  onClick={() => this.onDeleteClick(idx)} style={{marginLeft:"10px"}}>删除</a>
         </td>
       </tr>
@@ -115,6 +118,7 @@ class UsePacks2 extends React.Component {
 
     return (
     <div>
+        <UsePackEditNew parent={this} index={this.state.currentIndex} title="编辑" showModal={this.state.showModal} />
         <Table  responsive bordered condensed>
           <thead>
              <tr>
