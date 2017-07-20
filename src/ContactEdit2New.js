@@ -7,7 +7,6 @@ import Autocomplete from './Autocomplete';
 var moment = require('moment');
 var locale=require('moment/locale/zh-cn');
 var DateTime=require('react-datetime');
-var createReactClass = require('create-react-class');
 let styles = {
   item: {
     padding: '2px 6px',
@@ -40,11 +39,36 @@ class ContactEdit2New  extends Component{
   close=()=>{
     this.setState({ showModal: false });
   }
- componentWillReceiveProps(nextProps) {
-    this.setState({ showModal: nextProps.showModal });
+ // componentWillReceiveProps(nextProps) {
+ //    this.setState({ showModal: nextProps.showModal });
+ //    this.setState({bg:{}});
+ //    this.parent=nextProps.parent;
+ //    if (nextProps.index==null){
+ //      this.old={
+ //        yujifahuo_date:moment().format("YYYY-MM-DD"),
+ //        tiaoshi_date:moment().format("YYYY-MM-DD"),
+ //        addr:"",
+ //        channels:"",
+ //        baoxiang:"",
+ //        hetongbh:"",
+ //        shenhe:"",
+ //        yonghu:"",
+ //        yiqibh:"",
+ //        yiqixinghao:""
+ //      };
+ //    }
+ //    else{
+ //      this.old=this.parent.state.contacts[nextProps.index];
+ //      this.setState({hiddenPacks:false});
+ //    }
+ //    this.setState({contact:this.old});
+ //  }
+ open2=(idx)=>{
+    this.setState({ showModal: true });
     this.setState({bg:{}});
-    this.parent=nextProps.parent;
-    if (nextProps.index==null){
+    this.parent=this.props.parent;
+    this.index=idx;
+    if (this.index==null){
       this.old={
         yujifahuo_date:moment().format("YYYY-MM-DD"),
         tiaoshi_date:moment().format("YYYY-MM-DD"),
@@ -59,7 +83,7 @@ class ContactEdit2New  extends Component{
       };
     }
     else{
-      this.old=this.parent.state.contacts[nextProps.index];
+      this.old=this.parent.state.contacts[this.index];
       this.setState({hiddenPacks:false});
     }
     this.setState({contact:this.old});
@@ -68,7 +92,7 @@ class ContactEdit2New  extends Component{
     this.setState({ showModal: true });
     this.setState({bg:{}});
     this.parent=this.props.parent;
-    if (this.props.index==null){
+    if (this.index==null){
       this.old={
         yujifahuo_date:moment().format("YYYY-MM-DD"),
         tiaoshi_date:moment().format("YYYY-MM-DD"),
@@ -83,7 +107,7 @@ class ContactEdit2New  extends Component{
       };
     }
     else{
-      this.old=this.parent.state.contacts[this.props.index];
+      this.old=this.parent.state.contacts[this.index];
       this.setState({hiddenPacks:false});
     }
     this.setState({contact:this.old});
@@ -105,7 +129,7 @@ class ContactEdit2New  extends Component{
     Client.postOrPut(url,this.state.contact,(res) => {
       if(res.success){
         this.setState({contact:res.data});
-        this.parent.handleContactChange(this.props.index,res.data);
+        this.parent.handleContactChange(this.index,res.data);
         this.old=res.data;
         this.setState({bg:{}});
         this.setState({hiddenPacks:false});

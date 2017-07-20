@@ -96,7 +96,8 @@ class UsePacks2 extends React.Component {
     });
   };
    handleEdit=(idx)=>{
-    this.setState({currentIndex:idx,showModal:true});
+    //this.setState({currentIndex:idx,showModal:true});
+    this.refs.edit1.open2(idx);
   }
   render() {
     const { usepacks } = this.state;
@@ -118,7 +119,7 @@ class UsePacks2 extends React.Component {
 
     return (
     <div>
-        <UsePackEditNew parent={this} index={this.state.currentIndex} title="编辑" showModal={this.state.showModal} />
+        <UsePackEditNew ref="edit1" parent={this} index={this.state.currentIndex} title="编辑"  />
         <Table  responsive bordered condensed>
           <thead>
              <tr>

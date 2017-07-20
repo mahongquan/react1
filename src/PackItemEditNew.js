@@ -10,37 +10,38 @@ class PackItemEditNew extends Component{
       bg:{},
       date_open:false,
   }
-  componentWillReceiveProps(nextProps) {
-    this.setState({ showModal: nextProps.showModal });
-    if (nextProps.index==null){
-      this.old={};
-    }
-    else{
-      this.parent=nextProps.parent;
-      this.old=this.parent.state.items[nextProps.index];
-    }
-    this.setState({packitem:this.old});
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   this.setState({ showModal: nextProps.showModal });
+  //   if (nextProps.index==null){
+  //     this.old={};
+  //   }
+  //   else{
+  //     this.parent=nextProps.parent;
+  //     this.old=this.parent.state.items[nextProps.index];
+  //   }
+  //   this.setState({packitem:this.old});
+  // }
   close=()=>{
     this.setState({ showModal: false });
   }
 
-  // open=()=>{
-  //   this.setState({ showModal: true });
-  //   if (this.props.index==null){
-  //     this.old={};
-  //   }
-  //   else{
-  //     this.parent=this.props.parent;
-  //     this.old=this.parent.state.items[this.props.index];
-  //   }
-  //   this.setState({packitem:this.old});
-  // }
+  open2=(idx)=>{
+    this.setState({ showModal: true });
+    this.index=idx;
+    if (this.index==null){
+      this.old={};
+    }
+    else{
+      this.parent=this.props.parent;
+      this.old=this.parent.state.items[this.index];
+    }
+    this.setState({packitem:this.old});
+  }
   handleSave=(data)=>{
     var url="/rest/BothPackItem";
     Client.postOrPut(url,this.state.packitem,(res) => {
         this.setState({contact:res.data});
-        this.parent.handlePackItemChange(this.props.index,res.data);
+        this.parent.handlePackItemChange(this.index,res.data);
         this.old=res.data;
         this.close();
     });

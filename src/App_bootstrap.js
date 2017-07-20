@@ -28,7 +28,6 @@ class App extends Component {
     total:0,
     search:"",
     start_input:1,
-    showContactEdit:false,
     currentIndex:null,
   }
   componentDidMount=() => {
@@ -163,7 +162,8 @@ class App extends Component {
     });
   };
   handleEdit=(idx)=>{
-    this.setState({currentIndex:idx,showContactEdit:true});
+    //this.setState({currentIndex:idx});
+    this.refs.contactedit.open2(idx);
   }
   render() {
     const contactRows = this.state.contacts.map((contact, idx) => (
@@ -192,7 +192,7 @@ class App extends Component {
     ));
     return (
     <div id="todoapp" className="table-responsive">
-    <ContactEdit2New parent={this}   index={this.state.currentIndex} title="编辑" showModal={this.state.showContactEdit} />
+    <ContactEdit2New ref="contactedit" parent={this}   index={this.state.currentIndex} title="编辑"  />
     <Navbar className="navbar-inverse">
     <Navbar.Header>
       <Navbar.Brand>

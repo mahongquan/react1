@@ -14,28 +14,40 @@ class UsePackEditNew extends Component{
   handleChange=()=>{
     
   }
-  componentWillReceiveProps(nextProps) {
-    this.setState({ showModal: nextProps.showModal });
-    if (nextProps.index==null){
-      this.old={};
-    }
-    else{
-      this.parent=nextProps.parent;
-      this.old=this.parent.state.usepacks[nextProps.index];
-    }
-    this.setState({usepack:this.old});
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   this.setState({ showModal: nextProps.showModal });
+  //   if (nextProps.index==null){
+  //     this.old={};
+  //   }
+  //   else{
+  //     this.parent=nextProps.parent;
+  //     this.old=this.parent.state.usepacks[nextProps.index];
+  //   }
+  //   this.setState({usepack:this.old});
+  // }
   close=()=>{
     this.setState({ showModal: false });
   }
+  open2=(idx)=>{
+    this.index=idx;
+    this.setState({ showModal: true });
+    if (this.index==null){
+      this.old={};
+    }
+    else{
+      this.parent=this.props.parent;
+      this.old=this.parent.state.usepacks[this.index];
+    }
+    this.setState({usepack:this.old});
+  }
   // open=()=>{
   //   this.setState({ showModal: true });
-  //   if (this.props.index==null){
+  //   if (this.index==null){
   //     this.old={};
   //   }
   //   else{
   //     this.parent=this.props.parent;
-  //     this.old=this.parent.state.usepacks[this.props.index];
+  //     this.old=this.parent.state.usepacks[this.index];
   //   }
   //   this.setState({usepack:this.old});
   // }

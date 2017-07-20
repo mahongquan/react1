@@ -31,8 +31,6 @@ class PackItems extends React.Component {
     auto_items:[],
     auto_loading: false,
     release:true,
-    currentIndex:null,
-    showModal: false,
   };
   componentDidMount=()=> {
       Client.PackItems(this.props.pack_id, (items) => {
@@ -100,8 +98,7 @@ class PackItems extends React.Component {
     });
   };
   handleEdit=(idx)=>{
-    this.setState({currentIndex:idx});
-    this.setState({showModal:true});
+    this.refs.dlg.open2(idx);
   }
   render() {
     const { items } = this.state;
@@ -161,7 +158,7 @@ class PackItems extends React.Component {
         <input id="new_pack1"  placeholder="新备件" value={this.state.newPackName} onChange={this.newpackChange}/>
         <button className="btn btn-info" id="id_new_item" onClick={this.new_packitem}>新备件</button>
       </p>
-      <PackItemEditNew parent={this} index={this.state.currentIndex} showModal={this.state.showModal} />
+      <PackItemEditNew ref="dlg" parent={this} />
       </div>
     );
   }

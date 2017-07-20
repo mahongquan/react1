@@ -4,7 +4,6 @@ import Client from './Client';
 class DlgUrl extends Component{
   state= { 
       showModal: false,
-      hiddenPacks:true,
       error:"",
   }
 
