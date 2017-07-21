@@ -6,6 +6,7 @@ import ExampleModal from './ExampleModal';
 import ContactEdit2New from './ContactEdit2New';
 import DlgWait from './DlgWait';
 import DlgFolder from './DlgFolder';
+import DlgFolder2 from './DlgFolder2';
 import DlgStat from './DlgStat';
 import DlgImport from './DlgImport';
 import DlgCheck from './DlgCheck'
@@ -187,6 +188,7 @@ class App extends Component {
          <DlgWait contact_id={contact.id} title="全部文件" />
          <DlgCheck contact_id={contact.id} title="核对备料计划" />
         <DlgFolder contact_id={contact.id} title="资料文件夹" />
+        <DlgFolder2 contact_id={contact.id} title="资料文件夹2" />
         </td>
       </tr>
     ));

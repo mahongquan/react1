@@ -1,5 +1,16 @@
 /* eslint-disable no-undef */
 import queryString from 'query-string';
+function getRaw(url,cb) {
+  var method="GET";
+  return fetch(url,
+  {
+      method: method,
+      credentials: 'include',
+      headers: {'Content-Type':'application/json'},
+  }).then(checkStatus)
+    .then(parseJSON)
+    .then(cb);
+}
 function get(url,data,cb) {
   var method="GET";
   url=url+"?"+queryString.stringify(data)
@@ -146,5 +157,5 @@ function parseJSON(response) {
   return r;
 }
 
-const Client = {contacts,items,login_index,login,logout,UsePacks,PackItems,get,post,postOrPut,delete1,postForm};
+const Client = {getRaw,contacts,items,login_index,login,logout,UsePacks,PackItems,get,post,postOrPut,delete1,postForm};
 export default Client;
