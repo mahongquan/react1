@@ -29,7 +29,7 @@ const DlgFolder2 = createReactClass({
             <Modal.Title>file browser</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-          <Browser />
+          <Browser initpath={this.props.initpath}/>
           </Modal.Body>
         </Modal>
         </div>

@@ -188,7 +188,7 @@ class App extends Component {
          <DlgWait contact_id={contact.id} title="全部文件" />
          <DlgCheck contact_id={contact.id} title="核对备料计划" />
         <DlgFolder contact_id={contact.id} title="资料文件夹" />
-        <DlgFolder2 contact_id={contact.id} title="资料文件夹2" />
+        <DlgFolder2 contact_id={contact.id} initpath={"仪器资料/"+contact.yiqibh} title="资料文件夹2" />
         </td>
       </tr>
     ));

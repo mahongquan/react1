@@ -139,6 +139,7 @@ File.sizeString =  function(sizeBytes){
 }
 var Browser = createReactClass({
         getInitialState: function() {
+            console.log("get init ");
             return {
               paths : ["."],
               files: [],
@@ -242,8 +243,12 @@ var Browser = createReactClass({
 
 
     componentDidMount: function() {
-            var path = this.currentPath();
-            this.loadFilesFromServer(path);
+        console.log("mount======");
+        console.log(this.props.initpath);
+        if (this.props.initpath)
+            this.state.paths.push(this.props.initpath);
+        var path = this.currentPath();
+        this.loadFilesFromServer(path);
     },
 
     updateSort: function(sort) {
