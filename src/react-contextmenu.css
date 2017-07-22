@@ -18,6 +18,7 @@
 .react-contextmenu.react-contextmenu--visible {
     opacity: 1;
     pointer-events: auto;
+    display: inline;
 }
 
 .react-contextmenu-item {

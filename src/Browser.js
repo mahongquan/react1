@@ -1,6 +1,6 @@
 import React from 'react';
 import './react-contextmenu.css'
-import { ContextMenu, MenuItem, ContextMenuTrigger } from "./contextmenu";
+import { ContextMenu, MenuItem, ContextMenuTrigger } from "./contextmenu2";
 import Client from "./Client";
 var createReactClass = require('create-react-class');
 
@@ -38,11 +38,11 @@ function getParent(path, onSuccess) {
 
 var File = createReactClass({
 
-        glyphClass: function() {
-                var className = "glyphicon ";
-                className += this.props.isdir ? "glyphicon-folder-open" : "glyphicon-file";
-                return className;
-        },
+    glyphClass: function() {
+            var className = "glyphicon ";
+            className += this.props.isdir ? "glyphicon-folder-open" : "glyphicon-file";
+            return className;
+    },
 
 
 
@@ -96,20 +96,19 @@ var File = createReactClass({
     renderGrid: function() {
             var glyphClass = this.glyphClass();
             return (
-                <div ref={this.props.path} className="col-xs-8 col-md-4">
+                <div ref={this.props.path} >
                     <ContextMenuTrigger id={""+this.props.id}>
                         <a id={this.props.id} onClick={this.props.onClick}>
                         <span style={{fontSize:"3.5em"}} className={glyphClass}/>
-
                         </a>
                     </ContextMenuTrigger>
-                    <ContextMenu id={""+this.props.id}>
+                                            <ContextMenu id={""+this.props.id}>
                         <MenuItem data={{a:1}} onClick={this.onRemove}>remove</MenuItem>
                         <MenuItem data={{a:2}} onClick={this.onRename}>rename</MenuItem>
                     </ContextMenu>
-                    <div className="caption">
-                        <h4 className="heading">{this.props.name}</h4>
-                    </div>
+
+                    <h4 >{this.props.name}</h4>
+
                 </div>);
     },
 
@@ -335,13 +334,42 @@ var Browser = createReactClass({
     <input type="file" id="uploadInput" onChange={this.uploadFile()} style={{display:this.state.displayUpload}} /></div>);
             if (this.state.gridView)
             {
-                    return (<div>
-                    {toolbar}
-                    <table>
-                    <tbody> <tr><td>{files}</td></tr>
-                    </tbody>
-                    </table>
-                    </div>);
+                var files2=[];
+                var row=[]
+                var ncols=3
+                for(var i in files){
+                    if (i % ncols ===0)
+                    {
+                        if (row.length>0){
+                            files2.push(row)
+                            row=[]
+                            row.push(files[i]);
+                        }
+                        else{
+                            row.push(files[i]);   
+                        }
+                    }
+                    else{
+                        row.push(files[i]);
+                    }
+                }
+                if(row.length>0){files2.push(row)}
+                var files2_t=[]
+                for(var i in files2){
+                    var cols=[]
+                    for(var j in files2[i]){
+                        cols.push((<td key={j} >{files2[i][j]}</td>))
+                    }
+                    var row=(<tr key={i}>{cols}</tr>);
+                    files2_t.push(row);
+                }
+                return (<div>
+                {toolbar}
+                <table>
+                <tbody>{files2_t}
+                </tbody>
+                </table>
+                </div>);
 
             }
             else{

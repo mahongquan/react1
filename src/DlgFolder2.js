@@ -26,7 +26,7 @@ const DlgFolder2 = createReactClass({
         <div>
         <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
           <Modal.Header closeButton>
-            <Modal.Title>请等待。。。</Modal.Title>
+            <Modal.Title>file browser</Modal.Title>
           </Modal.Header>
           <Modal.Body>
           <Browser />
