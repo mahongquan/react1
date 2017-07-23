@@ -1,19 +1,11 @@
 import React from 'react'
-import {
-  BrowserRouter as Router,
-  Route,
-  Link
-} from 'react-router-dom'
-
+import App  from './App'
+import About from './About'
+import Repos from './Repos'
+import {BrowserRouter as Router,Route,Link} from 'react-router-dom'
 const Home = () => (
   <div>
     <h2>Home</h2>
-  </div>
-)
-
-const About = () => (
-  <div>
-    <h2>About</h2>
   </div>
 )
 
@@ -50,16 +42,23 @@ const Topics = ({ match }) => (
     )}/>
   </div>
 )
-
-class BasicExample extends React.Component{
-  render=() => {
-    return (
+class App2 extends React.Component {
+	render=()=>{
+		// return (
+		//   <Router>
+		//     <Route path="/" component={App}/>
+		//     <Route path="/repos" component={Repos}/>
+		//     <Route path="/about" component={About}/>
+		//   </Router>
+		// );
+		return (
       <Router>
         <div>
           <ul>
             <li><Link to="/">Home</Link></li>
             <li><Link to="/about">About</Link></li>
             <li><Link to="/topics">Topics</Link></li>
+            <li><Link to="/repos">repos</Link></li>
           </ul>
 
           <hr/>
@@ -67,9 +66,10 @@ class BasicExample extends React.Component{
           <Route exact path="/" component={Home}/>
           <Route path="/about" component={About}/>
           <Route path="/topics" component={Topics}/>
+          <Route path="/repos" component={Repos}/>
         </div>
       </Router>
     );
-  }
+	}
 }
-export default BasicExample
+export default App2;

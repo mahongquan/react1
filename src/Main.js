@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/css/bootstrap-theme.css';
 import {Navbar,Nav,NavItem,MenuItem,DropdownButton} from "react-bootstrap";
 import update from 'immutability-helper';
 import Client from './Client';
@@ -15,8 +13,10 @@ import DlgCheck from './DlgCheck'
 import DlgUrl from './DlgUrl';
 import DlgCopyPack from './DlgCopyPack';
 import DlgItems from './DlgItems';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/css/bootstrap-theme.css';
 var host="";
-class App extends Component {
+class Main extends Component {
   mystate = {
     start:0,
     limit:10,
@@ -258,4 +258,4 @@ class App extends Component {
     );
   }
 }
-export default App;
+export default Main;

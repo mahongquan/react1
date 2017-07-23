@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import UsePacks2 from "./UsePacks2";
-import {Modal} from "react-bootstrap";
 import update from 'immutability-helper';
 import Client from './Client';
 import Autocomplete from './Autocomplete';
@@ -25,7 +24,7 @@ let styles = {
     border: 'solid 1px #ccc'
   }
 }
-class ContactEdit2New  extends Component{
+class RouteContactEdit  extends Component{
   state={ 
       showModal: false,
       contact:{
@@ -64,11 +63,13 @@ class ContactEdit2New  extends Component{
  //    }
  //    this.setState({contact:this.old});
  //  }
- open2=(idx)=>{
+ componentDidMount=()=>{
     this.setState({ showModal: true });
     this.setState({bg:{}});
+    console.log(this.props);
     this.parent=this.props.parent;
-    this.index=idx;
+    this.index=this.props.idx;
+    console.log(this.props);
     if (this.index==null){
       this.old={
         yujifahuo_date:moment().format("YYYY-MM-DD"),
@@ -89,36 +90,6 @@ class ContactEdit2New  extends Component{
     }
     this.setState({contact:this.old});
   }
-  open=()=>{
-    this.setState({ showModal: true });
-    this.setState({bg:{}});
-    this.parent=this.props.parent;
-    if (this.index==null){
-      this.old={
-        yujifahuo_date:moment().format("YYYY-MM-DD"),
-        tiaoshi_date:moment().format("YYYY-MM-DD"),
-        addr:"",
-        channels:"",
-        baoxiang:"",
-        hetongbh:"",
-        shenhe:"",
-        yonghu:"",
-        yiqibh:"",
-        yiqixinghao:""
-      };
-    }
-    else{
-      this.old=this.parent.state.contacts[this.index];
-      this.setState({hiddenPacks:false});
-    }
-    this.setState({contact:this.old});
-  }
-  // handleClear (data) {
-  //   console.log("clear");
-  //   var contact2={id:"",hetongbh:"",name:"",addr:""};
-  //   console.log(contact2);
-  //   this.setState({contact:contact2});
-  // },
   handleCopy=(data)=> {
      console.log("copy");
      var contact2=update(this.state.contact,{id:{$set:""}});
@@ -272,11 +243,7 @@ class ContactEdit2New  extends Component{
   }
   render=()=>{
     return (
-        <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
-          <Modal.Header closeButton>
-            <Modal.Title>编辑仪器信息</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
+      <div>
             <table id="table_input" className="table-condensed" >
             <tbody>
             <tr >
@@ -438,16 +405,16 @@ class ContactEdit2New  extends Component{
             </tr>        
             </tbody>
             </table>
-       <div> 
-       <button className="btn btn-primary" id="bt_save" onClick={this.handleSave} >保存</button> 
-       <button className="btn" style={{margin:"20px 20px 20px 20px"}} id="bt_clearid" onClick={this.handleCopy}>复制</button>
-       </div>
-        <div id="id_usepacks" hidden={this.state.hiddenPacks}>
-        <UsePacks2  contact_id={this.state.contact.id}/>
+         <div> 
+           <button className="btn btn-primary" id="bt_save" onClick={this.handleSave} >保存</button> 
+           <button className="btn" style={{margin:"20px 20px 20px 20px"}} id="bt_clearid" onClick={this.handleCopy}>复制</button>
+         </div>
+          <div id="id_usepacks" hidden={this.state.hiddenPacks}>
+           <UsePacks2  contact_id={this.state.contact.id}/>
+          </div>
         </div>
-                </Modal.Body>
-        </Modal>
+
     );
   }
 };
-export default ContactEdit2New;
+export default RouteContactEdit;

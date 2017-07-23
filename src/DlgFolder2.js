@@ -1,6 +1,5 @@
 import React from 'react';
 import {Modal} from "react-bootstrap";
-import Client from './Client';
 import Browser from './Browser'
 var createReactClass = require('create-react-class');
 const DlgFolder2 = createReactClass({
@@ -17,7 +16,6 @@ const DlgFolder2 = createReactClass({
   },
 
   open() {
-    var self=this;
    this.setState({ showModal: true });
   },
   render() {
@@ -29,7 +27,7 @@ const DlgFolder2 = createReactClass({
             <Modal.Title>file browser</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-          <Browser initpath={this.props.initpath}/>
+          <Browser initpath={this.props.initpath}/> 
           </Modal.Body>
         </Modal>
         </div>

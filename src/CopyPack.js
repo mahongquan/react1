@@ -1,7 +1,5 @@
 import React from 'react';
-import {Modal} from "react-bootstrap";
 import Client from './Client';
-import {NavItem,} from "react-bootstrap";
 import Autocomplete from './Autocomplete'
 var createReactClass = require('create-react-class');
 let styles = {
@@ -22,7 +20,7 @@ let styles = {
   }
 }
 
-const DlgCopyPack = createReactClass({
+const CopyPack = createReactClass({
   getInitialState() {
     return { 
       showModal: false,
@@ -78,12 +76,7 @@ const DlgCopyPack = createReactClass({
   },
   render() {
     return (
-        <NavItem eventKey={5} href="#" onClick={this.open}>复制包
-        <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
-          <Modal.Header closeButton>
-            <Modal.Title>复制包</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
+          <div>
             <table>
             <tbody>
             <tr>
@@ -110,7 +103,7 @@ const DlgCopyPack = createReactClass({
               </td>
             </tr>
             <tr>
-              <td><label >新包名称:</label></td>
+              <td><label>新包名称:</label></td>
               <td>
                 <input id="nameto" type="text" onChange={this.newnameChange} size="15" value={this.state.newname} maxLength="30" />
               </td>
@@ -119,10 +112,8 @@ const DlgCopyPack = createReactClass({
             </table>
           <button onClick={this.copy_pack}>复制</button>
           <p>{this.state.error}</p>
-          </Modal.Body>
-        </Modal>
-        </NavItem>
+          </div>
     );
   }
 });
-export default DlgCopyPack;
+export default CopyPack;

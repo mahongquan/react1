@@ -360,12 +360,12 @@ var Browser = createReactClass({
                 }
                 if(row.length>0){files2.push(row)}
                 var files2_t=[]
-                for(var i in files2){
+                for(i in files2){
                     var cols=[]
                     for(var j in files2[i]){
                         cols.push((<td key={j} >{files2[i][j]}</td>))
                     }
-                    var row=(<tr key={i}>{cols}</tr>);
+                    row=(<tr key={i}>{cols}</tr>);
                     files2_t.push(row);
                 }
                 return (<div>

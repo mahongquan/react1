@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/css/bootstrap-theme.css';
-import {Navbar,Nav,NavItem,MenuItem,DropdownButton} from "react-bootstrap";
+import {MenuItem,DropdownButton} from "react-bootstrap";
 import update from 'immutability-helper';
 import Client from './Client';
 import ExampleModal from './ExampleModal';
@@ -9,14 +7,11 @@ import ContactEdit2New from './ContactEdit2New';
 import DlgWait from './DlgWait';
 import DlgFolder from './DlgFolder';
 import DlgFolder2 from './DlgFolder2';
-import DlgStat from './DlgStat';
 import DlgImport from './DlgImport';
 import DlgCheck from './DlgCheck'
 import DlgUrl from './DlgUrl';
-import DlgCopyPack from './DlgCopyPack';
-import DlgItems from './DlgItems';
 var host="";
-class App extends Component {
+class Home extends Component {
   mystate = {
     start:0,
     limit:10,
@@ -34,6 +29,7 @@ class App extends Component {
     currentIndex:null,
   }
   componentDidMount=() => {
+    console.log("Home mount");
     Client.contacts(
       { start:this.mystate.start,
         limit:this.mystate.limit,
@@ -167,6 +163,11 @@ class App extends Component {
   handleEdit=(idx)=>{
     //this.setState({currentIndex:idx});
     this.refs.contactedit.open2(idx);
+    // router.push({
+    //   pathname: '/users/12',
+    //   query: { modal: true },
+    //   state: { fromDashboard: true }
+    // })
   }
   render() {
     const contactRows = this.state.contacts.map((contact, idx) => (
@@ -197,19 +198,6 @@ class App extends Component {
     return (
     <div id="todoapp" className="table-responsive">
     <ContactEdit2New ref="contactedit" parent={this}   index={this.state.currentIndex} title="编辑"  />
-    <Navbar className="navbar-inverse">
-    <Navbar.Header>
-      <Navbar.Brand>
-        <a>装箱单</a>
-      </Navbar.Brand>
-    </Navbar.Header>
-    <Nav>
-      <NavItem eventKey={1} href="#">合同</NavItem>
-      <DlgItems />
-      <DlgCopyPack />
-      <DlgStat />
-    </Nav>
-  </Navbar>
     <table>
     <tbody>
     <tr>
@@ -258,4 +246,4 @@ class App extends Component {
     );
   }
 }
-export default App;
+export default Home;

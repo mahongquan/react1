@@ -1,10 +1,9 @@
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/css/bootstrap-theme.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App_bootstrap';
-//import registerServiceWorker from './registerServiceWorker';
-import './index.css';
-import './react-datetime.css';
+import App from './App_bootstrap_route';
 ReactDOM.render(<App />, document.getElementById('root'));
-//registerServiceWorker();
+//import BasicExample from './BasicExample'
+//ReactDOM.render(<BasicExample />, document.getElementById('root'));
+//import App2 from './modules/App2'
+//ReactDOM.render(<App2 />, document.getElementById('root'));
+
