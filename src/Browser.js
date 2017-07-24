@@ -20,7 +20,7 @@ function buildRemoveUrl(path) {
         return  "/fs/remove?path="+path;
 }
 function buildGetContentUrl(path) {
-        return "/static/"+path;
+        return "/media/"+path;
 }
 
 function buildUploadUrl(path, name) {
@@ -77,7 +77,7 @@ var File = createReactClass({
     },
 
     renderList: function() {
-            var dateString =  new Date(this.props.time*1000).toGMTString()
+            var dateString =  new Date(this.props.time*1000).toLocaleString();//toGMTString()
             var glyphClass = this.glyphClass();
             return (<tr id={this.props.id} ref={this.props.path}>
                             <td>
@@ -85,8 +85,8 @@ var File = createReactClass({
                             <a onClick={this.props.onClick}><span style={{fontSize:"1.5em", paddingRight:"10px"}} className={glyphClass}/>{this.props.name}</a>
                             </ContextMenuTrigger>
                             <ContextMenu id={""+this.props.id}>
-                                <MenuItem data={{a:1}} onClick={this.onRemove}>remove</MenuItem>
-                                <MenuItem data={{a:2}} onClick={this.onRename}>rename</MenuItem>
+                                <MenuItem data={{a:1}} onClick={this.onRemove}>删除</MenuItem>
+                                <MenuItem data={{a:2}} onClick={this.onRename}>重命名</MenuItem>
                               </ContextMenu>
                             </td>
                             <td>{File.sizeString(this.props.size)}</td>
@@ -187,8 +187,9 @@ var Browser = createReactClass({
                     alert("Cannot go back from "+ this.currentPath());
                     return;
             }
-            this.setState({paths:this.state.paths.slice(0,-1)});
-            this.loadFilesFromServer(this.currentPath());
+            var paths2=this.state.paths.slice(0,-1);
+            this.setState({paths:paths2});
+            this.loadFilesFromServer(paths2[paths2.length-1])
     },
 
     onUpload: function() {
@@ -278,7 +279,7 @@ var Browser = createReactClass({
         console.log("getContent");
         var url = buildGetContentUrl(path);
         console.log(url);
-        //window.location.href=url;
+        window.open(url, url, 'height=800,width=800,resizable=yes,scrollbars=yes');
     },
 
     mkdir: function() {
@@ -383,9 +384,9 @@ var Browser = createReactClass({
                               {toolbar}
                               <table className="table table-responsive table-striped table-hover">
                               <thead><tr>
-                              <th><button onClick={this.pathSort} className="btn btn-default"><span className={sortGlyph}/>Path</button></th>
-                              <th><button onClick={this.sizeSort} className="btn btn-default"><span className={sortGlyph}/>Size</button></th>
-                              <th><button onClick={this.timeSort} className="btn btn-default"><span className={sortGlyph}/>Last modified time</button></th>
+                              <th><button onClick={this.pathSort} className="btn btn-default"><span className={sortGlyph}/>名称</button></th>
+                              <th><button onClick={this.sizeSort} className="btn btn-default"><span className={sortGlyph}/>大小</button></th>
+                              <th><button onClick={this.timeSort} className="btn btn-default"><span className={sortGlyph}/>修改日期</button></th>
                               </tr></thead>
                               <tbody>
                               {files}

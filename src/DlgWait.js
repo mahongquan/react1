@@ -30,7 +30,7 @@ const DlgWait = createReactClass({
   },
   render() {
     return (
-        <a  onClick={this.open}>{this.props.title}
+        <button  onClick={this.open}>{this.props.title}
         <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
           <Modal.Header closeButton>
             <Modal.Title>请等待。。。</Modal.Title>
@@ -39,7 +39,7 @@ const DlgWait = createReactClass({
           <div>{this.state.error}</div>
           </Modal.Body>
         </Modal>
-        </a>
+        </button>
     );
   }
 });

@@ -185,12 +185,15 @@ class App extends Component {
         <td>{contact.tiaoshi_date}</td>
         <td>{contact.hetongbh}</td>
         <td>{contact.method}</td>
-        <td><a className="contact_detail" data={contact.id} onClick={() => this.onDetailClick(contact.id)}>详细</a>
+        <td>
+        <div className="btn-group" role="group">
+        <button className="contact_detail" data={contact.id} onClick={() => this.onDetailClick(contact.id)}>详细</button>
          <DlgUrl url="/rest/updateMethod" parent={this} index={idx} data={{id:contact.id}} title="更新方法" />
          <DlgWait contact_id={contact.id} title="全部文件" />
          <DlgCheck contact_id={contact.id} title="核对备料计划" />
         <DlgFolder contact_id={contact.id} title="资料文件夹" />
         <DlgFolder2 contact_id={contact.id} initpath={"仪器资料/"+contact.yiqibh} title="资料文件夹2" />
+                </div>
         </td>
       </tr>
     ));
@@ -230,7 +233,7 @@ class App extends Component {
         </button>
   </td>
   <td>
-       <a onClick={()=>this.handleEdit(null)}>新仪器</a>
+       <button className="btn btn-primary" onClick={()=>this.handleEdit(null)}>新仪器</button>
   </td>
    <td>
         <DlgImport/>

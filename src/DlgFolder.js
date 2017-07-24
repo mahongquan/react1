@@ -30,8 +30,7 @@ const DlgFolder = createReactClass({
   },
   render() {
     return (
-        <a   style={{marginLeft:"2px"}} onClick={this.open}>{this.props.title}
-        <div>
+        <button onClick={this.open}>{this.props.title}
         <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
           <Modal.Header closeButton>
             <Modal.Title>请等待。。。</Modal.Title>
@@ -40,8 +39,7 @@ const DlgFolder = createReactClass({
           <div>{this.state.error}</div>
           </Modal.Body>
         </Modal>
-        </div>
-        </a>
+        </button>
     );
   }
 });

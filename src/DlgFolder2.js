@@ -20,18 +20,16 @@ const DlgFolder2 = createReactClass({
   },
   render() {
     return (
-        <a   style={{marginLeft:"2px"}} onClick={this.open}>{this.props.title}
-        <div>
+        <button onClick={this.open}>{this.props.title}
         <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
           <Modal.Header closeButton>
-            <Modal.Title>file browser</Modal.Title>
+            <Modal.Title>文件浏览</Modal.Title>
           </Modal.Header>
           <Modal.Body>
           <Browser initpath={this.props.initpath}/> 
           </Modal.Body>
         </Modal>
-        </div>
-        </a>
+        </button>
     );
   }
 });

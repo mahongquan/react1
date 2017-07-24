@@ -91,7 +91,7 @@ const DlgCheck = createReactClass({
       </tr>
     ));   
     return (
-        <a  style={{marginLeft:"2px"}} onClick={this.open}>{this.props.title}
+        <button onClick={this.open}>{this.props.title}
         <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
           <Modal.Header closeButton>
             <Modal.Title>{this.props.title}</Modal.Title>
@@ -118,7 +118,7 @@ const DlgCheck = createReactClass({
           </div>
           </Modal.Body>
         </Modal>
-        </a>
+        </button>
     );
   }
 });
