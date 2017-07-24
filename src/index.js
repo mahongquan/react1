@@ -32,5 +32,5 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App2 from './todos/index';
-ReactDOM.render(<App2 />, document.getElementById('root'));
+import App from './realworld/index';
+ReactDOM.render(<App />, document.getElementById('root'));
