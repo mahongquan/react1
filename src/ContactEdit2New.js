@@ -4,6 +4,7 @@ import {Modal} from "react-bootstrap";
 import update from 'immutability-helper';
 import Client from './Client';
 import Autocomplete from './Autocomplete';
+import './react-datetime.css'
 var moment = require('moment');
 var locale=require('moment/locale/zh-cn');
 var DateTime=require('react-datetime');
