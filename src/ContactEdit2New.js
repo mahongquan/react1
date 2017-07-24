@@ -88,30 +88,30 @@ class ContactEdit2New  extends Component{
     }
     this.setState({contact:this.old});
   }
-  open=()=>{
-    this.setState({ showModal: true });
-    this.setState({bg:{}});
-    this.parent=this.props.parent;
-    if (this.index==null){
-      this.old={
-        yujifahuo_date:moment().format("YYYY-MM-DD"),
-        tiaoshi_date:moment().format("YYYY-MM-DD"),
-        addr:"",
-        channels:"",
-        baoxiang:"",
-        hetongbh:"",
-        shenhe:"",
-        yonghu:"",
-        yiqibh:"",
-        yiqixinghao:""
-      };
-    }
-    else{
-      this.old=this.parent.state.contacts[this.index];
-      this.setState({hiddenPacks:false});
-    }
-    this.setState({contact:this.old});
-  }
+  // open=()=>{
+  //   this.setState({ showModal: true });
+  //   this.setState({bg:{}});
+  //   this.parent=this.props.parent;
+  //   if (this.index==null){
+  //     this.old={
+  //       yujifahuo_date:moment().format("YYYY-MM-DD"),
+  //       tiaoshi_date:moment().format("YYYY-MM-DD"),
+  //       addr:"",
+  //       channels:"",
+  //       baoxiang:"",
+  //       hetongbh:"",
+  //       shenhe:"",
+  //       yonghu:"",
+  //       yiqibh:"",
+  //       yiqixinghao:""
+  //     };
+  //   }
+  //   else{
+  //     this.old=this.parent.state.contacts[this.index];
+  //     this.setState({hiddenPacks:false});
+  //   }
+  //   this.setState({contact:this.old});
+  // }
   // handleClear (data) {
   //   console.log("clear");
   //   var contact2={id:"",hetongbh:"",name:"",addr:""};
