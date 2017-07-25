@@ -1,7 +1,7 @@
-// import React from 'react';
-// import ReactDOM from 'react-dom';
-// import App from './App_bootstrap';
-// ReactDOM.render(<App />, document.getElementById('root'));
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App_bootstrap';
+ReactDOM.render(<App />, document.getElementById('root'));
 // //import BasicExample from './BasicExample'
 // //ReactDOM.render(<BasicExample />, document.getElementById('root'));
 // import ModalGallery from './ModalGallery'
@@ -30,7 +30,7 @@
 // render()
 // store.subscribe(render)
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './realworld/index';
-ReactDOM.render(<App />, document.getElementById('root'));
+// import React from 'react';
+// import ReactDOM from 'react-dom';
+// import App from './realworld/index';
+// ReactDOM.render(<App />, document.getElementById('root'));

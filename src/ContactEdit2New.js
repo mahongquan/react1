@@ -4,6 +4,8 @@ import {Modal} from "react-bootstrap";
 import update from 'immutability-helper';
 import Client from './Client';
 import Autocomplete from './Autocomplete';
+// import Select from 'react-select';
+// import 'react-select/dist/react-select.css';
 import './react-datetime.css'
 var moment = require('moment');
 var locale=require('moment/locale/zh-cn');
@@ -124,6 +126,7 @@ class ContactEdit2New  extends Component{
      var contact2=update(this.state.contact,{id:{$set:""}});
      console.log(contact2);
      this.setState({contact:contact2});
+     this.setState({hiddenPacks:true});
   }
   handleSave=(data)=>{
     var url="/rest/Contact";
@@ -203,10 +206,18 @@ class ContactEdit2New  extends Component{
     console.log(contact2);
     this.setState({contact:contact2});
   }
+  channels_change_new=(val)=>{
+    this.channels_select(null,val.value);
+  }
   channels_change=(event, value)=>{
     console.log("auto_change");
     //this.setState({ yiqixinghao_value:value, auto_loading: false });
     this.channels_select(null,value) 
+  }
+  channels_input=(event)=>{
+    console.log(event);
+    //this.setState({ yiqixinghao_value:value, auto_loading: false });
+    this.channels_select(null,event) 
   }
   channels_select=(value, item)=>{
       console.log("selected");
@@ -271,6 +282,22 @@ class ContactEdit2New  extends Component{
      return      state.toLowerCase().indexOf(value.toLowerCase()) !== -1 ;
   }
   render=()=>{
+    // var o=[
+    //                     "1O(低氧)",
+    //                     "1O(高氧)",
+    //                     "1O(低氧)+2N",
+    //                     "1C(低碳)+2S",
+    //                     "1C(高碳)+2S",
+    //                     "2C+1S(低硫)",
+    //                     "2C+1S(高硫)",
+    //                     "2C+2S",
+    //                     "2O+2N",
+    //                     "2O",
+    //                   ];
+    // var options_channels=[];
+    // for(var i in o){
+    //   options_channels.push({label:o[i],value:o[i]});
+    // }
     return (
         <Modal show={this.state.showModal} onHide={this.close}  dialogClassName="custom-modal">
           <Modal.Header closeButton>
@@ -303,6 +330,15 @@ class ContactEdit2New  extends Component{
                     通道配置:
                 </td>
                 <td>
+                {
+                // <Select
+                //   name="form-field-name"
+                //   value={this.state.contact.channels}
+                //   options={options_channels}
+                //   onChange={this.channels_change_new}
+                //   onInputChange={this.channels_input}
+                // />
+              }
                   <Autocomplete
                       value={this.state.contact.channels}
                       inputProps={

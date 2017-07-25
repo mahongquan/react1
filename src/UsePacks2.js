@@ -4,6 +4,8 @@ import Client from './Client';
 import {Table} from "react-bootstrap";
 import UsePackEditNew from "./UsePackEditNew";
 import Autocomplete from './Autocomplete'
+// import Select from 'react-select';
+// import 'react-select/dist/react-select.css';
 let styles = {
   item: {
     padding: '2px 6px',
@@ -57,7 +59,7 @@ class UsePacks2 extends React.Component {
       console.log("selected");
       console.log(item);
       this.addrow(item.id);
-      this.setState({auto_value:value, auto_items: [ item ] })
+      //this.setState({auto_value:value, auto_items: [ item ] })
   }
   bibei= (id) => {
     //this.setState({auto_value:"必备"});
@@ -99,6 +101,29 @@ class UsePacks2 extends React.Component {
     //this.setState({currentIndex:idx,showModal:true});
     this.refs.edit1.open2(idx);
   }
+  getUsers=(input)=> {
+    console.log("getUsers");
+    console.log(input)
+    if (!input) {
+      return Promise.resolve({ options: [] });
+    }
+
+    return fetch("/rest/Pack?limit=10&search="+input,{credentials: 'include'})
+    .then((response) => response.json())
+    .then((json) => {
+      var r={ options: json.data};
+      console.log(r);
+      return r;
+    });
+  }
+  onChange=(value)=>{
+    this.setState({
+      auto_value: value,
+    });
+  }
+  onValueClick=(value)=>{
+    console.log(value);
+  }
   render() {
     const { usepacks } = this.state;
     const usepackRows = usepacks.map((usepack, idx) => (
@@ -136,7 +161,17 @@ class UsePacks2 extends React.Component {
           </tbody>
         </Table>
         <div>
-        输入包<Autocomplete
+        输入包
+        {
+          // <Select.Async multi={false} 
+          // value={this.state.auto_value} 
+          // onChange={this.onChange} 
+          // onValueClick={this.onValueClick} 
+          // valueKey="id" labelKey="name" 
+          // loadOptions={this.getUsers}
+          // />
+        }
+        <Autocomplete
           inputProps={{ id: 'states-autocomplete' }}
           ref="autocomplete"
           value={this.state.auto_value}

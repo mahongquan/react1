@@ -43,7 +43,7 @@ class PackItems extends React.Component {
       console.log("selected");
       console.log(item);
       this.addrow(item.id);
-      this.setState({auto_value:value, auto_items: [ item ] })
+      //this.setState({auto_value:value, auto_items: [ item ] })
   }
   auto_change=(event, value)=>{
     console.log("auto_change");
